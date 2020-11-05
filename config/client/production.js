@@ -9,5 +9,6 @@ let env = {
     ASSET : '/public',
     g_captcha_site_key : '6Lef5tUUAAAAANDvzGnYRQ-YdO8XjLPRrDyEnNsd',
     API_LIST : 'http://artywiz.local/api/v1/admin/routes',
+    MAPBOX_ACCESS_TOKEN : 'pk.eyJ1IjoiYWthc2FkZXYiLCJhIjoiY2toNDNycTkxMDI2dTJzbWxubGxyOHlndiJ9.e9-jCWxYxk5m5A2nLymbTw'
 };
 module.exports = env;
