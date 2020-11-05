@@ -27,7 +27,9 @@ export const IndexClass = BaseVue.extend({
   },
   setInitDOMSelection : function(action,props){
     let self = this;
+    /* Composition define */
     self.displayOption.join(action,props,function(action,val,e){});
+    /* Casual define */
     switch(action){
       case 'FILTER_SEARCH':
         self.filterSearch = self.getRef('filterSearch');
@@ -58,7 +60,7 @@ export default {
   },
   render : function(h){
     return (<HomeLayout header={HeadMenu}>
-      <div class="ui grid">
+      <div class="ui grid" style="width:100%;">
         <div class="four wide column">
           <div id="nav_map">
             {/* Partial display map topion */}

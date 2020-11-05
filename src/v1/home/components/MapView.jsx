@@ -323,13 +323,17 @@ export const MapViewClass = BaseVue.extend({
         let secondResultWidth = firstResultWidth - ((firstResultWidth * 10)/100);
         let firstResultheight = mapsingleid.height() - ((mapHeight * 50)/100);
         let secondResultHeight = firstResultheight + ((firstResultheight * 70)/100);
-        $('#marker-content').css('left',secondResultWidth); // <<< use pageX and pageY
-        $('#marker-content').css('top',secondResultHeight);
-        $('#marker-content').css('display','inline');
-        $("#marker-content").css("position", "absolute");  // <<< also make it absolute!
+        $('.marker-content').css('left',secondResultWidth); // <<< use pageX and pageY
+        $('.marker-content').css('top',secondResultHeight);
+        $('.marker-content').css('display','inline');
+        $(".marker-content").css("position", "absolute");  // <<< also make it absolute!
+        $('.marker-content.mobile.only').css('left',"54.15px"); // <<< use pageX and pageY
+        $('.marker-content.mobile.only').css('top',"165.535px");
+        $('.marker-content.mobile.only').css('display','inline');
+        $(".marker-content.mobile.only").css("position", "absolute");
         break;
       case 'HIDE':
-        $('#marker-content').css('display','none');
+        $('.marker-content').css('display','none');
         return;
     }
   } 
@@ -342,10 +346,7 @@ export default {
   },
   render(h){
     let { style, select_marker } = this.get();
-    return (<div style={style.body}>
-      <div style={style.map_wrapper} id="mapsingleid"></div>
-      {Object.keys(select_marker).length > 0?
-      <div style="display:none;width:300px;z-index:2147483647" id="marker-content">
+    let popUpContent = Object.keys(select_marker).length>0?
       <div class="ui card" style="display:block;">
         <div class="ui grid title" style="margin:0;">
           <div class="four wide column" style="padding:0;">
@@ -420,8 +421,15 @@ export default {
           </div>
         </div>
       </div>
-    </div>:
-    null}
+    :null;
+    return (<div style={style.body}>
+      <div style={style.map_wrapper} id="mapsingleid"></div>
+      <div style="display:none;width:300px;z-index:2147483647" class="marker-content mobile hidden">
+        {popUpContent}
+      </div>
+      <div style="display:none;z-index:2147483647" class="marker-content mobile only">
+        {popUpContent}
+      </div>
     </div>);
   }
 };

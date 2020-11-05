@@ -31,26 +31,34 @@ export default {
   render(h){
     let { HeaderComponent} = this;
     let { style } = this.get();
+    let content = (<>
+      <div class="four wide column">
+        <div class="foot_item">
+          <img src="/public/img/fb_icon.svg" alt=""/>
+          &nbsp;&nbsp;
+          <span>Aide |  Conditions générales d’utilisation</span>
+        </div>
+      </div>
+      <div class="eight wide column">
+        <div class="foot_item" style="justify-content:center;">
+          <span>Artisans, commerçants, créez gratuitement votre compte sur Artywiz.io</span>
+        </div>
+      </div>
+      <div class="four wide column">
+        <div class="foot_item" style="justify-content:flex-end;">
+          <span>Copyright © 2019 artyplanet.io / Tous droits réservés</span>
+        </div>
+      </div>
+    </>);
     return (<div style={style}>
       <HeaderComponent></HeaderComponent>
       {this.$slots.default()}
-      <div class="ui grid" id="footer">
-        <div class="four wide column">
-          <div class="foot_item">
-            <img src="/public/img/fb_icon.svg" alt=""/>
-            &nbsp;&nbsp;
-            <span>Aide |  Conditions générales d’utilisation</span>
-          </div>
+      <div id="footer">
+        <div class="ui stackable three column grid mobile hidden lower hidden tablet computer large screen widescreen" >
+          {content}
         </div>
-        <div class="eight wide column">
-          <div class="foot_item" style="justify-content:center;">
-            <span>Artisans, commerçants, créez gratuitement votre compte sur Artywiz.io</span>
-          </div>
-        </div>
-        <div class="four wide column">
-          <div class="foot_item" style="justify-content:flex-end;">
-            <span>Copyright © 2019 artyplanet.io / Tous droits réservés</span>
-          </div>
+        <div class="ui stackable three column grid mobile only">
+          {content}
         </div>
       </div>
     </div>);
