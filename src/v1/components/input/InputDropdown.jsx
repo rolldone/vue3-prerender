@@ -168,9 +168,9 @@ export default {
               <i class="dropdown icon"></i>
               <div class="default text">{saved_text || default_text || "--"}</div>
               <div class="menu">
-                <div class="item" data-key="" data-value="" data-symbol="1">
+                {/* <div class="item" data-key="" data-value="" data-symbol="1">
                   {default_text == null ? "--" : default_text}
-                </div>
+                </div> */}
                 {_datas.map(function(value, index) {
                   return (
                     <div class="item" data-key={value.key} data-value={value.id} data-symbol="1">

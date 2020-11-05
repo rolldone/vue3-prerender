@@ -18,11 +18,11 @@ export default BaseService.extend({
     route = this._super(route);
     window.HTTP_REQUEST = Object.freeze({
       AUTH: {
-        REGISTER: route["api.partner.auth.register"],
-        LOGIN: route["api.partner.auth.login"],
-        LOGOUT: route["api.partner.auth.logout"],
+        REGISTER: route["api.member.auth.register"],
+        LOGIN: route["api.member.auth.login"],
+        LOGOUT: route["api.member.auth.logout"],
         OAUTH_TOKEN : route['passport.token'],
-        OAUTH_VAL_REQUEST : route['api.partner.auth.oauth_val_request'],
+        OAUTH_VAL_REQUEST : route['api.member.auth.oauth_val_request'],
         OAUTH_AUTHORIZE : route['passport.authorizations.authorize']
       },
       ROUTE: {
@@ -33,17 +33,6 @@ export default BaseService.extend({
         GET_USER : route['api.partner.user.user'],
         CURRENT_USER: route["api.partner.user.current_user"],
         UPDATE_CURRENT_USER: route["api.partner.user.update_current_user"],
-        GET_OWN_BUSINESSES : route["api.partner.user.get_own_business"],
-        UPDATE_OWN_BUSINESS : route['api.partner.user.update_own_business'],
-        UPDATE_OWN_BUSINESS_LEVEL : route['api.partner.user.update_own_business_level']
-      },
-      ARTYWIZ_USER: {
-        GET_USERS: route["api.admin.artywiz_user.users"],
-        GET_USER: route["api.admin.artywiz_user.user"],
-        UPDATE_USER: route["api.admin.artywiz_user.update"],
-        ADD_USER: route["api.admin.artywiz_user.new"],
-        DELETE_BACKUP: route["api.admin.artywiz_user.delete_backup"],
-        NOTIF_RESET_PASSWORD: route["api.admin.artywiz_user.notif_reset_password"],
       },
       ACTIVITY: {
         LOGS: route["api.partner.activity.logs"],
@@ -53,26 +42,16 @@ export default BaseService.extend({
         ASK_USER_BY_EMAIL: route["api.partner.activity.ask_user_by_email"],
       },
       CATEGORY: {
-        CATEGORIES: route["api.admin.category.categories"],
-        CATEGORY: route["api.admin.category.category"],
-        ADD: route["api.admin.category.add"],
-        UPDATE: route["api.admin.category.update"],
-        DELETE: route["api.admin.category.delete"],
+        CATEGORIES: route["api.artyplanet.category.categories"],
+        CATEGORY: route["api.artyplanet.category.category"],
       },
-      USER_BUSINESS: {
-        USER_BUSINESSES : route['api.partner.user_business.user_businesses'],
-        USER_BUSINESS : route['api.partner.user_business.user_business'],
-        UPDATE_USER_BUSINESS : route['api.partner.user_business.update_user_business'],
-        ADD_USER_BUSINESS : route['api.partner.user_business.add_user_business'],
-        DELETE_USER_BUSINESS : route['api.partner.user_business.delete_user_business'],
-        ASK_USER_TO_JOIN : route['api.partner.user_business.ask_user_to_join']
+      BUSINESS : {
+        BUSINESSES : route['api.artyplanet.business.businesses'],
+        BUSINESS : route['api.artyplanet.business.business'],
       },
-      GROUP_BUSINESS: {
-        ADD_CHILD_GROUP : route['api.partner.group_business.add_child_group'],
-        DELETE_CHILD_GROUP : route['api.partner.group_business.delete_child_group'],
-        UPDATE_CHILD_GROUP : route['api.partner.group_business.update_child_group'],
-        GET_CHILD_GROUPS : route['api.partner.group_business.get_child_groups'],
-        GET_CHILD_GROUP : route['api.partner.group_business.get_child_group']
+      PRODUCT : {
+        PRODUCTS : route['api.artyplanet.product.products'],
+        PRODUCT : route['api.artyplanet.product.product']
       }
     });
     console.log("HTTP_REQUEST", window.HTTP_REQUEST);
