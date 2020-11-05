@@ -1,0 +1,26 @@
+[ignore]
+.*/__tests__/.*
+.*/src/\(foo\|bar\)/.*
+.*\.ignore\.js
+./node_modules/**
+./dist/**
+./views/**
+@config
+[options]
+include_warnings=true
+esproposal.optional_chaining=enable
+esproposal.decorators=ignore
+module.file_ext=.vue
+module.file_ext=.js
+module.file_ext=.jsx
+module.file_ext=.scss
+module.file_ext=.css
+module.name_mapper='BaseVue' -> '<PROJECT_ROOT>/src/base/BaseVue.jsx'
+module.name_mapper='BaseComposition' -> '<PROJECT_ROOT>/src/base/BaseComposition.jsx'
+module.name_mapper='gettext' -> '<PROJECT_ROOT>/src/base/Ttag.jsx'
+module.name_mapper='^@base\/\(.*\)$' -> '<PROJECT_ROOT>/src/base\/\(.*\)$'
+module.name_mapper='^@app\/\(.*\)$' -> '<PROJECT_ROOT>/src\/\(.*\)$'
+module.name_mapper='^@v1\/\(.*\)$' -> '<PROJECT_ROOT>/src/v1\/\(.*\)$'
+module.name_mapper='^@asset\/\(.*\)$' -> '<PROJECT_ROOT>/assets\/\(.*\)$'
+[libs]
+flow-typed

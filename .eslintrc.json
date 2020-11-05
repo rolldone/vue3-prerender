@@ -1,0 +1,18 @@
+{
+  "extends": ["plugin:flowtype/recommended","plugin:flowtype-errors/recommended"],
+  "parser": "babel-eslint",
+  "plugins": [
+    "flowtype"
+  ],
+  "rules": {
+    "flowtype-errors/show-errors": 2,
+    "flowtype/no-types-missing-file-annotation": 0,
+    "func-style": 0,
+    "semi": "error"
+  },
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    }
+  }
+}

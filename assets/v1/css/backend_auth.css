@@ -1,0 +1,23 @@
+#auth.base_container {
+  padding-top: 7%; }
+
+body > .grid {
+  height: 100%; }
+
+.image {
+  margin-top: -100px; }
+
+.column {
+  max-width: 450px; }
+
+#auth .base_wr.notification {
+  height: auto;
+  -webkit-justify-content: center;
+  -moz-justify-content: center;
+  -ms-justify-content: center;
+  justify-content: center;
+  -ms-flex-pack: center; }
+  #auth .base_wr.notification > h5 {
+    color: red; }
+
+/*# sourceMappingURL=backend_auth.css.map */

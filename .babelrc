@@ -1,0 +1,12 @@
+{
+    "presets" : [
+        "@babel/preset-flow"
+    ],
+    "plugins" : [
+        "@vue/babel-plugin-jsx",
+        "@babel/plugin-transform-modules-commonjs",
+        "@babel/plugin-proposal-class-properties",
+        "@babel/plugin-syntax-dynamic-import",
+        ["vue-jsx-hot-reload", { "debug": false }]
+    ]
+}

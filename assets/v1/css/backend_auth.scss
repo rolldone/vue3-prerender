@@ -1,0 +1,32 @@
+@import 'flexbox';
+$distance: 12px;
+$base_padding: ($distance/2);
+$base_margin: ($distance/2);
+#auth.base_container {
+    padding-top: 7%;
+}
+body>.grid {
+    height: 100%;
+}
+.image {
+    margin-top: -100px;
+}
+.column {
+    max-width: 450px;
+}
+
+#auth {
+	form{
+		.base_wr{}
+		.base_info.error{
+
+		}
+	}
+    .base_wr.notification{
+        height: auto;
+        @include justify-content(center);
+        >h5{
+            color: red;
+        }
+    }
+}
