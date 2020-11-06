@@ -82,6 +82,7 @@ export default UberProto.extend({
     let self = this;
     let strk = this.getStackTrace();
     let str = strk[1];
+    console.log('ssssssssss',str);
     /* Important */
     /* Disesuaikan dengan kondisi stacktrace */
     /* Dont define inside anonymous function */
@@ -101,7 +102,7 @@ export default UberProto.extend({
     if(self[str] != null){
       return self[str](...props);
     }
-    console.warn('Donny!. You dont have function with this name!! '+str+', Check your composition!!');
+    console.warn('Donny!. You dont have function with this name -> '+str+', Check your composition!!');
     return null;
   },
   /* InitDOMSelection perfect how to manage feature methods */
