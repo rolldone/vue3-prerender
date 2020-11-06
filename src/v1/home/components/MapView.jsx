@@ -3,88 +3,7 @@ import { reactive, onMounted } from 'vue';
 import config from '@config';
 import mergeImages from 'merge-images';
 
-const artywiz_users = [{
-  id : 1,
-  lat : 48.583782,
-  long : 7.746497,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_1.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE',
-    phone : '03 88 23 23 23'
-  },
-  
-},{
-  id : 2,
-  lat : 48.583718,
-  long : 7.744763,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_2.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE',
-    phone : '03 88 23 23 23'
-  },
-},{
-  id : 3,
-  lat : 48.583125,
-  long : 7.748121,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_3.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE',
-    phone : '03 88 23 23 23'
-  },
-},{
-  id : 4,
-  lat : 48.584520,
-  long : 7.747375,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_4.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE',
-    phone : '03 88 23 23 23'
-  },
-},{
-  id : 5,
-  lat : 48.584772,
-  long : 7.745106,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_5.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE',
-    phone : '03 88 23 23 23'
-  },
-}];
+
 
 export const MapViewClass = BaseVue.extend({
   data : function(){
@@ -255,7 +174,10 @@ export const MapViewClass = BaseVue.extend({
   startMap : async function(props){
     let self = this;
     window.staticType(props,[Object]);
-    await self.markerManipulate(artywiz_users);
+    window.staticType(props.datas,[Array,null]);
+    window.staticType(props.lat,[Number,null]);
+    window.staticType(props.long,[Number,null]);
+    await self.markerManipulate(props.datas);
     self.setInitDOMSelection('LOAD_DATA',props);
   },
   markerManipulate : async function(props){
@@ -304,6 +226,8 @@ export const MapViewClass = BaseVue.extend({
     let self = this;
     switch(action){
       case 'MARKER_CLICK':
+        /* Must Clear first for good effect */
+        await self.set('select_marker',{});
         await self.set('select_marker',props);
         self.mymap.setView(new window.L.LatLng(props.lat, props.long));
         self.displayPopUp('SHOW',props,e);
@@ -424,7 +348,7 @@ export default {
     :null;
     return (<div style={style.body}>
       <div style={style.map_wrapper} id="mapsingleid"></div>
-      <div style="display:none;width:300px;z-index:2147483647" class="marker-content mobile hidden">
+      <div style="display:none;z-index:2147483647" class="marker-content mobile hidden">
         {popUpContent}
       </div>
       <div style="display:none;z-index:2147483647" class="marker-content mobile only">
