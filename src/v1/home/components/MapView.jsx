@@ -69,16 +69,16 @@ export const MapViewClass = BaseVue.extend({
 			x.innerHTML = "Geolocation is not supported by this browser.";
 		}
   },
-  returnLeafletIcon: window.L.Icon.extend({
-    options: {
-      // shadowUrl: 'leaf-shadow.png',
-      // iconSize: [32, 32]
-      // shadowSize:   [50, 64],
-      // iconAnchor:   [22, 94],
-      // shadowAnchor: [4, 62],
-      // popupAnchor:  [-3, -76]
-    }
-  }),
+  // returnLeafletIcon: window.L.Icon.extend({
+  //   options: {
+  //     // shadowUrl: 'leaf-shadow.png',
+  //     // iconSize: [32, 32]
+  //     // shadowSize:   [50, 64],
+  //     // iconAnchor:   [22, 94],
+  //     // shadowAnchor: [4, 62],
+  //     // popupAnchor:  [-3, -76]
+  //   }
+  // }),
   setInitDOMSelection : async function(action,props){
     let self = this;
     switch(action){

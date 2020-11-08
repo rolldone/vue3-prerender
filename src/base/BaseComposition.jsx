@@ -82,7 +82,6 @@ export default UberProto.extend({
     let self = this;
     let strk = this.getStackTrace();
     let str = strk[1];
-    console.log('ssssssssss',str);
     /* Important */
     /* Disesuaikan dengan kondisi stacktrace */
     /* Dont define inside anonymous function */

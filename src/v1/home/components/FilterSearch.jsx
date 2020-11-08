@@ -36,7 +36,7 @@ export const FilterSearchClass = BaseVue.extend({
     let self = this;
     self.listMenuClick.join(action,{
       ...props,
-      className : '.ui.button'
+      className : '#filter_search_button .ui.button'
     },function(action,val){
       self.onClickListener(action,val);
     });

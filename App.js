@@ -66,9 +66,14 @@ switch (config.env) {
 //   res.render(__dirname + "/views/admin/v1/"+viewModeFolder+"/auth", {title: 'Artywiz - Auth Partner', date: versionCompile});
 //   /* res.sendFile(__dirname + "/views/auth.html"); */
 // });
-
+app.get("/about", function (req, res) {
+  // res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
+  res.sendFile(__dirname + "/dist/about/index.html");
+  /* res.sendFile(__dirname + "/views/index.html"); */
+});
 app.get("/*", function (req, res) {
   res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
+  // res.sendFile(__dirname + "/dist/index.html");
   /* res.sendFile(__dirname + "/views/index.html"); */
 });
 

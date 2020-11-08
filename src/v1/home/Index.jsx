@@ -168,8 +168,9 @@ export default {
   render : function(h){
     let { select_view } = this.get();
     return (<HomeLayout header={HeadMenu}>
+      <h1>vmafkvmafdkvmfkdvm</h1>
       <div class="ui grid" style="width:100%;">
-        <div class="four wide column">
+        <div class="sixteen wide column">
           <div id="nav_map">
             {/* Partial display map topion */}
             {this.displayOption.render(h,{})}
@@ -177,8 +178,6 @@ export default {
             <FilterSearch ref={(ref)=>this.setRef('filterSearch',ref)}></FilterSearch>
           </div>
         </div>
-        <div class="four wide column"></div>
-        <div class="four wide column"></div>
       </div>
       {(()=>{
         switch(select_view){
