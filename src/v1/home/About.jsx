@@ -2,7 +2,7 @@ export default {
   setup(props,context){
     return {
       handleClick : function(action,props,e){
-        debugger;
+        alert(action);
       }
     };
   },
