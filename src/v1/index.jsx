@@ -22,8 +22,8 @@ window.onpopstate = function(event){
 };
 
 const routes = (function(routes){
-  // require('./auth/route')(routes);
-  // require('./user/route')(routes);
+  require('./auth/route')(routes);
+  require('./user/route')(routes);
   require('./home/route')(routes);
   return routes;
 })([]);
