@@ -1,5 +1,4 @@
 const { default: Middleware } = require('../../classes/Middleware.jsx');
-
 /* Async load leaflet depedency */
 var initLeafLet = async (to, from, done, nextMiddleware) => {
   require.ensure([], function() {
@@ -23,5 +22,17 @@ module.exports = function(routes){
     	}
     },
     beforeEnter: Middleware.bind(this, [initLeafLet]),
+  });
+  routes.push({
+    name : 'home.about',
+    path : '/about',
+    component : async function(){
+    	try{
+    		let component = await import('./About.jsx');
+    		return component;
+    	}catch(ex){
+    		console.error('ex',ex);
+    	}
+    },
   });
 };

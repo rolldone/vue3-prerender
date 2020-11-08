@@ -9,9 +9,9 @@ export default BaseVue.extend({
           self.list_menu_click.popup('hide');
         }
         self.list_menu_click = $(props.className ||".list-menu-click").popup({
-          inline: true,
+          // inline: true,
           on: "click",
-          position: "bottom right",
+          // position: "bottom right",
           delay: {
             show: 300,
             hide: 800,

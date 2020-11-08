@@ -4,6 +4,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const webpack = require("webpack");
+
+const PrerenderSPAPlugin = require('prerender-spa-plugin')
 var pkg = {
   version: new Date().getTime()
 };
@@ -86,7 +88,7 @@ module.exports = {
     */
     // publicPath: "/dist",
     filename: "[name].js",
-    chunkFilename : '[id].[hash].js'
+    chunkFilename : '[id].[hash].js',
     // chunkFilename : '[name].[hash].js'
   },
   module: {
@@ -177,6 +179,13 @@ module.exports = {
         date : new Date().getTime(),
         template : path.join(__dirname, "views", "v1/prod/index.html"),
         filename: path.join(__dirname, "dist", "index.html")
+    }),
+    new PrerenderSPAPlugin({
+      // Required - The path to the webpack-outputted app to prerender.
+      staticDir: path.join(__dirname, 'dist'),
+      indexPath: path.resolve('dist/index.html'),
+      // Required - Routes to render.
+      routes: [ '/', '/about' ],
     }),
     /* Ini artinya membuatkan folder tujuan pada saat di compile */
     new CopyPlugin([

@@ -25,13 +25,18 @@ for(var a=0;a<entryName.length;a++){
   }
 }
 config.output = {
-  path: path.resolve(__dirname, 'views'),
+  path: path.resolve(__dirname, 'dist'),
   publicPath: '/',
   filename: '[name].js',
 }
+
 // config.entry.unshift('webpack-hot-middleware/client');
 /* Kalo jalankan aplikasi lebih dari satu sebaiknya matikan  */
 // config.plugins.push(new BundleAnalyzerPlugin())
+
+/* Delete plugin HtmlWebpackPlugin */
+config.plugins.splice(0,1);
+
 config.plugins.push(new webpack.optimize.OccurrenceOrderPlugin())
 config.plugins.push(new webpack.HotModuleReplacementPlugin())
 config.plugins.push(new webpack.NoEmitOnErrorsPlugin())
