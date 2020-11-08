@@ -168,7 +168,6 @@ export default {
   render : function(h){
     let { select_view } = this.get();
     return (<HomeLayout header={HeadMenu}>
-      <h1>vmafkvmafdkvmfkdvm</h1>
       <div class="ui grid" style="width:100%;">
         <div class="sixteen wide column">
           <div id="nav_map">
