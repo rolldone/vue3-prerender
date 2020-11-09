@@ -35,9 +35,13 @@ module.exports = async function(req,res,next){
               return;
           }
           const browser = await chromium.puppeteer.launch({
-            executablePath: await chromium.executablePath,
-            args: chromium.args,
-            defaultViewport: chromium.defaultViewport,
+            // executablePath: await chromium.executablePath,
+            // args: chromium.args,
+            // defaultViewport: chromium.defaultViewport,
+            args: [
+              '--no-sandbox',
+              '--disable-setuid-sandbox',
+            ],
           })
           const page = await browser.newPage();
           await page.setDefaultNavigationTimeout(60000);
