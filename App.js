@@ -4,11 +4,14 @@ var config = require("./config/server/main.js");
 config = config.create();
 const express = require("express");
 const logger = require("morgan");
+const UserAgentCheck = require("./server/middlewares/UserAgentCheck.js");
+const robots = require('express-robots-txt');
 
 const app = new express();
 app.set("view engine", "ejs");
-var versionCompile = new Date().getTime();
+var versionCompile = new Date().getTime();  
 var viewModeFolder = (function(config){
+  console.log('configggg -> ',config);
   switch(config){
     case 'dev':
     case 'development':
@@ -17,10 +20,11 @@ var viewModeFolder = (function(config){
     case 'production':
       return 'prod';
   }
+  return 'prod';
 })(config.env);
 
 // ## Middleware
-switch (config.env) {
+switch (process.env.NODE_ENV+"") {
   case "development":
   case "dev":
     app.use(logger("dev"));
@@ -66,11 +70,13 @@ switch (config.env) {
 //   res.render(__dirname + "/views/admin/v1/"+viewModeFolder+"/auth", {title: 'Artywiz - Auth Partner', date: versionCompile});
 //   /* res.sendFile(__dirname + "/views/auth.html"); */
 // });
-app.get("/about", function (req, res) {
-  // res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
-  res.sendFile(__dirname + "/dist/about/index.html");
-  /* res.sendFile(__dirname + "/views/index.html"); */
-});
+app.use(robots({ UserAgent: '*', Disallow: '/member' }))
+app.use(UserAgentCheck);
+// app.get("/about", function (req, res) {
+//   // res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
+//   res.sendFile(__dirname + "/dist/about/index.html");
+//   /* res.sendFile(__dirname + "/views/index.html"); */
+// });
 app.get("/*", function (req, res) {
   res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
   // res.sendFile(__dirname + "/dist/index.html");
