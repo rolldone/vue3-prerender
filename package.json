@@ -10,7 +10,8 @@
     "lint": "eslint src; exit 0",
     "start_dev": "set NODE_ENV=development&& node App.js",
     "start_disabled": "webpack-dashboard -- node app.js",
-    "start" : "webpack -p && node App.js"
+    "start" : "node App.js",
+    "heroku-postbuild": "webpack -p"
   },
   "dependencies": {
     "@vue/server-renderer": "^3.0.2",
