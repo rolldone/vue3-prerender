@@ -180,13 +180,13 @@ module.exports = {
         template : path.join(__dirname, "views", "v1/prod/index.html"),
         filename: path.join(__dirname, "dist", "index.html")
     }),
-    new PrerenderSPAPlugin({
-      // Required - The path to the webpack-outputted app to prerender.
-      staticDir: path.join(__dirname, 'dist'),
-      indexPath: path.resolve('dist/index.html'),
-      // Required - Routes to render.
-      routes: [ '/', '/about' ],
-    }),
+    // new PrerenderSPAPlugin({
+    //   // Required - The path to the webpack-outputted app to prerender.
+    //   staticDir: path.join(__dirname, 'dist'),
+    //   indexPath: path.resolve('dist/index.html'),
+    //   // Required - Routes to render.
+    //   routes: [ '/', '/about' ],
+    // }),
     /* Ini artinya membuatkan folder tujuan pada saat di compile */
     new CopyPlugin([
       { from: 'assets/v1/img', to: 'public/img' },

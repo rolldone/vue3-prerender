@@ -13,6 +13,7 @@ var Cache = {};
 module.exports = async function(req,res,next){
   const local_url = req.protocol + "://" + req.get('host') + req.originalUrl
   console.log('user-agent -> ',req.headers['user-agent']);
+  console.log('local_url',local_url);
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
   // console.log('checkExist -> ',checkExist);
   if(!isBot(req.headers['user-agent'])){

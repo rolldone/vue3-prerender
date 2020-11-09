@@ -20,11 +20,10 @@ var viewModeFolder = (function(config){
     case 'production':
       return 'prod';
   }
-  return 'prod';
 })(config.env);
 
 // ## Middleware
-switch (process.env.NODE_ENV+"") {
+switch (config.env) {
   case "development":
   case "dev":
     app.use(logger("dev"));
