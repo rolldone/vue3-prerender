@@ -6,7 +6,6 @@ const express = require("express");
 const logger = require("morgan");
 const UserAgentCheck = require("./server/middlewares/UserAgentCheck.js");
 const robots = require('express-robots-txt');
-const serverless = require("serverless-http");
 
 const app = new express();
 app.set("view engine", "ejs");
@@ -38,7 +37,7 @@ switch (config.env) {
     app.use(webpackDevMiddleware(compiler, {
       logLevel: "warn",
       publicPath: webpackConfig.output.publicPath
-    }));
+    }));  
     app.use(webpackHotMiddleware(compiler));
     break;
   case "production":
@@ -85,4 +84,4 @@ app.get("/*", function (req, res) {
 
 // app.listen(config.port, () => console.log(`Server running on port ${config.port}...`));   
 
-module.exports.handler = serverless(app);
+app.listen(config.port, () => console.log(`Server running on port ${config.port}...`));
