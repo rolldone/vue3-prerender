@@ -11,7 +11,6 @@ function isBot (useragent) {
 var Cache = {};
 
 module.exports = async function(req,res,next){
-  
   console.log('req',req.headers.referer);
   const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
   console.log('local_url',local_url);  
@@ -34,7 +33,7 @@ module.exports = async function(req,res,next){
           let html = null;
           if(Cache[local_url] != null){
               console.log('Cache -> ',local_url);
-              console.log('Content ->',Cache[local_url]);
+              console.log('Content ->','Cache[local_url]');
               res.send(Cache[local_url]);
               return;
           }
@@ -62,6 +61,7 @@ module.exports = async function(req,res,next){
           Cache[local_url] = html;
           await browser.close();
           res.send(html);
+          return;
       } catch (err) {
           console.log('content -> ',err);
           next();

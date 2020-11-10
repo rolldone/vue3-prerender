@@ -173,13 +173,13 @@ module.exports = {
   },
   plugins: [
     /* Load Html-webpack-plugin */
-    new HtmlWebpackPlugin({
-        title: 'My App',
-        chunks: [],
-        date : new Date().getTime(),
-        template : path.join(__dirname, "views", "v1/prod/index.html"),
-        filename: path.join(__dirname, "dist", "index.html")
-    }),
+    // new HtmlWebpackPlugin({
+    //     title: 'My App',
+    //     chunks: [],
+    //     date : new Date().getTime(),
+    //     template : path.join(__dirname, "views", "v1/prod/index.html"),
+    //     filename: path.join(__dirname, "dist", "index.html")
+    // }),
     // new PrerenderSPAPlugin({
     //   // Required - The path to the webpack-outputted app to prerender.
     //   staticDir: path.join(__dirname, 'dist'),
