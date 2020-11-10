@@ -75,7 +75,7 @@ module.exports = {
   entry: {
     // auth: [path.resolve(__dirname, "./src/v1/partner/auth/index")],
     main: [path.resolve(__dirname, "./src/v1/index")],
-    vendor: ["babel-polyfill"]
+    vendor: ["babel-polyfill"],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -173,6 +173,7 @@ module.exports = {
   },
   plugins: [
     /* Load Html-webpack-plugin */
+    /* If use NOdejs as rendering you dont need it */
     // new HtmlWebpackPlugin({
     //     title: 'My App',
     //     chunks: [],

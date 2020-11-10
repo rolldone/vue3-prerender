@@ -1,5 +1,8 @@
 const puppeteer = require('puppeteer');
 const ua = require('useragent');
+var config = require("../../config/server/main.js");
+config = config.create();
+const _ = require('lodash');
 
 function isBot (useragent) {
   const agent = ua.is(useragent);
@@ -9,7 +12,20 @@ function isBot (useragent) {
 }
 
 var Cache = {};
-
+var browser = null;
+var runnerBrowser = (async function(){
+  browser = await puppeteer.launch({
+    // executablePath: await chromium.executablePath,
+    // args: chromium.args,
+    // defaultViewport: chromium.defaultViewport,
+    args: [
+      '--no-sandbox',
+      '--disable-setuid-sandbox'
+    ],
+  });
+  browser.on('disconnected', runnerBrowser);
+});
+runnerBrowser();
 module.exports = async function(req,res,next){
   console.log('req',req.headers.referer);
   const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
@@ -25,46 +41,69 @@ module.exports = async function(req,res,next){
   //     return next();
   //   }
   // }
+  var page = null;
   if (checkExist.length > 0) {
     // console.log('Deteck Dari Crawling');
     next();
   } else {
       try {
           let html = null;
-          if(Cache[local_url] != null){
-              console.log('Cache -> ',local_url);
-              console.log('Content ->','Cache[local_url]');
-              res.send(Cache[local_url]);
-              return;
-          }
-          const browser = await puppeteer.launch({
-            // executablePath: await chromium.executablePath,
-            // args: chromium.args,
-            // defaultViewport: chromium.defaultViewport,
-            args: [
-              '--no-sandbox',
-              '--disable-setuid-sandbox'
-            ],
-          })
-          const page = await browser.newPage();
+          // if(Cache[local_url] != null){
+          //     console.log('Cache -> ',local_url);
+          //     console.log('Content ->','Cache[local_url]');
+          //     res.send(Cache[local_url]);
+          //     return;
+          // }
+          
+          
+          console.log('acccesss it');
+          page = await browser.newPage();
           await page.setDefaultNavigationTimeout(60000);
           await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
-          
-          // await page.waitForTimeout(10000);
-          await page.goto(local_url,{
-            waitUntil: "networkidle0"
-          });  
+          switch (config.env) {
+            case "development":
+            case "dev":
+              /* Karena pake hammer SPA jangan gunakan waitUntil */
+              await page.goto(local_url);
+              break;
+            case "production":
+            case "devserver":
+              await page.goto(local_url,{
+                waitUntil: "networkidle0"
+              });
+              break;
+          }
+            
           // await page.waitForSelector('#mapsingleid');    
           html = await page.evaluate(() => {
               return document.documentElement.innerHTML;
           });
           Cache[local_url] = html;
-          await browser.close();
+          // await page.goto('about:blank');
+          await page.close();
+          closeOne();
           res.send(html);
           return;
       } catch (err) {
+          // await page.goto('about:blank');
+          await page.close();
+          closeOne();
           console.log('content -> ',err);
           next();
       }
   }
+}
+
+var pendingDebounce = null;
+var closeOne = function(){
+  if(pendingDebounce != null){
+    pendingDebounce.cancel();
+  }
+  pendingDebounce = _.debounce(async function(){
+    console.log('(await browser.pages()).length',(await browser.pages()).length)
+    if ((await browser.pages()).length == 1 || (await browser.pages()).length == 0) {
+      browser.close();
+    }
+  },120000);
+  pendingDebounce();
 }
