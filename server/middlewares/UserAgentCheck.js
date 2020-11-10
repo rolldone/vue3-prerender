@@ -19,13 +19,13 @@ module.exports = async function(req,res,next){
   console.log('user-agent -> ',req.headers['user-agent']);
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
   // console.log('checkExist -> ',checkExist);
-  if(!isBot(req.headers['user-agent'])){
-    let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
-    if(Lighthouse.length == 0){
-      // console.log('Bukan Crawling');
-      return next();
-    }
-  }
+  // if(!isBot(req.headers['user-agent'])){
+  //   let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
+  //   if(Lighthouse.length == 0){
+  //     // console.log('Bukan Crawling');
+  //     return next();
+  //   }
+  // }
   if (checkExist.length > 0) {
     // console.log('Deteck Dari Crawling');
     next();
