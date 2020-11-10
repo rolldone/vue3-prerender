@@ -14,17 +14,7 @@ module.exports = async function(req,res,next){
   
   console.log('req',req.headers.referer);
   const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
-  console.log('local_url',local_url);
-
-  const file = local_url.split(".");
-  const fileExtension = file[file.length-1];
-  console.log('fileExtension',fileExtension);
-  
-  // if(imageExtensions.includes(fileExtension)) {
-  //     console.log("It's an image");
-  // } else if (fileExtension === "js") {
-  //     console.log("It's a javascript file");
-  // }
+  console.log('local_url',local_url);  
 
   console.log('user-agent -> ',req.headers['user-agent']);
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
@@ -74,7 +64,7 @@ module.exports = async function(req,res,next){
           res.send(html);
       } catch (err) {
           console.log('content -> ',err);
-          res.send(err)
+          next();
       }
   }
 }
