@@ -40,7 +40,6 @@ module.exports = async function(req,res,next){
             // defaultViewport: chromium.defaultViewport,
             args: [
               '--no-sandbox',
-              '--disable-setuid-sandbox',
             ],
           })
           const page = await browser.newPage();
