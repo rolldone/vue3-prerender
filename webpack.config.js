@@ -4,8 +4,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const webpack = require("webpack");
+// const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
 var pkg = {
   version: new Date().getTime()
 };
@@ -110,11 +110,11 @@ module.exports = {
         exclude: [/node_modules/,/assets/],
         loaders: ["babel-loader",'eslint-loader']
       },
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/,
+      // },
       {
         test: /\.js?$/,
         exclude: /node_modules/,

@@ -1,4 +1,4 @@
-const chromium = require('chrome-aws-lambda');
+const puppeteer = require('puppeteer');
 const ua = require('useragent');
 
 function isBot (useragent) {
@@ -34,7 +34,7 @@ module.exports = async function(req,res,next){
               res.send(Cache[local_url]);
               return;
           }
-          const browser = await chromium.puppeteer.launch({
+          const browser = await puppeteer.launch({
             // executablePath: await chromium.executablePath,
             // args: chromium.args,
             // defaultViewport: chromium.defaultViewport,
