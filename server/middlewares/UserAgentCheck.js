@@ -48,15 +48,11 @@ module.exports = async function(req,res,next){
   } else {
       try {
           let html = null;
-          // if(Cache[local_url] != null){
-          //     console.log('Cache -> ',local_url);
-          //     console.log('Content ->','Cache[local_url]');
-          //     res.send(Cache[local_url]);
-          //     return;
-          // }
-          
-          
-          console.log('acccesss it');
+          if(Cache[local_url] != null){
+              console.log('Cache -> ',local_url);
+              res.send(Cache[local_url]);
+              return;
+          }
           page = await browser.newPage();
           await page.setDefaultNavigationTimeout(60000);
           await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
