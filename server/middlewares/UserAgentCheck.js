@@ -11,9 +11,22 @@ function isBot (useragent) {
 var Cache = {};
 
 module.exports = async function(req,res,next){
-  const local_url = req.protocol + "://" + req.get('host') + req.originalUrl
-  console.log('user-agent -> ',req.headers['user-agent']);
+  
+  console.log('req',req.headers.referer);
+  const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
   console.log('local_url',local_url);
+
+  const file = local_url.split(".");
+  const fileExtension = file[file.length-1];
+  console.log('fileExtension',fileExtension);
+  
+  // if(imageExtensions.includes(fileExtension)) {
+  //     console.log("It's an image");
+  // } else if (fileExtension === "js") {
+  //     console.log("It's a javascript file");
+  // }
+
+  console.log('user-agent -> ',req.headers['user-agent']);
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
   // console.log('checkExist -> ',checkExist);
   if(!isBot(req.headers['user-agent'])){
@@ -31,6 +44,7 @@ module.exports = async function(req,res,next){
           let html = null;
           if(Cache[local_url] != null){
               console.log('Cache -> ',local_url);
+              console.log('Content ->',Cache[local_url]);
               res.send(Cache[local_url]);
               return;
           }
@@ -40,12 +54,18 @@ module.exports = async function(req,res,next){
             // defaultViewport: chromium.defaultViewport,
             args: [
               '--no-sandbox',
+              '--disable-setuid-sandbox'
             ],
           })
           const page = await browser.newPage();
           await page.setDefaultNavigationTimeout(60000);
           await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
-          await page.goto(local_url);          
+          
+          // await page.waitForTimeout(10000);
+          await page.goto(local_url,{
+            waitUntil: "networkidle0"
+          });  
+          // await page.waitForSelector('#mapsingleid');    
           html = await page.evaluate(() => {
               return document.documentElement.innerHTML;
           });
