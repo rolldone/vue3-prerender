@@ -8,11 +8,12 @@ import FilterSearch from "./components/FilterSearch";
 import MapView from "./components/MapView";
 import GridDataFunction from "./partials/GridDataFunction";
 import ProductService from "../services/ProductService";
+import ListDataFunction from "./partials/ListDataFunction";
 
 export const IndexClass = BaseVue.extend({
   data : function(){
     return reactive({
-      select_view : 'MAP',
+      select_view : 'LIST',
       query : {},
       datas : []
     });
@@ -24,6 +25,7 @@ export const IndexClass = BaseVue.extend({
     let self = this;
     self.displayOption = (DisplayOptionFunction.create(props,self)).setup();
     self.gridData = (GridDataFunction.create(props,self)).setup();
+    self.listData = (ListDataFunction.create(props,self)).setup();
     onBeforeMount(function(){
       AppStore.commit('SET',{
         title : window.gettext("ArtyPlanet Home")
@@ -45,19 +47,28 @@ export const IndexClass = BaseVue.extend({
       console.error('getProducts - ex ',ex);
     }
   },
-  setProducts : function(props){
+  setProducts : async function(props){
     let self = this;
     if(props == null) return;
     let datas = (function(parseDatas){
       return parseDatas;
     })(props.return);
-    self.set('datas',datas);
+    await self.set('datas',datas);
+    self.passDataToComponent();
+  },
+  passDataToComponent : function(){
+    let self = this;
     self.setInitDOMSelection('LOAD_MAP_VIEW');
+    self.setInitDOMSelection(self.gridData.map.LOAD,self.get('datas'));
+    self.setInitDOMSelection(self.listData.map.LOAD,self.get('datas'));
   },
   setInitDOMSelection : async function(action,props){
     let self = this;
     /* Composition define */
     self.gridData.join(action,props,async function(action,val){
+
+    });
+    self.listData.join(action,props,async function(action,val){
 
     });
     self.displayOption.join(action,props,async function(action,val,e){
@@ -68,6 +79,7 @@ export const IndexClass = BaseVue.extend({
           self.setInitDOMSelection(self.gridData.map.LOAD,self.get('datas'));
           break;
         case 'LIST':
+          self.setInitDOMSelection(self.listData.map.LOAD,self.get('datas'));
           break;
         case 'MAP':
           self.setInitDOMSelection('LOAD_MAP_VIEW');
@@ -128,7 +140,7 @@ export default {
           case 'GRID':
             return this.gridData.render(h,{});
           case 'LIST':
-            return null;
+            return this.listData.render(h,{});
         }
       })()}
       

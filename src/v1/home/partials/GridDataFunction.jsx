@@ -6,14 +6,14 @@ export default BaseVue.extend({
     let self = this;
     switch(action){
       case this.getMapDOMSelection('LOAD'):
-        let gridData = self.getRef('gridData');
-        if(gridData == null) return;
-        gridData.setOnClickListener(callback);
-        gridData.setDatas(props);
+        let ownRefData = self.getRef('ownRefData');
+        if(ownRefData == null) return;
+        ownRefData.setOnClickListener(callback);
+        ownRefData.setDatas(props);
         break;
     }
   },
   render(h){
-    return (<GridData ref={(ref)=>this.setRef('gridData',ref)}></GridData>);
+    return (<GridData ref={(ref)=>this.setRef('ownRefData',ref)}></GridData>);
   }
 });

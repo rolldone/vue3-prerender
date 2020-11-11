@@ -15,15 +15,14 @@ var Cache = {};
 var browser = null;
 var runnerBrowser = (async function(){
   browser = await puppeteer.launch({
-    // executablePath: await chromium.executablePath,
-    // args: chromium.args,
-    // defaultViewport: chromium.defaultViewport,
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox'
     ],
   });
   browser.on('disconnected', runnerBrowser);
+  /* Puppeteer opens an empty tab in non-headless mode */
+  /* You can add this to automatically close the first "blank" page whenever you open a new page. */
   browser.on('targetcreated', async function f() {
     let pages = await browser.pages();
     if (pages.length > 1) {
@@ -35,11 +34,10 @@ var runnerBrowser = (async function(){
 runnerBrowser();
 
 module.exports = async function(req,res,next){
-  
-  console.log('req',req.headers.referer);
+  /* For index path access will detect null "req.protocol + "://" + req.get('host') + req.path" */
+  /* So use exception handling to get referer */
   const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
-  // console.log('local_url',local_url);  
-  // console.log('user-agent -> ',req.headers['user-agent']);
+  
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
 
   /* If get cache load cache */
@@ -63,7 +61,6 @@ module.exports = async function(req,res,next){
   } else {
     try {
         let html = null;
-        
         page = await browser.newPage();
         await page.setDefaultNavigationTimeout(60000);
         await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
@@ -84,6 +81,7 @@ module.exports = async function(req,res,next){
         // await page.waitForSelector('#mapsingleid');    
         html = await page.evaluate(() => {
             document.querySelector('#nprogress').outerHTML = null;
+            /* Any method to access full html content? */
             return new XMLSerializer().serializeToString(document.doctype)+document.documentElement.outerHTML;
         });
         Cache[local_url] = html;

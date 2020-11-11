@@ -4,7 +4,7 @@ var config = require("./config/server/main.js");
 config = config.create();
 const express = require("express");
 const logger = require("morgan");
-const UserAgentCheck = require("./server/middlewares/UserAgentCheck.js");
+const RenderPage = require("./server/middlewares/RenderPage.js");
 const robots = require('express-robots-txt');
 
 const app = new express();
@@ -69,8 +69,8 @@ switch (config.env) {
 //   res.render(__dirname + "/views/admin/v1/"+viewModeFolder+"/auth", {title: 'Artywiz - Auth Partner', date: versionCompile});
 //   /* res.sendFile(__dirname + "/views/auth.html"); */
 // });
-app.use(robots({ UserAgent: '*', Disallow: '/member' }))
-app.use(UserAgentCheck);
+app.use(robots({ UserAgent: '*', Disallow: '/member' }));
+app.use(RenderPage);
 // app.get("/about", function (req, res) {
 //   // res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
 //   res.sendFile(__dirname + "/dist/about/index.html");
