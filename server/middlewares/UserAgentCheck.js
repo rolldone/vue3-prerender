@@ -24,15 +24,30 @@ var runnerBrowser = (async function(){
     ],
   });
   browser.on('disconnected', runnerBrowser);
+  browser.on('targetcreated', async function f() {
+    let pages = await browser.pages();
+    if (pages.length > 1) {
+        await pages[0].close();
+        browser.off('targetcreated', f);
+    }
+  });
 });
 runnerBrowser();
 
 module.exports = async function(req,res,next){
+  
   console.log('req',req.headers.referer);
   const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
-  console.log('local_url',local_url);  
-  console.log('user-agent -> ',req.headers['user-agent']);
+  // console.log('local_url',local_url);  
+  // console.log('user-agent -> ',req.headers['user-agent']);
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
+
+  /* If get cache load cache */
+  if(Cache[local_url] != null){
+    console.log('Cache -> ',local_url);
+    res.send(Cache[local_url]);
+    return;
+  }
 
   /* Only real user agent get block at here */
   if(!isBot(req.headers['user-agent'])){
@@ -48,11 +63,7 @@ module.exports = async function(req,res,next){
   } else {
     try {
         let html = null;
-        if(Cache[local_url] != null){
-            console.log('Cache -> ',local_url);
-            res.send(Cache[local_url]);
-            return;
-        }
+        
         page = await browser.newPage();
         await page.setDefaultNavigationTimeout(60000);
         await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
@@ -72,7 +83,8 @@ module.exports = async function(req,res,next){
           
         // await page.waitForSelector('#mapsingleid');    
         html = await page.evaluate(() => {
-            return document.documentElement.innerHTML;
+            document.querySelector('#nprogress').outerHTML = null;
+            return new XMLSerializer().serializeToString(document.doctype)+document.documentElement.outerHTML;
         });
         Cache[local_url] = html;
         // await page.goto('about:blank');

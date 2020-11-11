@@ -11,7 +11,7 @@ const app = new express();
 app.set("view engine", "ejs");
 var versionCompile = new Date().getTime();  
 var viewModeFolder = (function(config){
-  console.log('configggg -> ',config);
+  console.log('config -> ',config);
   switch(config){
     case 'dev':
     case 'development':
@@ -76,7 +76,7 @@ app.use(UserAgentCheck);
 //   res.sendFile(__dirname + "/dist/about/index.html");
 //   /* res.sendFile(__dirname + "/views/index.html"); */
 // });
-app.get("/*", function (req, res) {
+app.get("/*",function (req, res) {
   res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
   // res.sendFile(__dirname + "/dist/index.html");
   /* res.sendFile(__dirname + "/views/index.html"); */

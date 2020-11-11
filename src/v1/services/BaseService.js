@@ -50,8 +50,8 @@ export default BaseService.extend({
         BUSINESS : route['api.artyplanet.business.business'],
       },
       PRODUCT : {
-        PRODUCTS : route['api.artyplanet.product.products'],
-        PRODUCT : route['api.artyplanet.product.product']
+        PRODUCTS : route['v1.member.product.products'],
+        PRODUCT : route['v1.member.product.product']
       }
     });
     console.log("HTTP_REQUEST", window.HTTP_REQUEST);
