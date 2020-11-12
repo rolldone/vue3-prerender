@@ -20,17 +20,18 @@ var runnerBrowser = (async function(){
       '--no-sandbox',
       '--disable-setuid-sandbox'
     ],
+    headless : true
   });
   browser.on('disconnected', runnerBrowser);
   /* Puppeteer opens an empty tab in non-headless mode */
   /* You can add this to automatically close the first "blank" page whenever you open a new page. */
-  // browser.on('targetcreated', async function f() {
-  //   let pages = await browser.pages();
-  //   if (pages.length > 1) {
-  //       await pages[0].close();
-  //       browser.off('targetcreated', f);
-  //   }
-  // });
+  browser.on('targetcreated', async function f() {
+    let pages = await browser.pages();
+    if (pages.length > 1) {
+        await pages[0].close();
+        browser.off('targetcreated', f);
+    }
+  });
 });
 runnerBrowser();
 
@@ -43,24 +44,26 @@ module.exports = async function(req,res,next){
 
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
 
-  /* If get cache load cache */
-  if(loadCache(local_url,req,res) == true){
-    return;
-  }
-
   /* Only real user agent get block at here */
-  if(!isBot(req.headers['user-agent'])){
-    let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
-    if(Lighthouse.length == 0){
-      return next();
-    }
-  }
+  // if(!isBot(req.headers['user-agent'])){
+  //   let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
+  //   if(Lighthouse.length == 0){
+  //     next();
+  //     return;
+  //   }
+  // }
   
   var page = null;
   if (checkExist.length > 0) {
     next();
+    return;
   } else {
     try {
+        if(req.protocol + "://" + req.get('host') + req.path != local_url){
+          /* For prevent asset */
+          // console.log('WRONG - MY_SYSTEM WRONG PLACE ',req.protocol + "://" + req.get('host') + req.path);
+          return next();
+        }
         let html = null;
         let pages = await browser.pages();
         let existPage = null;
@@ -78,26 +81,34 @@ module.exports = async function(req,res,next){
         if(existPage != null){
           if(existPage.isClosed()){
             if(Cache[local_url] != null){
+              console.log('SECOND REQUEST USING CACHED');
               res.send(Cache[local_url]);
             }
             return 
           }
           existPage.on('close', async () => {
+            console.log('SECOND REQUEST USING SAME ARE CLOSED');
             res.send(Cache[local_url]);
           });
-          // console.log('SECOND REQUEST USING SAME PAGE FOR EVALUATE');
-          // res.send(await evaluatePage(existPage));
+          console.log('SECOND REQUEST USING SAME PAGE FOR EVALUATE');
+          /* Just waiting it but send data use cache that saved */
+          
+          // res.send();
+          // res.send('Please wait! Still On Rendering!');
           return;
         }else{
           if(CurrentUrlWorking[local_url] != null){
             /* Important filter */
             /* If get big concurent at the same time Dont give ssr just let user get spa only */
+            console.log('If get big concurent at the same time Dont give ssr just let user get spa only');
             return next();
           }
         }
 
         /* If get cache load cache */
         if(loadCache(local_url,req,res) == true){
+          console.log('GET CACHE');
+          res.send(Cache[local_url]);
           return;
         }
 
@@ -105,18 +116,19 @@ module.exports = async function(req,res,next){
         CurrentUrlWorking[local_url] = local_url;
 
         let page = await browser.newPage();
-        await page.setDefaultNavigationTimeout(60000);
+        await page.setDefaultNavigationTimeout(12000);
 
         /* Optimation */
         /* 1. Intercept network requests. */
         await page.setRequestInterception(true);
         page.on('request', req => {
           // 2. Ignore requests for resources that don't produce DOM
-          // (images, stylesheets, media).
-          // const allowlist = ['document', 'script', 'xhr', 'fetch'];
-          // if (!allowlist.includes(req.resourceType())) {
-          //   return req.abort();
-          // }
+          /* (, stylesheets, ). */
+          const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
+          if (!allowlist.includes(req.resourceType())) {
+            console.log('req.resourceType()',req.resourceType());
+            return req.abort();
+          }
 
           /* Avoid inflating Analytics pageviews */
           /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
@@ -138,6 +150,7 @@ module.exports = async function(req,res,next){
             break;
           case "production":
           case "devserver":
+            console.log('go to',local_url);
             await page.goto(local_url,{
               waitUntil: "networkidle0"
             });
@@ -145,22 +158,34 @@ module.exports = async function(req,res,next){
         }
           
         // await page.waitForSelector('#mapsingleid');    
-        html = await evaluatePage(page);
+        // html = await evaluatePage(page);
+        html = await page.evaluate(function(){
+          try{
+            document.querySelector('#nprogress').innerHTML = null;
+            /* Any method to access full html content? */
+            return new XMLSerializer().serializeToString(document.doctype)+document.documentElement.outerHTML;
+          }catch(ex){
+            console.log('evaluatePage - ex',ex);
+            return null;
+          }
+        });
         Cache[local_url] = html;
         // await page.goto('about:blank');
         await page.close();
         delete CurrentUrlWorking[local_url];
         closeOne();
         res.send(html);
+        console.log('DONE RENDERING');
         return;
     } catch (err) {
         // await page.goto('about:blank');
         if(page != null ){
           await page.close();
         }
+        console.log('err - ',err);
+        process.exit(1);
         closeOne();
-        console.log('content -> ',err);
-        next();
+        res.send('on Rendering!');
     }
   }
 }
@@ -172,6 +197,7 @@ var evaluatePage = async function(page){
       /* Any method to access full html content? */
       return new XMLSerializer().serializeToString(document.doctype)+document.documentElement.outerHTML;
     }catch(ex){
+      console.log('evaluatePage - ex',ex);
       return null;
     }
   });
@@ -179,8 +205,6 @@ var evaluatePage = async function(page){
 
 var loadCache = function(url,req,res){
   if(Cache[url] != null){
-    console.log('Cache -> ',url);
-    res.send(Cache[url]);
     return true;
   }
   return false;
