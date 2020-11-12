@@ -13,7 +13,7 @@ import ListDataFunction from "./partials/ListDataFunction";
 export const IndexClass = BaseVue.extend({
   data : function(){
     return reactive({
-      select_view : 'LIST',
+      select_view : 'MAP',
       query : {},
       datas : []
     });
