@@ -152,10 +152,11 @@ module.exports = async function(req,res,next){
             break;
           case "production":
           case "devserver":
+            await page.goto(local_url);
             console.log('go to',local_url);
-            await page.goto(local_url,{
-              waitUntil: "networkidle0"
-            });
+            // await page.goto(local_url,{
+            //   waitUntil: "networkidle0"
+            // });
             break;
         }
           

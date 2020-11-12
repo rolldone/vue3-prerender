@@ -70,13 +70,12 @@ switch (config.env) {
 //   /* res.sendFile(__dirname + "/views/auth.html"); */
 // });
 app.use(robots({ UserAgent: '*', Disallow: '/member' }));
-app.use(RenderPage);
 // app.get("/about", function (req, res) {
 //   // res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
 //   res.sendFile(__dirname + "/dist/about/index.html");
 //   /* res.sendFile(__dirname + "/views/index.html"); */
 // });
-app.get("/*",function (req, res) {
+app.get("/*",[RenderPage],function (req, res) {
   res.render(__dirname + "/views/v1/"+viewModeFolder+"/main", {title: 'Artyplanet', date: versionCompile});
   // res.sendFile(__dirname + "/dist/index.html");
   /* res.sendFile(__dirname + "/views/index.html"); */
