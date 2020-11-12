@@ -4,6 +4,22 @@ $base_margin: ($distance/2);
 $peter_river: #3498db;
 $barlow: 'Barlow', sans-serif;
 
+//NEW VERSION OBJECT ASPECT RATIO
+//BUTUH REQUIREMENT CHILDREN ABSOLUTE LAYOUT
+@mixin aspect-ratio(){
+    display: inline-block;
+    position: relative;
+    &:after{
+        @content;
+    }
+}
+@mixin aspect-ratio-item(){
+    display: block;
+    content: '';
+    padding-top: 50%; //sample
+    @content;
+}
+
 @import 'flexbox';
 @import 'normalize';
 @mixin box-shadow() {
@@ -494,6 +510,128 @@ body.pushable>.pusher {
     }
 
 }
+.list_data{
+    padding: 12px;
+    .ui.card{
+        width: 100%;
+        min-height: 100px;
+        background-color: white;
+        display: flex;
+        flex-direction: row;
+        .ui.grid{
+            margin: 0;
+            width: 100%;
+        }
+        .image {
+            height: 100%;
+            width: 160px;
+            position: relative;
+            @include aspect-ratio{
+                @include aspect-ratio-item{
+                    padding-top: 63%;
+                }
+            }
+            img{
+                background-position: center;
+                background-size: 110%;
+                background-repeat: no-repeat;
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                height: 100%;
+            }
+        }
+        .name {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            padding-left: 12px;
+            h2,h3,h4,h5{
+                margin: 0;
+            }
+        }
+        .store{
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            .image{
+                width: 50px;
+                height: 50px;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                align-items: center;
+                border-radius: 50%;
+                background: white;
+                border: #f1f1f1 solid 1px;
+                margin-right: 12px;
+                margin-left: 12px;
+                img{
+                    width: 30px;
+                    height: 30px;
+                    position: relative;
+                }
+
+            }
+            h2,h3,h4,h5{
+                margin: 0;
+                color: #87A6B5;
+            }
+        }
+        .price{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            margin-left: 12px;
+            margin-right: 12px;
+            h2,h3,h4,h5{
+                margin: 0;
+                color: #87A6B5;
+            }
+            h3{
+                color:#4A4A4A;
+            }
+        }
+        .nav{
+            display: flex;
+            justify-content: center;
+            flex-direction: row;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: white;
+            > div{
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                background-color: #ECF0F5;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                &:first-child{
+                    margin-right: 0.5rem;
+                }
+
+                &.blue {
+                    background-color: #0B76F1;
+                }
+            }
+
+            img{
+                width: 50%;
+            }
+        }
+    }
+    
+}
 .grid_data{
     display: flex;
     align-items: flex-start;
@@ -501,11 +639,90 @@ body.pushable>.pusher {
     flex-direction: row;
     flex-wrap: wrap;
     padding: 6px;
+    min-height: 75%;
+    .title{
+        h5{
+            font-size: 0.7em;
+            margin:0;
+        }
+        span{
+            font-size: 0.7em;
+        }
+        .column{
+            padding: 0px;
+        }
+        .four.wide.column{
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+        }
+        .image{
+            border-radius: 50%;
+            border: 1px solid #f1f1f1;
+            width: 50px;
+            height: 50px;
+        }
+    }
     .price {
+        position: relative;
+        width: 100%;
         .text {
             h5 {
                 margin: 0;
             }
+        }
+        @include aspect-ratio {
+            @include aspect-ratio-item {
+                padding-top: 63%;
+            }
+        }
+        .image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
+            background-size: 100% !important;
+        }
+        .nav{
+            position: absolute;
+            top: auto;
+            bottom: 10px;
+            right: 6px;
+            left: auto;
+            display: flex;
+            > div{
+                width: 50px;
+                height: 50px;
+                border-radius: 50%;
+                background-color: #ECF0F5;
+                display: flex;
+                flex-direction: row;
+                justify-content: center;
+                &:first-child{
+                    margin-right: 0.5rem;
+                }
+
+                &.blue {
+                    background-color: #0B76F1;
+                }
+            }
+
+            img{
+                width: 50%;
+            }
+        }
+    }
+    .name {
+        padding: 12px;
+        >*{
+            display: block;
+        }
+        h1,h2,h3{
+            margin: 0;
         }
     }
     .ui.card {

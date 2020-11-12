@@ -4,8 +4,8 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const webpack = require("webpack");
+// const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
-const PrerenderSPAPlugin = require('prerender-spa-plugin')
 var pkg = {
   version: new Date().getTime()
 };
@@ -75,7 +75,7 @@ module.exports = {
   entry: {
     // auth: [path.resolve(__dirname, "./src/v1/partner/auth/index")],
     main: [path.resolve(__dirname, "./src/v1/index")],
-    vendor: ["babel-polyfill"]
+    vendor: ["babel-polyfill"],
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -110,11 +110,11 @@ module.exports = {
         exclude: [/node_modules/,/assets/],
         loaders: ["babel-loader",'eslint-loader']
       },
-      {
-        test: /\.tsx?$/,
-        use: 'ts-loader',
-        exclude: /node_modules/,
-      },
+      // {
+      //   test: /\.tsx?$/,
+      //   use: 'ts-loader',
+      //   exclude: /node_modules/,
+      // },
       {
         test: /\.js?$/,
         exclude: /node_modules/,
@@ -173,12 +173,13 @@ module.exports = {
   },
   plugins: [
     /* Load Html-webpack-plugin */
+    /* If use NOdejs as rendering you dont need it */
     new HtmlWebpackPlugin({
         title: 'My App',
         chunks: [],
         date : new Date().getTime(),
         template : path.join(__dirname, "views", "v1/prod/index.html"),
-        filename: path.join(__dirname, "dist", "index.html")
+        filename: path.join(__dirname, "dist", "main.html")
     }),
     // new PrerenderSPAPlugin({
     //   // Required - The path to the webpack-outputted app to prerender.

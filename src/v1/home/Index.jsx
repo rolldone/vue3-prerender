@@ -1,121 +1,74 @@
 import BaseVue from "../../base/BaseVue";
 import HomeLayout from "../layout/HomeLayout";
 import HeadMenu from "./components/HeadMenu";
-import { reactive, onMounted, onBeforeMount } from 'vue';
+import { reactive, onMounted, onBeforeMount  } from 'vue';
 import AppStore from "../store/AppStore";
 import DisplayOptionFunction from "./partials/DisplayOptionFunction";
 import FilterSearch from "./components/FilterSearch";
 import MapView from "./components/MapView";
 import GridDataFunction from "./partials/GridDataFunction";
-
-const artywiz_users = [{
-  id : 1,
-  lat : 48.583782,
-  long : 7.746497,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_1.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE 1',
-    phone : '03 88 23 23 23'
-  },
-  
-},{
-  id : 2,
-  lat : 48.583718,
-  long : 7.744763,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_2.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE 2',
-    phone : '03 88 23 23 23'
-  },
-},{
-  id : 3,
-  lat : 48.583125,
-  long : 7.748121,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_3.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE 3',
-    phone : '03 88 23 23 23'
-  },
-},{
-  id : 4,
-  lat : 48.584520,
-  long : 7.747375,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_4.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE 4',
-    phone : '03 88 23 23 23'
-  },
-},{
-  id : 5,
-  lat : 48.584772,
-  long : 7.745106,
-  product_name : 'Ciabatta',
-  price : 3,
-  unit : 'EUR',
-  description : "La ciabatta est un pain blanc originaire d'Italie, dont l'une des...",
-  ingredient : "yeast, milk, water, olive oil, biga, unbleached all-purpose flour, ....",
-  image : '/public/img/map/sample_product.png',
-  store : {
-    image : "/public/img/map/users/user_5.png",
-    address : '0,2 km | 15-3 Rue des Pucelles 67000 Strasbourg',
-    store_name : 'BOULANGERIE DE LA REINE 5',
-    phone : '03 88 23 23 23'
-  },
-}];
+import ProductService from "../services/ProductService";
+import ListDataFunction from "./partials/ListDataFunction";
 
 export const IndexClass = BaseVue.extend({
   data : function(){
     return reactive({
-      select_view : 'MAP'
+      select_view : 'MAP',
+      query : {},
+      datas : []
     });
   },
-  construct : function(props,context){
+  returnProductService : function(){
+    return ProductService.create();
+  },
+  construct : async function(props,context){
     let self = this;
     self.displayOption = (DisplayOptionFunction.create(props,self)).setup();
     self.gridData = (GridDataFunction.create(props,self)).setup();
+    self.listData = (ListDataFunction.create(props,self)).setup();
     onBeforeMount(function(){
       AppStore.commit('SET',{
         title : window.gettext("ArtyPlanet Home")
       });
     });
-    onMounted(function(){
+    onMounted(async function(){
+      self.setProducts(await self.getProducts());
       self.setInitDOMSelection(self.displayOption.map.INITIALIZE);
       self.setInitDOMSelection('FILTER_SEARCH');
-      self.setInitDOMSelection('LOAD_MAP_VIEW');
     });
   },
-  setInitDOMSelection : function(action,props){
+  getProducts : async function(){
+    let self = this;
+    try{
+      let service = self.returnProductService();
+      let resData = await service.getProducts(self.get('query'));
+      return resData;
+    }catch(ex){
+      console.error('getProducts - ex ',ex);
+    }
+  },
+  setProducts : async function(props){
+    let self = this;
+    if(props == null) return;
+    let datas = (function(parseDatas){
+      return parseDatas;
+    })(props.return);
+    await self.set('datas',datas);
+    self.passDataToComponent();
+  },
+  passDataToComponent : function(){
+    let self = this;
+    self.setInitDOMSelection('LOAD_MAP_VIEW');
+    self.setInitDOMSelection(self.gridData.map.LOAD,self.get('datas'));
+    self.setInitDOMSelection(self.listData.map.LOAD,self.get('datas'));
+  },
+  setInitDOMSelection : async function(action,props){
     let self = this;
     /* Composition define */
     self.gridData.join(action,props,async function(action,val){
+
+    });
+    self.listData.join(action,props,async function(action,val){
 
     });
     self.displayOption.join(action,props,async function(action,val,e){
@@ -123,12 +76,13 @@ export const IndexClass = BaseVue.extend({
       await self.set('select_view',action);
       switch(action){
         case 'GRID':
-          self.setInitDOMSelection(self.gridData.map.LOAD,artywiz_users);
+          self.setInitDOMSelection(self.gridData.map.LOAD,self.get('datas'));
           break;
         case 'LIST':
+          self.setInitDOMSelection(self.listData.map.LOAD,self.get('datas'));
           break;
         case 'MAP':
-          self.setInitDOMSelection('LOAD_MAP_VIEW',artywiz_users);
+          self.setInitDOMSelection('LOAD_MAP_VIEW');
           break;
       }
     });
@@ -148,9 +102,10 @@ export const IndexClass = BaseVue.extend({
       case 'LOAD_MAP_VIEW':
         self.mapView = self.getRef('mapView');
         if(self.mapView == null) return;
+        let datas = await self.get('datas');
         self.mapView.setOnChangeListener(function(action,val){});
         self.mapView.startMap({
-          datas : artywiz_users,
+          datas : datas,
           lat : null,
           long : null
         });
@@ -185,7 +140,7 @@ export default {
           case 'GRID':
             return this.gridData.render(h,{});
           case 'LIST':
-            return null;
+            return this.listData.render(h,{});
         }
       })()}
       
