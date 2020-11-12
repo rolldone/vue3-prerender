@@ -1,8 +1,8 @@
 let env = {
 	APP_NAME : 'ARTYPLANET_DEV_SERVER',
     DIST_URL: '/public',
-    API_URL: 'https://artyplanet-webapp.herokuapp.com',
-    API_ASSET_URL : 'https://artyplanet-webapp.herokuapp.com',
+    API_URL: 'https://artyplanet-service.artywiz.ovh',
+    API_ASSET_URL : 'https://artyplanet-service.artywiz.ovh',
     HTTP_GENERATOR_URL : 'http://localhost:1084',
     BASE_PATH: '/',
     /* Ini mengikuti new Copy Plugin */
