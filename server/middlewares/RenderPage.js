@@ -186,7 +186,6 @@ module.exports = async function(req,res,next){
           await page.close();
         }
         console.log('err - ',err);
-        process.exit(1);
         closeOne();
         res.send('on Rendering!');
     }
