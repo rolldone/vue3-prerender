@@ -120,26 +120,26 @@ module.exports = async function(req,res,next){
 
         /* Optimation */
         /* 1. Intercept network requests. */
-        await page.setRequestInterception(true);
-        page.on('request', req => {
-          // 2. Ignore requests for resources that don't produce DOM
-          /* (, stylesheets, ). */
-          const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
-          if (!allowlist.includes(req.resourceType())) {
-            console.log('req.resourceType()',req.resourceType());
-            return req.abort();
-          }
+        // await page.setRequestInterception(true);
+        // page.on('request', req => {
+        //   // 2. Ignore requests for resources that don't produce DOM
+        //   /* (, stylesheets, ). */
+        //   const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
+        //   if (!allowlist.includes(req.resourceType())) {
+        //     console.log('req.resourceType()',req.resourceType());
+        //     return req.abort();
+        //   }
 
-          /* Avoid inflating Analytics pageviews */
-          /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
-          const blocklist = ['www.google-analytics.com', '/gtag/js', 'ga.js', 'analytics.js'];
-          if (blocklist.find(regex => req.url().match(regex))) {
-            return req.abort();
-          }
+        //   /* Avoid inflating Analytics pageviews */
+        //   /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
+        //   const blocklist = ['www.google-analytics.com', '/gtag/js', 'ga.js', 'analytics.js'];
+        //   if (blocklist.find(regex => req.url().match(regex))) {
+        //     return req.abort();
+        //   }
 
-          /* 3. Pass through all other requests. */
-          req.continue();
-        });
+        //   /* 3. Pass through all other requests. */
+        //   req.continue();
+        // });
 
         await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
         switch (config.env) {
