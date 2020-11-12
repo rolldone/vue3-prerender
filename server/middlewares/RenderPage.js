@@ -40,7 +40,7 @@ module.exports = async function(req,res,next){
   /* So use exception handling to get referer */
   const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
   
-  console.log('local_url',local_url);
+  console.log('step 1 - local_url ->',local_url);
 
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
 
@@ -55,12 +55,14 @@ module.exports = async function(req,res,next){
   
   var page = null;
   if (checkExist.length > 0) {
+    console.log('step 2 - Detect User Agent - closed ->',checkExist);
     next();
     return;
   } else {
     try {
         if(req.protocol + "://" + req.get('host') + req.path != local_url){
           /* For prevent asset */
+          console.log('step 2 - is asset - closed ->',req.protocol + "://" + req.get('host') + req.path);
           // console.log('WRONG - MY_SYSTEM WRONG PLACE ',req.protocol + "://" + req.get('host') + req.path);
           return next();
         }
@@ -81,7 +83,7 @@ module.exports = async function(req,res,next){
         if(existPage != null){
           if(existPage.isClosed()){
             if(Cache[local_url] != null){
-              console.log('SECOND REQUEST USING CACHED');
+              console.log('step 2 - existPage.isClosed() - closed ->','SECOND REQUEST USING CACHED');
               res.send(Cache[local_url]);
             }
             return 
@@ -120,26 +122,26 @@ module.exports = async function(req,res,next){
 
         /* Optimation */
         /* 1. Intercept network requests. */
-        // await page.setRequestInterception(true);
-        // page.on('request', req => {
-        //   // 2. Ignore requests for resources that don't produce DOM
-        //   /* (, stylesheets, ). */
-        //   const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
-        //   if (!allowlist.includes(req.resourceType())) {
-        //     console.log('req.resourceType()',req.resourceType());
-        //     return req.abort();
-        //   }
+        await page.setRequestInterception(true);
+        page.on('request', req => {
+          // 2. Ignore requests for resources that don't produce DOM
+          /* (, stylesheets, ). */
+          const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
+          if (!allowlist.includes(req.resourceType())) {
+            console.log('req.resourceType()',req.resourceType());
+            return req.abort();
+          }
 
-        //   /* Avoid inflating Analytics pageviews */
-        //   /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
-        //   const blocklist = ['www.google-analytics.com', '/gtag/js', 'ga.js', 'analytics.js'];
-        //   if (blocklist.find(regex => req.url().match(regex))) {
-        //     return req.abort();
-        //   }
+          /* Avoid inflating Analytics pageviews */
+          /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
+          const blocklist = ['www.google-analytics.com', '/gtag/js', 'ga.js', 'analytics.js'];
+          if (blocklist.find(regex => req.url().match(regex))) {
+            return req.abort();
+          }
 
-        //   /* 3. Pass through all other requests. */
-        //   req.continue();
-        // });
+          /* 3. Pass through all other requests. */
+          req.continue();
+        });
 
         await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
         switch (config.env) {
@@ -157,7 +159,7 @@ module.exports = async function(req,res,next){
             break;
         }
           
-        // await page.waitForSelector('#mapsingleid');    
+        await page.waitForSelector('#headless_done');    
         // html = await evaluatePage(page);
         html = await page.evaluate(function(){
           try{
