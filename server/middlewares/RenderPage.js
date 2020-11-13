@@ -45,13 +45,13 @@ module.exports = async function(req,res,next){
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
 
   /* Only real user agent get block at here */
-  // if(!isBot(req.headers['user-agent'])){
-  //   let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
-  //   if(Lighthouse.length == 0){
-  //     next();
-  //     return;
-  //   }
-  // }
+  if(!isBot(req.headers['user-agent'])){
+    let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
+    if(Lighthouse.length == 0){
+      next();
+      return;
+    }
+  }
   
   var page = null;
   if (checkExist.length > 0) {
@@ -132,7 +132,8 @@ module.exports = async function(req,res,next){
             return req.abort();
           }
 
-          console.log('req.resourceType() - all',req.resourceType());
+          // console.log('req.resourceType() - all',req.resourceType());
+
           /* Avoid inflating Analytics pageviews */
           /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
           const blocklist = ['www.google-analytics.com', '/gtag/js', 'ga.js', 'analytics.js'];
@@ -172,12 +173,12 @@ module.exports = async function(req,res,next){
             await page.goto(local_url,{
               // waitUntil: "networkidle0",
               timeout: 60000, 
-              waitUntil: 'domcontentloaded'
+              waitUntil: 'networkidle0'
             });
             break;
         }
           
-        await page.waitForSelector('#headless_done');    
+        // await page.waitForSelector('#headless_done');    
         // html = await evaluatePage(page);
         html = await page.evaluate(function(){
           try{
