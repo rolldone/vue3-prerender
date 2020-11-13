@@ -6,7 +6,7 @@
   "scripts": {
     "dist_windows": "set NODE_ENV=production&& webpack -p && node App.js",
     "dist": "export NODE_ENV=production&& webpack -p",
-    "dist_devserver": "export NODE_ENV=devserver&& webpack -p && node App.js",
+    "dist_devserver": "export NODE_ENV=devserver&& webpack -p",
     "lint": "eslint src; exit 0",
     "start_dev": "set NODE_ENV=development&& node App.js",
     "start_disabled": "webpack-dashboard -- node app.js",
