@@ -126,12 +126,13 @@ module.exports = async function(req,res,next){
         page.on('request', req => {
           // 2. Ignore requests for resources that don't produce DOM
           /* ( ). */
-          const allowlist = ['stylesheets','image','other','document', 'script', 'xhr', 'fetch'];
+          const allowlist = ['stylesheet','image','other','document', 'script', 'xhr', 'fetch'];
           if (!allowlist.includes(req.resourceType())) {
-            console.log('req.resourceType()',req.resourceType());
+            console.log('req.resourceType() - blocked ',req.resourceType());
             return req.abort();
           }
 
+          console.log('req.resourceType() - all',req.resourceType());
           /* Avoid inflating Analytics pageviews */
           /* Don't load Google Analytics lib requests so pageviews aren't 2x. */
           const blocklist = ['www.google-analytics.com', '/gtag/js', 'ga.js', 'analytics.js'];
