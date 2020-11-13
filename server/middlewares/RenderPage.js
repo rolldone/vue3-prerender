@@ -172,7 +172,9 @@ module.exports = async function(req,res,next){
           case "dev":
             /* Karena pake hammer SPA jangan gunakan waitUntil */
             /* Dan jangan di test di google light house karena ada webpack hammr */
+            /* Kalo pengen ambil semua content sampai selesai gunakan  waitForSelector */
             await page.goto(local_url);
+            await page.waitForSelector('#headless_done');  
             break;
           case "production":
           case "devserver":
