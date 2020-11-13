@@ -48,6 +48,16 @@ module.exports = async function(req,res,next){
   if(!isBot(req.headers['user-agent'])){
     let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
     if(Lighthouse.length == 0){
+      /* If get cache load cache */
+      if(isUrlAsset(local_url,req) == true){
+        return next();
+      }
+      /* If get cache load cache */
+      if(loadCache(local_url,req,res) == true){
+        console.log('GET CACHE');
+        res.send(Cache[local_url]);
+        return;
+      }
       next();
       return;
     }
@@ -60,10 +70,7 @@ module.exports = async function(req,res,next){
     return;
   } else {
     try {
-        if(req.protocol + "://" + req.get('host') + req.path != local_url){
-          /* For prevent asset */
-          console.log('step 2 - is asset - closed ->',req.protocol + "://" + req.get('host') + req.path);
-          // console.log('WRONG - MY_SYSTEM WRONG PLACE ',req.protocol + "://" + req.get('host') + req.path);
+        if(isUrlAsset(local_url,req) == true){
           return next();
         }
         let html = null;
@@ -164,6 +171,7 @@ module.exports = async function(req,res,next){
           case "development":
           case "dev":
             /* Karena pake hammer SPA jangan gunakan waitUntil */
+            /* Dan jangan di test di google light house karena ada webpack hammr */
             await page.goto(local_url);
             break;
           case "production":
@@ -177,21 +185,12 @@ module.exports = async function(req,res,next){
             });
             break;
         }
-          
-        // await page.waitForSelector('#headless_done');    
-        // html = await evaluatePage(page);
-        html = await page.evaluate(function(){
-          try{
-            document.querySelector('#nprogress').innerHTML = null;
-            /* Any method to access full html content? */
-            return new XMLSerializer().serializeToString(document.doctype)+document.documentElement.outerHTML;
-          }catch(ex){
-            console.log('evaluatePage - ex',ex);
-            return null;
-          }
-        });
+        
+        /* Cadangan */
+        // await page.waitForSelector('#headless_done');   
+
+        html = await evaluatePage(page);
         Cache[local_url] = html;
-        // await page.goto('about:blank');
         await page.close();
         delete CurrentUrlWorking[local_url];
         closeOne();
@@ -199,7 +198,6 @@ module.exports = async function(req,res,next){
         console.log('DONE RENDERING');
         return;
     } catch (err) {
-        // await page.goto('about:blank');
         if(page != null ){
           await page.close();
         }
@@ -208,6 +206,16 @@ module.exports = async function(req,res,next){
         res.send('on Rendering!');
     }
   }
+}
+
+var isUrlAsset = function(local_url,req){
+  if(req.protocol + "://" + req.get('host') + req.path != local_url){
+          /* For prevent asset */
+    console.log('step 2 - is asset - closed ->',req.protocol + "://" + req.get('host') + req.path);
+    // console.log('WRONG - MY_SYSTEM WRONG PLACE ',req.protocol + "://" + req.get('host') + req.path);
+    return true;
+  }
+  return false;
 }
 
 var evaluatePage = async function(page){
