@@ -126,7 +126,7 @@ module.exports = async function(req,res,next){
         page.on('request', req => {
           // 2. Ignore requests for resources that don't produce DOM
           /* (, stylesheets, ). */
-          const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
+          const allowlist = ['image','other','document', 'script', 'xhr', 'fetch'];
           if (!allowlist.includes(req.resourceType())) {
             console.log('req.resourceType()',req.resourceType());
             return req.abort();
