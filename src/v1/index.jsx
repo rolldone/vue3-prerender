@@ -11,7 +11,13 @@ import InitRouteApi from './middlewares/InitRouteApi';
 import NotifRouteChange from './middlewares/NotifRouteChange';
 import { createStore } from 'vuex';
 
-let is_middleware_done = ref(null);
+let is_loading_value = ref(null);
+/* Check if main content is have SSR content  */
+/* If yes dont use loading at the first time */
+let existInnerHtml = document.getElementById('main').innerHTML;
+if(existInnerHtml != ""){
+  is_loading_value.value = existInnerHtml;
+}
 
 /* Add onpopstate event listener */
 window.onpopstate = function(event){
@@ -40,6 +46,7 @@ var beforeEach = Middleware.bind(Middleware, [
   // NotifRouteChange,
   // InitCheckBusiness,
   (to, from, done, nextMiddleware) => {
+    console.log('selesai');
     return nextMiddleware();
   },
 ]);
@@ -58,9 +65,7 @@ router.beforeEach(beforeEach);
 /* Nested before each */
 /* If previouse beforeEach is done */
 router.beforeEach(function(to,from,next){
-  // let current_date = new Date();
-  // let cms = current_date.getMilliseconds();
-  is_middleware_done.value = true;
+  is_loading_value.value = true;
   next();
 });
 router.afterEach(afterEach);
@@ -71,14 +76,20 @@ const app = createApp({
   setup(props,context){
     window.router = router;
     window.route = useRoute();
+    
     return {
-      is_middleware_done
+      is_loading_value
     };
   },
   render(){
-    if(this.is_middleware_done == true){
+    if(this.is_loading_value == true){
       return (<App/>);
     }
+    /* Using SSR */
+    if(this.is_loading_value != ""){
+      return <div v-html={this.is_loading_value} style="height:100%;"></div>;
+    }
+    /* Using boolean value */
     return (<h5 style="margin:20px;">{window.gettext("Charger le contenu ...")}</h5>);
   }
 });

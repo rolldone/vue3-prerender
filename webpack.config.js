@@ -223,7 +223,6 @@ module.exports = {
   ],
   resolve: {
     alias: {
-      pubsub: "aurelia-event-aggregator",
       "BaseVue": path.resolve(path.join(__dirname, "src", "base/BaseVue.jsx")),
       "BaseComposition": path.resolve(path.join(__dirname, "src", "base/BaseComposition.jsx")),
       "@base": path.resolve(__dirname, "src", "base"),
