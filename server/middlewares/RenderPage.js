@@ -143,6 +143,20 @@ module.exports = async function(req,res,next){
           req.continue();
         });
 
+        page.on('console', message => {
+          if(message.type().substr(0, 3).toUpperCase() == "ERR"){
+            console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`)
+          }
+          if(message.type().substr(0, 3).toUpperCase() == "LOG"){
+            console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`)
+          }
+        });
+        // .on('pageerror', ({ message }) => console.log(message))
+        // .on('response', response =>
+        //   console.log(`${response.status()} ${response.url()}`))
+        // .on('requestfailed', request =>
+        //   console.log(`${request.failure().errorText} ${request.url()}`))
+
         await page.setUserAgent(req.headers['user-agent']+' MY_SYSTEM');
         switch (config.env) {
           case "development":
