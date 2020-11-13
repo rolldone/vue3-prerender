@@ -46,7 +46,7 @@ var beforeEach = Middleware.bind(Middleware, [
 
 /* Only one called when load first time */
 var afterEach = Middleware.bind(Middleware, [(to, from) => {
-  $("body").append("<div id='headless_done'>HEADLESS DONE</div>");
+  $("body").append("<div id='headless_done'></div>");
 }]);
 
 const router = createRouter({
