@@ -50,7 +50,7 @@ module.exports = async function(req,res,next){
     if(Lighthouse.length == 0){
       /* If get cache load cache */
       if(isUrlAsset(local_url,req) == true){
-        return next();
+        return res.end();
       }
       /* If get cache load cache */
       if(loadCache(local_url,req,res) == true){
@@ -70,9 +70,9 @@ module.exports = async function(req,res,next){
     return;
   } else {
     try {
-        // if(isUrlAsset(local_url,req) == true){
-        //   return next();
-        // }
+        if(isUrlAsset(local_url,req) == true){
+          return res.end();
+        }
         let html = null;
         let pages = await browser.pages();
         let existPage = null;
