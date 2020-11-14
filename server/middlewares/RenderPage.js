@@ -70,9 +70,9 @@ module.exports = async function(req,res,next){
     return;
   } else {
     try {
-        if(isUrlAsset(local_url,req) == true){
-          return next();
-        }
+        // if(isUrlAsset(local_url,req) == true){
+        //   return next();
+        // }
         let html = null;
         let pages = await browser.pages();
         let existPage = null;
