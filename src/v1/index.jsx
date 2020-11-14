@@ -46,7 +46,6 @@ var beforeEach = Middleware.bind(Middleware, [
   // NotifRouteChange,
   // InitCheckBusiness,
   (to, from, done, nextMiddleware) => {
-    console.log('selesai');
     return nextMiddleware();
   },
 ]);
@@ -85,12 +84,14 @@ const app = createApp({
     if(this.is_loading_value == true){
       return (<App/>);
     }
+    if(this.is_loading_value == null){
+      /* Using boolean value */
+      return (<h5 style="margin:20px;">{window.gettext("Charger le contenu ...")}</h5>);
+    }
     /* Using SSR */
     if(this.is_loading_value != ""){
       return <div v-html={this.is_loading_value} style="height:100%;"></div>;
     }
-    /* Using boolean value */
-    return (<h5 style="margin:20px;">{window.gettext("Charger le contenu ...")}</h5>);
   }
 });
 

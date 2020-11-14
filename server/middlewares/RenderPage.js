@@ -132,8 +132,8 @@ module.exports = async function(req,res,next){
         await page.setRequestInterception(true);
         page.on('request', req => {
           // 2. Ignore requests for resources that don't produce DOM
-          /* ( ). */
-          const allowlist = ['stylesheet','image','other','document', 'script', 'xhr', 'fetch'];
+          /* (image,stylesheet ). */
+          const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
           if (!allowlist.includes(req.resourceType())) {
             console.log('req.resourceType() - blocked ',req.resourceType());
             return req.abort();
@@ -161,8 +161,9 @@ module.exports = async function(req,res,next){
           }
         });
         // .on('pageerror', ({ message }) => console.log(message))
-        // .on('response', response =>
-        //   console.log(`${response.status()} ${response.url()}`))
+        // page.on('response', async (response)=>  {
+        //   console.log(`${response.status()} ${response.url()}`);
+        // });
         // .on('requestfailed', request =>
         //   console.log(`${request.failure().errorText} ${request.url()}`))
 
