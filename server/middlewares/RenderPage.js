@@ -3,6 +3,8 @@ const ua = require('useragent');
 var config = require("../../config/server/main.js");
 config = config.create();
 const _ = require('lodash');
+var urlModule = require('url');
+const URL = urlModule.URL;
 
 function isBot (useragent) {
   const agent = ua.is(useragent);
@@ -76,6 +78,7 @@ module.exports = async function(req,res,next){
         let html = null;
         let pages = await browser.pages();
         let existPage = null;
+        let stylesheetContents = {};
         if(CurrentUrlWorking[local_url] != null){
           for(var a=0;a<pages.length;a++){
             var pageItem = pages[a];
@@ -132,8 +135,8 @@ module.exports = async function(req,res,next){
         await page.setRequestInterception(true);
         page.on('request', req => {
           // 2. Ignore requests for resources that don't produce DOM
-          /* (image,stylesheet ). */
-          const allowlist = ['other','document', 'script', 'xhr', 'fetch'];
+          /* (image ). */
+          const allowlist = ['stylesheet','other','document', 'script', 'xhr', 'fetch'];
           if (!allowlist.includes(req.resourceType())) {
             console.log('req.resourceType() - blocked ',req.resourceType());
             return req.abort();
@@ -160,10 +163,16 @@ module.exports = async function(req,res,next){
             console.log(`${message.type().substr(0, 3).toUpperCase()} ${message.text()}`)
           }
         });
+
         // .on('pageerror', ({ message }) => console.log(message))
-        // page.on('response', async (response)=>  {
-        //   console.log(`${response.status()} ${response.url()}`);
-        // });
+        page.on('response', async resp => {
+          const responseUrl = resp.url();
+          const sameOrigin = new URL(responseUrl).origin === new URL(local_url).origin;
+          const isStylesheet = resp.request().resourceType() === 'stylesheet';
+          if (sameOrigin && isStylesheet) {
+            stylesheetContents[responseUrl] = await resp.text();
+          }
+        });
         // .on('requestfailed', request =>
         //   console.log(`${request.failure().errorText} ${request.url()}`))
 
@@ -190,7 +199,19 @@ module.exports = async function(req,res,next){
         }
         
         /* Cadangan */
-        // await page.waitForSelector('#headless_done');   
+        // await page.waitForSelector('#headless_done');  
+
+        // Replace stylesheets in the page with their equivalent <style>.
+        await page.$$eval('link[rel="stylesheet"]', (links, content) => {
+          links.forEach(link => {
+            const cssText = content[link.href];
+            if (cssText) {
+              const style = document.createElement('style');
+              style.textContent = cssText;
+              link.replaceWith(style);
+            }
+          });
+        },stylesheetContents);
 
         html = await evaluatePage(page);
         Cache[local_url] = html;
