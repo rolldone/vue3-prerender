@@ -52,6 +52,232 @@ body.pushable>.pusher {
     height: 100%;
 }
 
+#app_map_view{
+    position: relative;
+    height: 85vh;
+    background: white;
+    > div{
+        position : absolute;
+        &:first-child{
+            left: 12px;
+            right: auto;
+            bottom: 12px;
+            top: 12px;
+            overflow: hidden;
+        }
+        &:last-child{
+            left: 430px;
+            right: 0px;
+            bottom: 0px;
+            top: 0px;
+        }
+    }
+}
+
+#app_shop_list{  
+    overflow-y: scroll;
+    height: 100%;
+    *,
+    ::after,
+    ::before {
+        box-sizing: border-box;
+    }
+
+    hr {
+        box-sizing: content-box;
+        height: 0;
+        overflow: visible;
+    }
+
+    a {
+        color: #007bff;
+        text-decoration: none;
+        background-color: transparent;
+    }
+
+    a:hover {
+        color: #0056b3;
+        text-decoration: underline;
+    }
+
+    hr {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+        border: 0;
+        border-top: 1px solid rgba(0, 0, 0, .1);
+    }
+
+    .row {
+        display: -ms-flexbox;
+        display: flex;
+        -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+        margin-right: -15px;
+        margin-left: -15px;
+    }
+
+    .col {
+        position: relative;
+        width: 100%;
+        padding-right: 15px;
+        padding-left: 15px;
+    }
+
+    .col {
+        -ms-flex-preferred-size: 0;
+        flex-basis: 0;
+        -ms-flex-positive: 1;
+        flex-grow: 1;
+        max-width: 100%;
+    }
+
+    .btn {
+        display: inline-block;
+        font-weight: 400;
+        color: #212529;
+        text-align: center;
+        vertical-align: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        background-color: transparent;
+        border: 1px solid transparent;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .btn:hover {
+        color: #212529;
+        text-decoration: none;
+    }
+
+    .btn:focus {
+        outline: 0;
+        box-shadow: 0 0 0 .2rem rgba(0, 123, 255, .25);
+    }
+
+    .btn:disabled {
+        opacity: .65;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: .25em .4em;
+        font-size: 75%;
+        font-weight: 700;
+        line-height: 1;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: baseline;
+        border-radius: .25rem;
+        transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    }
+
+    .badge:empty {
+        display: none;
+    }
+
+    .mr-1 {
+        margin-right: .25rem!important;
+    }
+
+    .ml-1 {
+        margin-left: .25rem!important;
+    }
+
+    .mb-2 {
+        margin-bottom: .5rem!important;
+    }
+
+    .ml-3 {
+        margin-left: 1rem!important;
+    }
+
+    /*! CSS Used from: https://www.jacheteenlocal.fr/css/style.css?v=5.4.9 */
+
+
+    /*! @import https://www.jacheteenlocal.fr/css/font-awesome.css */
+
+    .pull-right {
+        float: right;
+    }
+
+    .fa-phone:before {
+        content: "\f095";
+    }
+
+
+    /*! end @import */
+
+    .btn {
+        border: medium none;
+        border-radius: 3px;
+        font-weight: normal;
+        line-height: 1.4;
+        padding: 10px 12px;
+        transition: all 0.25s linear 0s;
+        -webkit-transition: all 0.25s linear 0s;
+        -moz-transition: all 0.25s linear 0s;
+        -ms-transition: all 0.25s linear 0s;
+        -o-transition: all 0.25s linear 0s;
+    }
+
+    hr {
+        color: grey;
+    }
+
+    a {
+        color: #FF415B;
+        outline: none!important;
+        -webkit-transition: all 0.2s ease-in;
+        transition: all 0.2s ease-in;
+    }
+
+    a:hover,
+    a:focus {
+        text-decoration: none;
+        cursor: pointer;
+        color: #53adc5;
+    }
+
+    .shadowed {
+        -webkit-box-shadow: 0 10px 24px 0 rgba(105, 133, 174, 0.25);
+        box-shadow: 0 10px 24px 0 rgba(105, 133, 174, 0.25);
+    }
+
+    .btn {
+        cursor: pointer;
+    }
+
+    .btn-white-map {
+        background-color: white;
+        color: #37474f;
+        font-size: 12px;
+        border-radius: 20px;
+        margin-right: 10px;
+        margin-bottom: 10px;
+    }
+
+    .btn-white-map i {
+        opacity: 0.8;
+    }
+
+    .btn-white-map:hover {
+        background-color: #FF415B;
+        color: white;
+    }
+
+    .tag {
+        font-size: 12px;
+        font-weight: 600;
+        background-color: #c30048;
+        color: white;
+    }
+}
 .marker-content{
     .title {
         .image {
