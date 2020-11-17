@@ -56,28 +56,37 @@ export default {
           let select_marker = datas[a];
           newDats.push(<div class="ui card">
             <div class="ui grid">
-              <div class="image">
+              <div class="image mobile">
                 <img style={{"background-image":'url('+select_marker.image+')'}} alt=""/>
               </div>
-              <div class="name">
+              <div class="name mobile hidden">
                 <h2>{select_marker.product_name}</h2>
                 <span>{select_marker.description}</span>
                 <span style="">{select_marker.price}€ TTC</span>
               </div>
-              <div class="store">
+              <div class="name mobile only">
+                <h4>{select_marker.product_name}</h4>
+                <span style="">{select_marker.price}€ TTC</span>
+              </div>
+              <div class="store mobile only">
                 <div class="image">
                   <img src={select_marker.store.image} alt=""/>
                 </div>
-                <div class="column">
+              </div>
+              <div class="store mobile hidden tablet hidden computer hidden">
+                <div class="image">
+                  <img src={select_marker.store.image} alt=""/>
+                </div>
+                <div class="column mobile tablet computer hidden ">
                   <h5>{select_marker.store.store_name}</h5>
                   <h5>{select_marker.store.address}</h5>
                 </div>
               </div>
-              <div class="price">
+              <div class="price mobile hidden tablet hidden computer hidden">
                 <h3>{select_marker.price}€ TTC</h3>
                 <h5>{select_marker.price}€</h5>
               </div>
-              <div class="nav">
+              <div class="nav mobile hidden">
                 <div><img src="/public/img/heart.svg" alt=""/></div>
                 <div class="blue"><img src="/public/img/map/call_me.png" alt=""/></div>
               </div>

@@ -345,57 +345,64 @@ export default {
         </div>
       </div>
     :null;
-    return (<div style={style.body}>
-      <div class="display" id="app_map_view">
-        <div>
-          <div id="app_shop_list">
-          {(()=>{
-            let newMarkers = [];
-            for(var a=0; a < marker_datas.length; a++){
-              let markerItem = marker_datas[0];
-              newMarkers.push(
-                <div class="shop_list" style={{ "margin-bottom" : "12px" }}>
-                  <div class="row" style={{
-                    "margin" : 0
-                  }}>
-                      <div class="shopImg" style={{
-                        "background-image":"url("+markerItem.image+")", 
-                        "width" : "100px",
-                        "background-position": "center",
-                        "background-repeat": "no-repeat",
-                        "background-size": "150%"
-                        }}>
-                        <a href="/boutique/10506/129"></a>
+    var appShopList = function(){
+      return (<div class="app_shop_list">
+        {(()=>{
+          let newMarkers = [];
+          for(var a=0; a < marker_datas.length; a++){
+            let markerItem = marker_datas[0];
+            newMarkers.push(
+              <div class="shop_list" style={{}}>
+                <div class="row" style={{
+                  "margin" : 0,
+                  "padding" : "12px"
+                }}>
+                    <div class="shopImg" style={{
+                      "background-image":"url("+markerItem.image+")", 
+                      "width" : "100px",
+                      "background-position": "center",
+                      "background-repeat": "no-repeat",
+                      "background-size": "150%"
+                      }}>
+                      <a href="/boutique/10506/129"></a>
+                    </div>
+                    <div class="col shopDescription">
+                      <div class="mb-2">
+                        <span class="badge tag">Alimentation</span>
+                        <span class="ml-3 badge tag">#levenementiel51</span>
                       </div>
-                      <div class="col shopDescription">
-                        <div class="mb-2">
-                          <span class="badge tag">Alimentation</span>
-                          <span class="ml-3 badge tag">#levenementiel51</span>
-                        </div>
-                        <div class="title">L'�v�nementiel</div>
-                        <div class="localisation">
-                          <i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i>53 Rue Du Mar�chal De Lattre De Tassigny
-                        </div>
-                        <div class="localisation">51230 F�re-Champenoise</div>
-                        <div class="localisation">
-                          <i class="fas fa-phone mr-1" aria-hidden="true"></i>0326421124
-                        </div>
-                        <div class="shop_delivery">
-                          <i class="fas fa-shipping-fast" aria-hidden="true"></i>
-                        </div>
-                        <a href="/boutique/10506/129" class="btn btn-white-map shadowed pull-right">Aller � la boutique 
-                          <i class="fas fa-store ml-1" aria-hidden="true"></i>
-                        </a>
-                        <div class="btn btn-white-map shadowed pull-right" onclick="map.flyTo({center: [3.991384, 48.755486], zoom: 15})">Voir sur la carte 
-                          <i class="fas fa-map-marked-alt ml-1" aria-hidden="true"></i>
-                        </div>
+                      <div class="title">L'�v�nementiel</div>
+                      <div class="localisation">
+                        <i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i>53 Rue Du Mar�chal De Lattre De Tassigny
+                      </div>
+                      <div class="localisation">51230 F�re-Champenoise</div>
+                      <div class="localisation">
+                        <i class="fas fa-phone mr-1" aria-hidden="true"></i>0326421124
+                      </div>
+                      <div class="shop_delivery">
+                        <i class="fas fa-shipping-fast" aria-hidden="true"></i>
+                      </div>
+                      <a href="/boutique/10506/129" class="btn btn-white-map shadowed pull-right">Aller � la boutique 
+                        <i class="fas fa-store ml-1" aria-hidden="true"></i>
+                      </a>
+                      <div class="btn btn-white-map shadowed pull-right" onclick="map.flyTo({center: [3.991384, 48.755486], zoom: 15})">Voir sur la carte 
+                        <i class="fas fa-map-marked-alt ml-1" aria-hidden="true"></i>
                       </div>
                     </div>
-                </div>);
-            }
-            return newMarkers;
-          })()}
-          </div>
+                  </div>
+              </div>);
+          }
+          return newMarkers;
+        })()}
+      </div>);
+    };
+    return (<div style={style.body}>
+      <div class="mobile tablet only" style="background:white;">
+        {appShopList()}
+      </div>
+      <div class="display mmobile hidden tablet hidden computer" id="app_map_view">
+        <div>
+          {appShopList()}
         </div>
         <div style="height: 85vh;">
           <div style={style.map_wrapper} id="mapsingleid"></div>

@@ -10,7 +10,7 @@ export default {
     let { title, user_data, app_data, select_business_text, business_datas } = this.get();
     let { handleClick } = this;
     return (<>
-      <div class="ui massive menu table header-menu tablet computer large screen widescreen only">
+      <div class="ui massive menu table header-menu tablet computer large screen widescreen only" style="margin-bottom:0;">
         <div class="item">
           <img src="/public/img/icon_head_menu.png" class="ui icon_head_menu" alt="" on-click="@this.handleClick('OPEN_SIDE_MENU',{},@event)" />
         </div>
@@ -44,7 +44,7 @@ export default {
           </div>
         </div>
       </div>
-      <div class="ui massive menu  header-menu mobile only">
+      <div class="ui massive menu  header-menu mobile only" style="margin-bottom:0;">
         <div class="item">
           <img src="/public/img/icon_head_menu.png" class="icon_head_menu" alt="" on-click="@this.handleClick('OPEN_SIDE_MENU',{},@event)" />
           <span class="base_info">{gettext("Commandez autour de chez vous")}</span>
