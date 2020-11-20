@@ -229,6 +229,7 @@ export const MapViewClass = BaseVue.extend({
     await self.set('marker_datas',markers);
   },
   resizeImage : function(url, width, height) {
+    let self = this;
     return new Promise(function(resolve){
       var sourceImage = new Image();
       sourceImage.setAttribute('crossorigin', 'anonymous');
@@ -243,6 +244,9 @@ export const MapViewClass = BaseVue.extend({
   
         // Convert the canvas to a data URL in PNG format
         resolve(canvas.toDataURL());
+      };
+      sourceImage.onerror = function(){
+        resolve(self.resizeImage('/public/img/map/broken_image.svg',width,height));
       };
       sourceImage.src = url;
     });
