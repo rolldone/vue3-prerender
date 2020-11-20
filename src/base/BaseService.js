@@ -108,13 +108,27 @@ var BaseHttpRequest = Proto.extend({
   test: function() {
     console.log("original");
   },
+  validURL : function(str) {
+    var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
+      '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // domain name
+      '((\\d{1,3}\\.){3}\\d{1,3}))'+ // OR ip (v4) address
+      '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*'+ // port and path
+      '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
+      '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
+    return !!pattern.test(str);
+  },
   name: "class_" + new Date().getMilliseconds(),
   setApiRoute: function(route) {
     window.staticType(route, [Object]);
     var newRoute = {};
     var baseHttp = config.API_URL;
     for (var a in route) {
-      newRoute[a] = baseHttp + route[a];
+      if(this.validURL(route[a]) == true){
+        newRoute[a] = route[a];
+      }else{
+        newRoute[a] = baseHttp + route[a];
+      }
+      
     }
     window.routeApi = (function(api_store_list) {
       window.staticType(api_store_list, [Object]);

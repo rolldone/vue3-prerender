@@ -35,4 +35,16 @@ module.exports = function(routes){
     	}
     },
   });
+  routes.push({
+    name : 'test.detail.shop',
+    path : '/test/detail/shop',
+    component : async function(){
+      try{
+        let component = await import('./test/DetailShopMapView');
+        return component;
+      }catch(ex){
+        console.error('ex',ex);
+      }
+    }
+  });
 };

@@ -2,6 +2,7 @@ import BaseVue from "../../../base/BaseVue";
 import { reactive, onMounted } from 'vue';
 import config from '@config';
 import mergeImages from 'merge-images';
+import ListMapView from "./ListMapView";
 
 
 
@@ -17,7 +18,6 @@ export const MapViewClass = BaseVue.extend({
       style : {
         body : {
           width : '100%',
-          height : '100%',
         },
         map_wrapper : {
           width : '100%',
@@ -63,6 +63,7 @@ export const MapViewClass = BaseVue.extend({
 			return;
 		}
 		if (navigator.geolocation) {
+      debugger;
 			navigator.geolocation.getCurrentPosition(self.showPosition.bind(self));
 		} else {
 			x.innerHTML = "Geolocation is not supported by this browser.";
@@ -81,6 +82,19 @@ export const MapViewClass = BaseVue.extend({
   setInitDOMSelection : async function(action,props){
     let self = this;
     switch(action){
+      case 'LIST_DATA_VIEW':
+        self.listMapView = self.getRef('listMapViewRef');
+        if(self.listMapView == null) return;
+        self.listMapView.setOnChangeListener(function(action,parseData,index){
+          switch(action){
+            case 'BUSINESS_SELECTED':
+              self.mymap.setView(self.markers["marker-" + index]._latlng);
+              break;
+          }
+        });
+        if(props == null) return;
+        self.listMapView.selectBusiness(props);
+        break;
       case 'LOAD_DATA':
         self.setUpdate("currentLocation", {
           lat: props.lat || self.get("currentLocation.lat"),
@@ -92,6 +106,10 @@ export const MapViewClass = BaseVue.extend({
         feather.replace();
         /* Defaultnya harusnya posisi restaurantnya */
         console.log("currentLocation.lat", self.get("currentLocation.lat"));
+        if(self.mymap != null){
+          self.mymap.off();
+          self.mymap.remove();
+        }
         self.mymap = window.L.map("mapsingleid",{ scrollWheelZoom: false }).setView([self.get("currentLocation.lat"), self.get("currentLocation.long")], 13);
         let tile_layer = window.L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${config.MAPBOX_ACCESS_TOKEN}`, {
           attribution:
@@ -109,8 +127,8 @@ export const MapViewClass = BaseVue.extend({
         /* Set location of orders */
         for (var a = 0; a < location_datas.length; a++) {
           self.markers["marker-" + a] = L.marker([
-            parseFloat(location_datas[a].lat),
-            parseFloat(location_datas[a].long)
+            parseFloat(location_datas[a].business_latitude),
+            parseFloat(location_datas[a].business_longitude)
           ], {
             icon: new self.returnLeafletIcon({
               // iconUrl: "https://dummyimage.com/32x32/000/fff.png&text=" + (a + 1),
@@ -118,10 +136,13 @@ export const MapViewClass = BaseVue.extend({
             })
             // focus: false,
             // interactive: false
-          }).addTo(self.mymap).on('click',self.handleClick.bind(self,'MARKER_CLICK',{ 
-						...location_datas[a],
-						index : a
-					}));
+          }).addTo(self.mymap).on('click',function(a,e){
+            self.mymap.panTo(e.target.getLatLng());
+            self.handleClick.call(self,'MARKER_CLICK',{ 
+              ...location_datas[a],
+              index : a
+            });
+          }.bind(L,a));
           // self.corner.push(new L.LatLng(parseFloat(location_datas[a].lat), parseFloat(location_datas[a].long)));
         }
         var markerBounds = window.L.latLngBounds([self.markers['marker-you'].getLatLng()]);
@@ -178,17 +199,21 @@ export const MapViewClass = BaseVue.extend({
     window.staticType(props.long,[Number,null]);
     await self.markerManipulate(props.datas);
     self.setInitDOMSelection('LOAD_DATA',props);
+    self.setInitDOMSelection('LIST_DATA_VIEW');
   },
   markerManipulate : async function(props){
     let self = this;
     let markers = [];
     await self.set('markers',markers);
     for(var a=0;a<props.length;a++){
-      let newResizeImage = await self.resizeImage(props[a].store.image,30,30);
+      let newResizeImage = await self.resizeImage(config.ARTYWIZ_HOST+props[a].store.icon,30,30);
+      let wrapper = await self.resizeImage('/public/img/map/wrapper.svg',44,65);
       let newMerge = await mergeImages([{
-        src : "/public/img/map/wrapper.png",
+        src : wrapper,
         x: 0, 
-        y: 0
+        y: 0,
+        width: 1,
+        height: 1
       },{
         src : newResizeImage,
         width: 1,
@@ -206,6 +231,7 @@ export const MapViewClass = BaseVue.extend({
   resizeImage : function(url, width, height) {
     return new Promise(function(resolve){
       var sourceImage = new Image();
+      sourceImage.setAttribute('crossorigin', 'anonymous');
       sourceImage.onload = function() {
         // Create a canvas with the desired dimensions
         var canvas = document.createElement("canvas");
@@ -225,10 +251,12 @@ export const MapViewClass = BaseVue.extend({
     let self = this;
     switch(action){
       case 'MARKER_CLICK':
+        self.setInitDOMSelection('LIST_DATA_VIEW',props.id);
+        return;
         /* Must Clear first for good effect */
         await self.set('select_marker',{});
         await self.set('select_marker',props);
-        self.mymap.setView(new window.L.LatLng(props.lat, props.long));
+        self.mymap.setView(new window.L.LatLng(props.business_latitude, props.business_longitude));
         self.displayPopUp('SHOW',props,e);
         break;
       case 'PAGINATION':
@@ -239,15 +267,16 @@ export const MapViewClass = BaseVue.extend({
   displayPopUp : function(action,props,e){
     switch(action){
       case 'SHOW':
+        return;
         let mapsingleid = $('#mapsingleid');
         let mapWidth = mapsingleid.width();
         let mapHeight = mapsingleid.height();
-        let firstResultWidth = mapsingleid.width() - ((mapWidth * 50)/100);
+        let firstResultWidth = mapsingleid.width() - ((mapWidth * 66)/100);
         let secondResultWidth = firstResultWidth - ((firstResultWidth * 10)/100);
-        let firstResultheight = mapsingleid.height() - ((mapHeight * 50)/100);
+        let firstResultheight = mapsingleid.height() - ((mapHeight * 70)/100);
         let secondResultHeight = firstResultheight + ((firstResultheight * 70)/100);
-        $('.marker-content').css('left',secondResultWidth); // <<< use pageX and pageY
-        $('.marker-content').css('top',secondResultHeight);
+        $('.marker-content').css('left',firstResultWidth); // <<< use pageX and pageY
+        $('.marker-content').css('top',firstResultheight);
         $('.marker-content').css('display','inline');
         $(".marker-content").css("position", "absolute");  // <<< also make it absolute!
         $('.marker-content.mobile.only').css('left',"54.15px"); // <<< use pageX and pageY
@@ -345,63 +374,15 @@ export default {
         </div>
       </div>
     :null;
-    var appShopList = function(){
-      return (<div class="app_shop_list">
-        {(()=>{
-          let newMarkers = [];
-          for(var a=0; a < marker_datas.length; a++){
-            let markerItem = marker_datas[0];
-            newMarkers.push(
-              <div class="shop_list" style={{}}>
-                <div class="row" style={{
-                  "margin" : 0,
-                  "padding" : "12px"
-                }}>
-                    <div class="shopImg" style={{
-                      "background-image":"url("+markerItem.image+")", 
-                      "width" : "100px",
-                      "background-position": "center",
-                      "background-repeat": "no-repeat",
-                      "background-size": "150%"
-                      }}>
-                      <a href="/boutique/10506/129"></a>
-                    </div>
-                    <div class="col shopDescription">
-                      <div class="mb-2">
-                        <span class="badge tag">Alimentation</span>
-                        <span class="ml-3 badge tag">#levenementiel51</span>
-                      </div>
-                      <div class="title">L'�v�nementiel</div>
-                      <div class="localisation">
-                        <i class="fas fa-map-marker-alt mr-1" aria-hidden="true"></i>53 Rue Du Mar�chal De Lattre De Tassigny
-                      </div>
-                      <div class="localisation">51230 F�re-Champenoise</div>
-                      <div class="localisation">
-                        <i class="fas fa-phone mr-1" aria-hidden="true"></i>0326421124
-                      </div>
-                      <div class="shop_delivery">
-                        <i class="fas fa-shipping-fast" aria-hidden="true"></i>
-                      </div>
-                      <a href="/boutique/10506/129" class="btn btn-white-map shadowed pull-right">Aller � la boutique 
-                        <i class="fas fa-store ml-1" aria-hidden="true"></i>
-                      </a>
-                      <div class="btn btn-white-map shadowed pull-right" onclick="map.flyTo({center: [3.991384, 48.755486], zoom: 15})">Voir sur la carte 
-                        <i class="fas fa-map-marked-alt ml-1" aria-hidden="true"></i>
-                      </div>
-                    </div>
-                  </div>
-              </div>);
-          }
-          return newMarkers;
-        })()}
-      </div>);
+    var appShopList = ()=>{
+      return (<ListMapView marker_datas={marker_datas} ref={(ref)=>this.setRef('listMapViewRef',ref)}></ListMapView>);
     };
     return (<div style={style.body}>
-      <div class="mobile tablet only" style="background:white;">
+      <div class="mobile tablet only" sty>
         {appShopList()}
       </div>
-      <div class="display mmobile hidden tablet hidden computer" id="app_map_view">
-        <div>
+      <div class="display mobile hidden tablet hidden computer" id="app_map_view">
+        <div class="on_computer">
           {appShopList()}
         </div>
         <div style="height: 85vh;">

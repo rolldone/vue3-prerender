@@ -8,6 +8,7 @@ import InitGetUser from './middlewares/InitGetUser';
 import InitCheckBusiness from './middlewares/InitCheckBusiness';
 import InitPubSub from './middlewares/InitPubSub';
 import InitRouteApi from './middlewares/InitRouteApi';
+import InitLocation from './middlewares/InitLocation';
 import NotifRouteChange from './middlewares/NotifRouteChange';
 import { createStore } from 'vuex';
 
@@ -41,6 +42,7 @@ var beforeEach = Middleware.bind(Middleware, [
   InitPubSub,
   CommonCode,
   InitRouteApi,
+  InitLocation,
   // InitCheckRoute,
   // InitGetUser,
   // NotifRouteChange,

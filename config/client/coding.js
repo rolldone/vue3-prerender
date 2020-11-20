@@ -5,6 +5,7 @@ let env = {
     API_ASSET_URL : 'http://service.artyplanet.test',
     HTTP_GENERATOR_URL : 'http://localhost:1084',
     BASE_PATH: '/',
+    ARTYWIZ_HOST : 'http://artywiz.local',
     /* Ini mengikuti new Copy Plugin */
     ASSET : '/public',
     g_captcha_site_key : '6Lef5tUUAAAAANDvzGnYRQ-YdO8XjLPRrDyEnNsd',

@@ -1,19 +1,42 @@
 import HeadMenu from "../components/HeadMenu";
-import { reactive } from 'vue';
+import { watch, onBeforeMount, onMounted, reactive } from 'vue';
 import BaseVue from "../../base/BaseVue";
+import StickyMessage from "../components/notification/StickyMessage";
+import AppStore from "../store/AppStore";
 
 export const HomeLayoutClass = BaseVue.extend({
   data : function(){
     return reactive({
       style : {
         height : 'inherit'
-      }
+      },
+      notif_location : {}
     });
   },
   construct : function(props,context){
     let self = this;
     self.HeaderComponent = props.header || HeadMenu;
     self.ContentComponent = props.content || {};
+    onBeforeMount(function(){
+      watch(()=>AppStore.state.app.notif_location,function(val){
+        self.setUpdate('notif_location',val||{});
+      });
+      let notif_location = AppStore.state.app.notif_location;
+      self.setUpdate('notif_location',notif_location||{});
+    });
+  },
+  handleClick : function(action,props,e){
+    let self = this;
+    switch(action){
+      case 'STICKY_MESSAGE_OK':
+        let a= document.createElement('a');
+        a.target= '_blank';
+        a.href= 'https://docs.buddypunch.com/en/articles/919258-how-to-enable-location-services-for-chrome-safari-edge-and-android-ios-devices-gps-setting';
+        a.click();
+        break;
+      case 'STICKY_MESSAGE_IGNORE':
+        break;
+    }
   }
 });
 export default {
@@ -29,8 +52,8 @@ export default {
     return homeLayoutClass;
   },
   render(h){
-    let { HeaderComponent} = this;
-    let { style } = this.get();
+    let { HeaderComponent, handleClick } = this;
+    let { style, notif_location } = this.get();
     let content = (<>
       <div class="four wide column">
         <div class="foot_item">
@@ -51,6 +74,7 @@ export default {
       </div>
     </>);
     return (<div style={style}>
+      {notif_location.message != null?<StickyMessage message={notif_location.message} type={notif_location.type} title={notif_location.title} message_ok="How to Activate?" handleClick={handleClick.bind(this,'STICKY_MESSAGE_OK')}></StickyMessage>:null}
       <HeaderComponent></HeaderComponent>
       {this.$slots.default()}
       <div id="footer">
