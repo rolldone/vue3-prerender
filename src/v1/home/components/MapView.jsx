@@ -382,10 +382,10 @@ export default {
       return (<ListMapView marker_datas={marker_datas} ref={(ref)=>this.setRef('listMapViewRef',ref)}></ListMapView>);
     };
     return (<div style={style.body}>
-      <div class="mobile tablet only" sty>
+      <div class="mobile only" sty>
         {appShopList()}
       </div>
-      <div class="display mobile hidden tablet hidden computer" id="app_map_view">
+      <div class="display mobile hidden computer" id="app_map_view">
         <div class="on_computer">
           {appShopList()}
         </div>

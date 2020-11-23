@@ -10,6 +10,7 @@ import InitPubSub from './middlewares/InitPubSub';
 import InitRouteApi from './middlewares/InitRouteApi';
 import InitLocation from './middlewares/InitLocation';
 import NotifRouteChange from './middlewares/NotifRouteChange';
+import 'url-change-event';
 import { createStore } from 'vuex';
 
 let is_loading_value = ref(null);
@@ -21,12 +22,25 @@ if(existInnerHtml != ""){
 }
 
 /* Add onpopstate event listener */
-window.onpopstate = function(event){
-  if(event.state.current == window.location.pathname){
-    window.masterData.saveData('on_pop_state',event);
-  }
-  window.masterData.saveData('global_on_pop_state',event);
-};
+window.addEventListener('urlchangeevent', function(e) {
+  // your code here
+  setTimeout(function(){
+    switch(e.action){
+      case 'pushState':
+        window.masterData.saveData('on_push_state',{
+          ...e,
+          route : window.route
+        });
+        break;
+      case 'popstate':
+        window.masterData.saveData('on_pop_state',{
+          ...e,
+          route : window.route
+        });
+        break;
+    }
+  },200);
+});
 
 const routes = (function(routes){
   require('./auth/route')(routes);

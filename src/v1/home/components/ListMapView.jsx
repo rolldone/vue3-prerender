@@ -46,6 +46,7 @@ export const ListMMapViewClass = BaseVue.extend({
         self.setUpdate('action','list');
         break;
       case 'OPEN_DETAIL':
+        e.preventDefault();
         self.selectBusiness(props.id);
         self.onChangeListener('BUSINESS_SELECTED',self.get('select_business'),props.index);
         break;
@@ -69,45 +70,66 @@ export default {
     let { marker_datas } = this.props;
     switch(action){
       case 'list':
-        return (<div class="app_shop_list">
+        return (<div class="app_shop_list on_mobile">
         {(()=>{
           let newMarkers = [];
           for(var a=0; a < marker_datas.length; a++){
             let markerItem = marker_datas[0];
             newMarkers.push(
-              <div class="v228_105">
-                <div class="v228_105_wrapper on_mobile">
-                  <div class="v228_106 on_mobile on_computer on_large_screen on_wide_screen">
-                    <div class="v228_107"></div>
-                    <div class="v228_108" style={{ "background-image" : "url("+config.ARTYWIZ_HOST+markerItem.products[0].photo+")"}}></div>
+              <div class="asl_1">
+                <div class="asl_a_11 on_mobile">
+                  <div class="asl_11 on_mobile">
+                    <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+markerItem.products[0].photo+")"}} alt=""/>
                   </div>
-                  <div class="v228_109_container on_mobile on_tablet">
-                    <div class="v228_109 on_mobile on_tablet">
-                      <div class="v228_110" style={{ "background-image" : "url("+config.ARTYWIZ_HOST+markerItem.store.icon+")"}}></div>
-                    </div>
-                    <div class="v228_118_container on_mobile on_tablet">
-                      <span class="v228_118">{markerItem.store.name.toUpperCase()}</span>
-                      <span class="v228_119">{markerItem.business_address} {markerItem.business_city} {markerItem.business_postal_code} {markerItem.business_country} {markerItem.business_phone}</span>
-                    </div>
-                    
-                    <div class="v228_120_container on_mobile on_tablet">
-                      <div class="v228_120 on_mobile" onCLick={this.handleClick.bind(this,'OPEN_DETAIL',{ id : markerItem.id, index : a })}>
-                        <div class="v228_122 on_mobile">
-                          Voir sur la carte
-                        </div>
-                        <div class="v228_121">
-                        </div>
-                      </div>
-                      <div class="v228_123 on_mobile">
-                        <span class="v228_126 on_mobile">Aller à la boutique</span>
-                        <div class="v228_124"></div>
+                  <div class="asl_12">
+                    <div class="asl_121 on_mobile">
+                      <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+markerItem.store.icon+")"}} alt=""/>
+                      <div class="asl_1211">
+                        <h3>{markerItem.store.name.toUpperCase()}</h3>
+                        <span>{markerItem.business_address} {markerItem.business_city} {markerItem.business_postal_code} {markerItem.business_country} {markerItem.business_phone}</span>
                       </div>
                     </div>
-                    
+                    <div class="asl_122 on_mobile">
+                      <a href="" onCLick={this.handleClick.bind(this,'OPEN_DETAIL',{ id : markerItem.id, index : a })}><span>Voir sur la carte</span>&nbsp;&nbsp; <img src="/public/img/map/detail_map.svg" alt=""/></a>
+                      <a href=""><span>Aller à la boutique</span>&nbsp;&nbsp; <img src="/public/img/map/shop.svg" alt=""/></a>
+                    </div>
                   </div>
                 </div>
+                {markerItem.products.length > 0?
+                  <div class="asl_13">
+                    {(()=>{
+                      let subItem = [];
+                      for(var b=0; b < markerItem.products.length;b++){
+                        let productItem = markerItem.products[b];
+                        subItem.push(<div class="app_shop_detail_list">
+                          <div class="asdl_1">
+                            <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+productItem.photo+")"}} alt=""/>
+                          </div>
+                          <div class="asdl_2">
+                            <div class="asdl_21">
+                              <h4>{productItem.name}</h4>
+                              <div class="asdl_211">
+                                <span>{productItem.price}€ TTC</span>
+                                <span class="divider"></span>
+                                <span>{productItem.price_promotion}€ TTC</span>
+                              </div>
+                            </div>
+                            <div class="asdl_22">
+                              <span>Description</span>
+                              <span>{productItem.description}</span>
+                            </div>
+                            <div class="asdl_23">
+                              <span>Ingrédients</span>
+                              <span>{productItem.ingredient}</span>
+                            </div>
+                          </div>
+                        </div>);
+                      }
+                      return subItem;
+                    })()}
+                  </div>:null}
               </div>
-              );
+            );
           }
           return newMarkers;
         })()}
