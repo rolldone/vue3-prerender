@@ -82,9 +82,8 @@ module.exports = {
     /* 
         Kalo pengen express jadi pondasi
     */
-    publicPath : '/',
-    /* 
-        Kalo pengen mandiri
+    publicPath : '/dist/',
+    /* Kalo pengen mandiri
     */
     // publicPath: "/dist",
     filename: "[name].js",
@@ -172,6 +171,11 @@ module.exports = {
     ]
   },
   plugins: [
+    new webpack.SourceMapDevToolPlugin({
+      filename: '[name].js.map',
+      exclude: ['vendor.js']
+    }),
+
     /* Load Html-webpack-plugin */
     /* If use NOdejs as rendering you dont need it */
     new HtmlWebpackPlugin({

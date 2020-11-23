@@ -11,8 +11,15 @@ const CopyPlugin = require('copy-webpack-plugin');
 config.mode = "development";
 config.devtool = 'cheap-module-eval-source-map';
 /* Biar mau refresh pada saat compile otomatis */
-const entryName = ['main','auth'];
+const entryName  = ['auth'];
+const entryExclude = { "vendor" : "" };
+for(var key in config.entry){
+  if(entryExclude[key] == null){
+    entryName.push(key);
+  }
+}
 
+/* webpack-hot-middleware register entry */
 for(var a=0;a<entryName.length;a++){
   if (typeof config.entry[entryName[a]] == 'string') {
     config.entry[entryName[a]] = ['webpack-hot-middleware/client', config.entry[entryName[a]]];
@@ -26,7 +33,7 @@ for(var a=0;a<entryName.length;a++){
 }
 config.output = {
   // path: path.resolve(__dirname, 'dist'),
-  publicPath: '/',
+  publicPath: '/dist/',
   filename: '[name].js',
 }
 

@@ -2,6 +2,7 @@ import { ref, watch, reactive,  onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BaseVue from "../base/BaseVue";
 import SideMenu from "./components/SideMenu";
+import HomeView from "./home/HomeView";
 import RouteActionFunction from "./partials/RouteActionFunction";
 let router = null;
 let route = null;
@@ -76,7 +77,7 @@ export default {
 			case 'auth':
 				return (<router-view></router-view>);
 			case 'home':
-				return (<router-view></router-view>);
+				return (<HomeView></HomeView>);
 			case 'main':
 				return (<div id="main">
 					{/* <SideMenu ref={(ref)=>this.setRef('sideRef',ref)}></SideMenu> */}

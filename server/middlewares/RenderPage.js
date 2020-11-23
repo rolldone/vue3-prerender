@@ -40,8 +40,8 @@ runnerBrowser();
 module.exports = async function(req,res,next){
   /* For index path access will detect null "req.protocol + "://" + req.get('host') + req.path" */
   /* So use exception handling to get referer */
-  const local_url = req.headers.referer || req.protocol + "://" + req.get('host') + req.path;
-  
+  const local_url = req.protocol + "://" + req.get('host') + req.originalUrl;
+  console.log('url path ',req.protocol + "://" + req.get('host') + req.path);
   console.log('step 1 - local_url ->',local_url);
 
   let checkExist = req.headers['user-agent'].match(/MY_SYSTEM/g) || [];
@@ -49,11 +49,7 @@ module.exports = async function(req,res,next){
   /* Only real user agent get block at here */
   if(!isBot(req.headers['user-agent'])){
     let Lighthouse = req.headers['user-agent'].match(/Chrome-Lighthouse/g) || [];
-    if(Lighthouse.length == 0){
-      /* If get cache load cache */
-      if(isUrlAsset(local_url,req) == true){
-        return res.end();
-      }
+    if(Lighthouse.length == 0){      
       /* If get cache load cache */
       if(loadCache(local_url,req,res) == true){
         console.log('GET CACHE');
@@ -72,9 +68,6 @@ module.exports = async function(req,res,next){
     return;
   } else {
     try {
-        if(isUrlAsset(local_url,req) == true){
-          return res.end();
-        }
         let html = null;
         let pages = await browser.pages();
         let existPage = null;
@@ -214,6 +207,7 @@ module.exports = async function(req,res,next){
         },stylesheetContents);
 
         html = await evaluatePage(page);
+        console.log('rendered!!');
         Cache[local_url] = html;
         await page.close();
         delete CurrentUrlWorking[local_url];
@@ -237,19 +231,23 @@ var isUrlAsset = function(local_url,req){
           /* For prevent asset */
     console.log('step 2 - is asset - closed ->',req.protocol + "://" + req.get('host') + req.path);
     // console.log('WRONG - MY_SYSTEM WRONG PLACE ',req.protocol + "://" + req.get('host') + req.path);
-    return true;
+    return false;
   }
+  console.log('aaaaaaa',req.protocol + "://" + req.get('host') + req.path);
   return false;
 }
 
 var evaluatePage = async function(page){
   return await page.evaluate(() => {
     try{
-      document.querySelector('#nprogress').outerHTML = null;
+      var nprogress = document.querySelector('#nprogress') !== null;
+      if (nprogress) {
+        document.querySelector('#nprogress').outerHTML = null;
+      }
       /* Any method to access full html content? */
       return new XMLSerializer().serializeToString(document.doctype)+document.documentElement.outerHTML;
     }catch(ex){
-      console.log('evaluatePage - ex',ex);
+      console.log('evaluatePage - ex',ex.message);
       return null;
     }
   });
