@@ -3,6 +3,7 @@ import { reactive, onMounted } from 'vue';
 import config from '@config';
 import mergeImages from 'merge-images';
 import ListMapView from "./ListMapView";
+import HeadSearch from "./HeadSearch";
 
 
 
@@ -110,7 +111,11 @@ export const MapViewClass = BaseVue.extend({
           self.mymap.off();
           self.mymap.remove();
         }
-        self.mymap = window.L.map("mapsingleid",{ scrollWheelZoom: false }).setView([self.get("currentLocation.lat"), self.get("currentLocation.long")], 13);
+        self.mymap = window.L.map("mapsingleid",{ 
+          scrollWheelZoom: false,
+          zoomControl: false
+        }).setView([self.get("currentLocation.lat"), self.get("currentLocation.long")], 13);
+        window.L.control.zoom({ position: 'topright' }).addTo(self.mymap);
         let tile_layer = window.L.tileLayer(`https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=${config.MAPBOX_ACCESS_TOKEN}`, {
           attribution:
             'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
@@ -389,7 +394,12 @@ export default {
         <div class="on_computer">
           {appShopList()}
         </div>
-        <div style="height: 85vh;">
+        <div style="height: inherit;">
+          <div class="map_nav_home">
+            <div class="mvh_1">
+              <HeadSearch></HeadSearch>
+            </div>
+          </div>
           <div style={style.map_wrapper} id="mapsingleid"></div>
           <div style="display:none;z-index:2147483647" class="marker-content mobile hidden">
             {popUpContent}

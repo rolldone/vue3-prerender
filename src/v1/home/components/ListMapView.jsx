@@ -3,6 +3,8 @@ import { reactive } from 'vue';
 import config from '@config';
 import BusinessService from "../../services/BusinessService";
 import ProductService from "../../services/ProductService";
+import FilterSearch from "./FilterSearch";
+import SortingSearch from "./SortingSearch";
 
 export const ListMMapViewClass = BaseVue.extend({
   data : function(){
@@ -124,6 +126,16 @@ export default {
     switch(action){
       case 'list':
         return (<div class="app_shop_list on_mobile">
+          <div class="shop_filter">
+            <div class="sf_1">
+              <div class="sf_11">
+                <FilterSearch></FilterSearch>
+              </div>
+              <div class="sf_11">
+                <SortingSearch></SortingSearch>
+              </div>
+            </div>
+          </div>
         {(()=>{
           let newMarkers = [];
           for(var a=0; a < marker_datas.length; a++){
