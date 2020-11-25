@@ -55,7 +55,7 @@ export default {
     return (<div class="head_sorting_search" id="sorting_search">
       <div class="hss_1 on_mobile">
         <div class="hss_1_2">
-          <img src="/public/img/map/dropdown_rort.svg" alt=""/>
+          <img src="/public/img/map/sort_icon.svg" alt=""/>
         </div>
         <span>TRIER PAR</span>
         <img class="hss_1_3" src="/public/img/map/dropdown_arrow_bottom.svg" alt=""/>

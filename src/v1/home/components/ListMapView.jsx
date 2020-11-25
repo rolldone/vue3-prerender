@@ -218,15 +218,16 @@ export default {
                                   <span>Description</span>
                                   <span>{productItem.description}</span>
                                 </div>
-                                <div class="asdl_23">
-                                  <span>Ingrédients</span>
-                                  <span>{productItem.ingredient}</span>
-                                </div>
                               </div>
                             </div>);
                           }
                           return subItem;
                         })()}
+                        <div class="asl_131">
+                          <div class="asl_1311">
+                            <a href="" onCLick={this.handleClick.bind(this,'OPEN_DETAIL',{ id : markerItem.id, index : a })}><span>Voir tout le menu sur la boutique</span>&nbsp;&nbsp; <img src="/public/img/map/store.svg" alt=""/></a>
+                          </div>
+                        </div>
                       </div>);
                     }else{
                       return null;
