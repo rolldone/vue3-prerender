@@ -5,8 +5,6 @@ import mergeImages from 'merge-images';
 import ListMapView from "./ListMapView";
 import HeadSearch from "./HeadSearch";
 
-
-
 export const MapViewClass = BaseVue.extend({
   data : function(){
     return reactive({
@@ -30,7 +28,7 @@ export const MapViewClass = BaseVue.extend({
   construct : function(props,context){
     let self = this;
     onMounted(function(){
-
+      self.setInitDOMSelection('HEAD_SEARCH');
     });
   },
   showPosition: async function(position) {
@@ -188,6 +186,21 @@ export const MapViewClass = BaseVue.extend({
             // self.getAddress();
           }, 1000);
           self.pendingLatLong(getMarkerPosition);
+        });
+        break;
+        case 'HEAD_SEARCH':
+        self.headSearch = self.getRef('headSearchRef');
+        if(self.headSearch == null) return;
+        self.headSearch.setOnChangeListener(async function(action,val){
+          switch(action){
+            case 'ON_TYPING':
+              await self.setUpdate('query',{
+                search : val
+              });
+              self.updateCurrentState(self.get('query'));
+              // self.setProducts(await self.getProducts());
+              break;
+          }
         });
         break;
     }
@@ -397,7 +410,7 @@ export default {
         <div style="height: inherit;">
           <div class="map_nav_home">
             <div class="mvh_1">
-              <HeadSearch></HeadSearch>
+              <HeadSearch ref={(ref)=>this.setRef('headSearchRef',ref)}></HeadSearch>
             </div>
           </div>
           <div style={style.map_wrapper} id="mapsingleid"></div>

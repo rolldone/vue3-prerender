@@ -86,12 +86,8 @@ export const IndexClass = BaseVue.extend({
   setInitDOMSelection : async function(action,props){
     let self = this;
     /* Composition define */
-    self.gridData.join(action,props,async function(action,val){
-
-    });
-    self.listData.join(action,props,async function(action,val){
-
-    });
+    self.gridData.join(action,props,async function(action,val){});
+    self.listData.join(action,props,async function(action,val){});
     self.displayOption.join(action,props,async function(action,val,e){
       /* Need promise for good effect */
       await self.set('select_view',action);
@@ -109,45 +105,6 @@ export const IndexClass = BaseVue.extend({
     });
     /* Casual define */
     switch(action){
-      case 'SORTING_SEARCH':
-        self.sortingSearch = self.getRef('sortingSearchRef');
-        if(self.sortingSearch == null) return;
-        self.sortingSearch.setOnChangeListener(async function(action,val){
-            switch(action){
-              case 'SORT_ACTION':
-                await self.setUpdate('query',val);
-                self.updateCurrentState(self.get('query'));
-                break;
-            }
-        });
-        break;
-      case 'HEAD_SEARCH':
-        self.headSearch = self.getRef('headSearchRef');
-        if(self.headSearch == null) return;
-        self.headSearch.setOnChangeListener(async function(action,val){
-          switch(action){
-            case 'ON_TYPING':
-              await self.setUpdate('query',{
-                search : val
-              });
-              self.updateCurrentState(self.get('query'));
-              // self.setProducts(await self.getProducts());
-              break;
-          }
-        });
-        break;
-      case 'FILTER_SEARCH':
-        self.filterSearch = self.getRef('filterSearch');
-        if(self.filterSearch == null) return;
-        self.filterSearch.setOnClickListener(function(action,val){
-          switch(action){
-            case 'SHOW':
-              break;
-            case 'HIDE':
-              break;
-          }
-        });
-        break;
       case 'LOAD_MAP_VIEW':
         self.mapView = self.getRef('mapView');
         if(self.mapView == null) return;
@@ -173,28 +130,6 @@ export default {
   render : function(h){
     let { select_view } = this.get();
     return (<>
-      <div class="ui grid" style="width:100%; margin:0;">
-        <div class="sixteen wide column">
-          <div id="nav_map" class="on_mobile">
-            <div class="nm_a_1 on_mobile">
-              <div class="nm_1">
-                {/* Partial display map topion */}
-                {/* {this.displayOption.render(h,{})} */}
-              </div>
-              <div class="nm_1">
-                {/* Display filter search */}
-                <FilterSearch ref={(ref)=>this.setRef('filterSearch',ref)}></FilterSearch>
-              </div>
-              <div class="nm_1">
-                <SortingSearch ref={(ref)=>this.setRef('sortingSearchRef',ref)}></SortingSearch>
-              </div>
-            </div>
-            <div class="nm_2 on_mobile">
-              <HeadSearch ref={(ref)=>this.setRef('headSearchRef',ref)}></HeadSearch>
-            </div>
-          </div>
-        </div>
-      </div>
       {(()=>{
         switch(select_view){
           case 'MAP':
@@ -205,7 +140,6 @@ export default {
             return this.listData.render(h,{});
         }
       })()}
-      
     </>);
   }
 };

@@ -1,5 +1,5 @@
 import BaseVue from "../../../base/BaseVue";
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import config from '@config';
 import BusinessService from "../../services/BusinessService";
 import ProductService from "../../services/ProductService";
@@ -24,8 +24,41 @@ export const ListMMapViewClass = BaseVue.extend({
   },
   construct : function(props,context){
     let self = this;
+    onMounted(function(){
+      self.setInitDOMSelection('FILTER_SEARCH');
+      self.setInitDOMSelection('SORTING_SEARCH');
+    });
   },
-  setInitDOMSelection : function(action,props){},
+  setInitDOMSelection : async function(action,props){
+    let self = this;
+    /* Casual define */
+    switch(action){
+      case 'SORTING_SEARCH':
+        self.sortingSearch = self.getRef('sortingSearchRef');
+        if(self.sortingSearch == null) return;
+        self.sortingSearch.setOnChangeListener(async function(action,val){
+            switch(action){
+              case 'SORT_ACTION':
+                await self.setUpdate('query',val);
+                self.updateCurrentState(self.get('query'));
+                break;
+            }
+        });
+        break;
+      case 'FILTER_SEARCH':
+        self.filterSearch = self.getRef('filterSearch');
+        if(self.filterSearch == null) return;
+        self.filterSearch.setOnClickListener(function(action,val){
+          switch(action){
+            case 'SHOW':
+              break;
+            case 'HIDE':
+              break;
+          }
+        });
+        break;
+    }
+  },
   getDetailProducts : async function(){
     let self = this;
     try{
@@ -129,10 +162,10 @@ export default {
           <div class="shop_filter">
             <div class="sf_1">
               <div class="sf_11">
-                <FilterSearch></FilterSearch>
+                <FilterSearch ref={(ref)=>this.setRef('filterSearch',ref)}></FilterSearch>
               </div>
               <div class="sf_11">
-                <SortingSearch></SortingSearch>
+                <SortingSearch ref={(ref)=>this.setRef('sortingSearchRef',ref)}></SortingSearch>
               </div>
             </div>
           </div>
