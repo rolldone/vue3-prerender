@@ -1,6 +1,17 @@
 import BaseService from "./BaseService";
 
 export default BaseService.extend({
+  getDetailProducts : async function(props){
+    window.staticType(props,[Object]);
+    try{
+      let url = window.HTTP_REQUEST.PRODUCT.DETAIL_PRODUCTS;
+      let resData = await this.getData(url,props);
+      if(resData.status == "error") throw resData.data.responseJSON;
+      return resData;
+    }catch(ex){
+      throw ex;
+    }
+  },
   getProducts : async function(props){
     window.staticType(props,[Object]);
     try{

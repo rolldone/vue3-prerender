@@ -8,8 +8,8 @@ export const ListMMapViewClass = BaseVue.extend({
   data : function(){
     return reactive({
       action : 'list',
-      select_business_id : null,
-      business_data : null,
+      business_data_id : null,
+      business_data : {},
       product_datas : [],
       query : {}
     });
@@ -22,54 +22,33 @@ export const ListMMapViewClass = BaseVue.extend({
   },
   construct : function(props,context){
     let self = this;
-    
   },
-  setInitDOMSelection : function(action,props){
-
-  },
-  // selectBusiness : async function(id){
-  //   let self = this;
-  //   window.staticType(id,[Number]);
-  //   let { marker_datas } = self.props;
-  //   let select_business = (function(parseDatas){
-  //     let select_business = null;
-  //     for(var a=0;a<parseDatas.length;a++){
-  //       if(id == parseDatas[a].id){
-  //         select_business = parseDatas[a];
-  //         break;
-  //       }
-  //     }
-  //     return select_business;
-  //   })(marker_datas);
-  //   if(select_business == null) return;
-  //   await self.setUpdate('select_business',select_business);
-  //   await self.setUpdate('action','detail');
-  // },
-  getProducts : async function(){
+  setInitDOMSelection : function(action,props){},
+  getDetailProducts : async function(){
     let self = this;
     try{
       let { query } = this.get();
       let service = this.returnProductService();
-      let resData = await service.getProducts(query);
+      let resData = await service.getDetailProducts(query);
       return resData;
     }catch(ex){
-      console.error('getProducts - ex ',ex);
+      console.error('getDetailProducts - ex ',ex);
     }
   },
-  setProducts : function(props){
+  setDetailProducts : function(props){
     let self = this;
     if(props == null) return;
-    let products = (function(parseData){
-      return parseData;
+    let product_datas = (function(parseDatas){
+      return parseDatas;
     })(props.return);
-    self.setUpdate('product_datas',products);
+    self.set('product_datas',product_datas);
   },
   getBusiness : async function(){
     let self = this;
     try{
-      let select_business_id = self.get('select_business_id');
+      let business_data_id = self.get('business_data_id');
       let service = this.returnBusinessService();
-      let resData = await service.getBusiness(select_business_id);
+      let resData = await service.getBusiness(business_data_id);
       return resData;
     }catch(ex){
       console.error('getBusiness - ex ',ex);
@@ -79,9 +58,20 @@ export const ListMMapViewClass = BaseVue.extend({
     let self = this;
     if(props == null) return;
     let business_data = (function(parseData){
+      parseData.store = self.simpleInitData(parseData.business_product_category);
+      delete parseData.business_product_category;
       return parseData;
     })(props.return);
     self.setUpdate('business_data',business_data);
+  },
+  getCurrentPosition : async function(){
+    try{
+      let service = this.returnProductService();
+      let resData = await service.getCurrentPosition();
+      return resData;
+    }catch(ex){
+      console.error('getCurrentPosition - ex ',ex);
+    }
   },
   setOnChangeListener : function(func){
     let self = this;
@@ -91,7 +81,8 @@ export const ListMMapViewClass = BaseVue.extend({
     let self = this;
     switch(action){
       case 'BACK':
-        self.setUpdate('select_business',null);
+        self.setUpdate('business_data',{});
+        self.set('product_datas',[]);
         self.setUpdate('action','list');
         break;
       case 'OPEN_DETAIL':
@@ -99,14 +90,18 @@ export const ListMMapViewClass = BaseVue.extend({
         window.staticType(props,[Object]);
         window.staticType(props.id,[Number]);
         window.staticType(props.search,[null,String]);
+        await self.setUpdate('action','detail');
+        self.onChangeListener('BUSINESS_SELECTED',self.get('business_data'),props.index);
+        let currentPosition = await self.getCurrentPosition();
         await self.setUpdate('query',{
           business_id : props.id,
-          search : props.search
+          search : props.search,
+          long : currentPosition.longitude,
+          lat : currentPosition.latitude
         });
-        await self.setUpdate('select_business_id',props.id);
+        await self.setUpdate('business_data_id',props.id);
         self.setBusiness(await self.getBusiness());
-        self.setProducts(await self.getProducts());
-        self.onChangeListener('BUSINESS_SELECTED',self.get('select_business'),props.index);
+        self.setDetailProducts(await self.getDetailProducts());
         break;
     }
   }
@@ -124,7 +119,7 @@ export default {
     return listMapView.setup();
   },
   render(h){
-    let { action, select_business } = this.get();
+    let { action, business_data, product_datas } = this.get();
     let { marker_datas } = this.props;
     switch(action){
       case 'list':
@@ -212,19 +207,19 @@ export default {
               </div>
               <div class="asd_2">
                 <div class="asd_2_1">
-                  <div class="image" style={{ "background-image":"url("+config.ARTYWIZ_HOST+select_business.store.icon+")"}}></div>
+                  <div class="image" style={{ "background-image":"url("+config.ARTYWIZ_HOST+this.safeJSON(business_data.store,'icon')+")"}}></div>
                 </div>
                 <div class="asd_2_2">
                   <div class="asd_2_2_1">
-                    <h4>{select_business.store.name}</h4>
+                    <h4>{this.safeJSON(business_data.store,'name')}</h4>
                     <span>
-                      {select_business.business_address} {select_business.business_city} {select_business.business_postal_code} {select_business.business_country}
+                      {business_data.business_address} {business_data.business_city} {business_data.business_postal_code} {business_data.business_country}
                     </span>
                   </div>
                   <div class="asd_2_2_2">
                     <div class="call active" onCLick={this.handleClick.bind(this,'CALL_STORE')}>
                       <img src="/public/img/map/shop_call_active.svg" alt=""/>
-                      <span>{select_business.business_phone}</span>
+                      <span>{business_data.business_phone}</span>
                     </div>
                     <div class="shop" onCLick={this.handleClick.bind(this,'GO_SHOP')}>
                       <span>Aller à la boutique </span>
@@ -236,12 +231,12 @@ export default {
             </div>
             {(()=>{
               let products = [];
-              for(var a=0;a<select_business.products.length;a++){
-                let productItem = select_business.products[a];
+              for(var a=0;a<product_datas.length;a++){
+                let productItem = product_datas[a];
                 products.push(
                   <div class="app_shop_detail_list">
                     <div class="asdl_1">
-                      <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+select_business.products[a].photo+")"}} alt=""/>
+                      <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+productItem.photo+")"}} alt=""/>
                     </div>
                     <div class="asdl_2">
                       <div class="asdl_21">

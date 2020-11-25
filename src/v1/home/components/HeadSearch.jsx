@@ -1,8 +1,16 @@
 import BaseVue from "../../../base/BaseVue";
+import { reactive } from 'vue';
 
 export const HeadSearchClass = BaseVue.extend({
+  data : function(){
+    return reactive({
+      search_text : null
+    });
+  },
   construct : function(props,context){
     let self = this;
+    let jsonParseUrl = self.jsonParseUrl();
+    self.setUpdate('search_text',jsonParseUrl.query.search);
   },
   handleChange : function(action,props,e){
     let self = this;
@@ -30,9 +38,10 @@ export default {
     return headSearchClass.setup();
   },
   render(h){
+    let { search_text } = this.get();
     return (<div class="home_search on_mobile">
       <div class="hm_1 on_mobile">
-        <input type="text" placeholder="Researcher" onChange={this.handleChange.bind(this,'SEARCH_TEXT',{})}/>
+        <input type="text" placeholder="Researcher" v-model={search_text} onChange={this.handleChange.bind(this,'SEARCH_TEXT',{})}/>
         <img src="/public/img/map/search.svg" alt=""/>
       </div>
     </div>);

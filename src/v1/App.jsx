@@ -50,6 +50,7 @@ const AppClass = BaseVue.extend({
 		self.RouteActionFunction.join(action,props,function(action,props){
 			switch(action){
 				case 'GLOBAL_POP_STATE':
+				case 'MANUAL_STATE':
 					/* This is important for prevent duplicate component */
 					self.set('template',null);
 					break;

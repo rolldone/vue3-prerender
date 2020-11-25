@@ -35,12 +35,15 @@ export const IndexClass = BaseVue.extend({
       AppStore.commit('SET',{
         title : window.gettext("ArtyPlanet Home")
       });
+      let jsonParseUrl = self.jsonParseUrl();
+      self.setUpdate('query',jsonParseUrl.query);
     });
     onMounted(async function(){
       self.setProducts(await self.getProducts());
       self.setInitDOMSelection(self.displayOption.map.INITIALIZE);
       self.setInitDOMSelection('FILTER_SEARCH');
       self.setInitDOMSelection('HEAD_SEARCH');
+      self.setInitDOMSelection('SORTING_SEARCH');
     });
   },
   getProducts : async function(){
@@ -106,6 +109,18 @@ export const IndexClass = BaseVue.extend({
     });
     /* Casual define */
     switch(action){
+      case 'SORTING_SEARCH':
+        self.sortingSearch = self.getRef('sortingSearchRef');
+        if(self.sortingSearch == null) return;
+        self.sortingSearch.setOnChangeListener(async function(action,val){
+            switch(action){
+              case 'SORT_ACTION':
+                await self.setUpdate('query',val);
+                self.updateCurrentState(self.get('query'));
+                break;
+            }
+        });
+        break;
       case 'HEAD_SEARCH':
         self.headSearch = self.getRef('headSearchRef');
         if(self.headSearch == null) return;
@@ -115,7 +130,8 @@ export const IndexClass = BaseVue.extend({
               await self.setUpdate('query',{
                 search : val
               });
-              self.setProducts(await self.getProducts());
+              self.updateCurrentState(self.get('query'));
+              // self.setProducts(await self.getProducts());
               break;
           }
         });
@@ -170,7 +186,7 @@ export default {
                 <FilterSearch ref={(ref)=>this.setRef('filterSearch',ref)}></FilterSearch>
               </div>
               <div class="nm_1">
-                <SortingSearch></SortingSearch>
+                <SortingSearch ref={(ref)=>this.setRef('sortingSearchRef',ref)}></SortingSearch>
               </div>
             </div>
             <div class="nm_2 on_mobile">

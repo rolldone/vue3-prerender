@@ -317,7 +317,7 @@ export default BaseComposition.extend({
     return newQuery;
   },
   updateCurrentState(query){
-    window.masterData.saveData('global_on_pop_state',null);
+    window.masterData.saveData('manual_state',null);
     window.router.push({ name : window.route.name, query : query });
   },
   resolveRouteToUrl: function(string) {

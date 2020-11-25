@@ -17,6 +17,9 @@ export default BaseVue.extend({
     switch(action){
       case self.getMapDOMSelection('LOAD'):
         window.staticType(callback,[Function]);
+        window.masterData.setOnListener('on_push_state',function(props){
+          callback('PUSH_STATE',props);
+        });
         window.masterData.setOnListener('on_pop_state',function(props){
           callback('POP_STATE',props);
         },key);
@@ -26,6 +29,9 @@ export default BaseVue.extend({
         window.masterData.setOnListener('url_update',function(props){
           callback('URL_UPDATE',props);
         },key);
+        window.masterData.setOnListener('manual_state',function(props){
+          callback('MANUAL_STATE',props);
+        });
         break;
     }
   }

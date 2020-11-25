@@ -895,6 +895,7 @@ body.pushable>.pusher {
     padding-right: 20px;
     margin-left: 6px;
     margin-right: 12px;
+    cursor: pointer;
     .hss_1{
         display: flex;
         flex-direction: row;
@@ -926,6 +927,12 @@ body.pushable>.pusher {
         width: 205px !important;
         .item{
             margin-bottom: 12px;
+            &:hover{
+                color: blue;
+            }
+        }
+        .active{
+            color: #1F8EFA;
         }
     }
 }

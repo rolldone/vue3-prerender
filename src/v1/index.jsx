@@ -24,22 +24,25 @@ if(existInnerHtml != ""){
 /* Add onpopstate event listener */
 window.addEventListener('urlchangeevent', function(e) {
   // your code here
-  setTimeout(function(){
-    switch(e.action){
-      case 'pushState':
-        window.masterData.saveData('on_push_state',{
-          ...e,
-          route : window.route
-        });
-        break;
-      case 'popstate':
-        window.masterData.saveData('on_pop_state',{
-          ...e,
-          route : window.route
-        });
-        break;
-    }
-  },200);
+  /* Dont use delay */
+  switch(e.action){
+    case 'pushState':
+      window.masterData.saveData('on_push_state',{
+        ...e,
+        route : window.route
+      });
+      return;
+    case 'popstate':
+      window.masterData.saveData('global_on_pop_state',{
+        ...e,
+        route : window.route
+      });
+      window.masterData.saveData('on_pop_state',{
+        ...e,
+        route : window.route
+      });
+      return;
+  }
 });
 
 const routes = (function(routes){

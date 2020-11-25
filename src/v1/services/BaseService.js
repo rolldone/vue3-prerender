@@ -46,12 +46,13 @@ export default BaseService.extend({
         CATEGORY: route["api.artyplanet.category.category"],
       },
       BUSINESS : {
-        BUSINESSES : route['api.artyplanet.business.businesses'],
-        BUSINESS : route['api.artyplanet.business.business'],
+        BUSINESSES : route['api.artywiz.artyplanet.store.stores'],
+        BUSINESS : route['api.artywiz.artyplanet.store.store'],
       },
       PRODUCT : {
         PRODUCTS : route['api.artywiz.artyplanet.product.products'],
-        PRODUCT : route['api.artywiz.artyplanet.product.product']
+        PRODUCT : route['api.artywiz.artyplanet.product.product'],
+        DETAIL_PRODUCTS : route['api.artywiz.artyplanet.product.detail_products']
       }
     });
     console.log("HTTP_REQUEST", window.HTTP_REQUEST);
