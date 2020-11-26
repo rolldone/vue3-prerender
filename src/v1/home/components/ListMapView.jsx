@@ -112,6 +112,10 @@ export const ListMMapViewClass = BaseVue.extend({
     let self = this;
     self.onChangeListener = func;
   },
+  selectBusiness : function(props){
+    let self = this;
+    self.handleClick('OPEN_DETAIL',props,null);
+  },
   handleClick : async function(action,props,e){
     let self = this;
     switch(action){
@@ -119,11 +123,15 @@ export const ListMMapViewClass = BaseVue.extend({
         self.setUpdate('business_data',{});
         self.set('product_datas',[]);
         self.setUpdate('action','list');
+        self.onChangeListener('BACK');
         break;
       case 'OPEN_DETAIL':
-        e.preventDefault();
+        if(e!=null){
+          e.preventDefault();
+        }
         window.staticType(props,[Object]);
         window.staticType(props.id,[Number]);
+        window.staticType(props.index,[Number]);
         window.staticType(props.search,[null,String]);
         await self.setUpdate('action','detail');
         self.onChangeListener('BUSINESS_SELECTED',self.get('business_data'),props.index);
@@ -280,7 +288,7 @@ export default {
               for(var a=0;a<product_datas.length;a++){
                 let productItem = product_datas[a];
                 products.push(
-                  <div class="app_shop_detail_list">
+                  <div class="app_shop_detail_list detail">
                     <div class="asdl_1">
                       <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+productItem.photo+")"}} alt=""/>
                     </div>

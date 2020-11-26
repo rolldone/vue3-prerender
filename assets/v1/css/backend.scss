@@ -140,6 +140,10 @@ body.pushable>.pusher {
     width: 330px;
     margin-left: auto;
     border-bottom: 1px solid #DDDDDD;
+    &.detail {
+        width: 100%;
+        margin-left: 0;
+    }
     .asdl_1{
         background-color: silver;
         max-width: 60px;
@@ -188,7 +192,7 @@ body.pushable>.pusher {
         }
     }
     .asdl_22{
-        margin-top: 12px;
+        margin-top: 6px;
         display: flex;
         flex-direction: column;
         span{
@@ -521,112 +525,6 @@ body.pushable>.pusher {
         flex-direction: column;
         justify-content: center;
         align-items: center;
-    }
-}
-.marker-content{
-    .title {
-        .image {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            img{
-                max-width: 50%;
-            }
-        }
-        .text {
-            padding: 0;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            h5{
-                margin: 0;
-                display: block;
-            }
-            span{
-                font-size: 0.8em;
-            }
-        }
-    }
-    .price {
-        .text {
-            padding: 0;
-            padding-top: 1rem;
-            padding-bottom: 1rem;
-            h5{
-                margin: 0;
-                display: block;
-            }
-        }
-        .image {
-            display: block;
-            text-align: center;
-            
-            
-            img{
-                width: 100%;
-            }
-        }
-    }
-    .ingredient{
-        .title {
-            padding: 0;
-            padding-left: 1rem;
-            span{
-                /* * Nom */
-                font-style: normal;
-                font-weight: bold;
-                font-size: 11px;
-                line-height: 13px;
-                /* identical to box height */
-                color: #ADADAD;
-                padding: 0;
-                margin: 0;
-            }
-        }
-        .body{
-            padding: 0;
-            padding-left: 1rem;
-            padding-bottom: 1rem;
-        }
-    }
-    .pagination{
-        margin: 0;
-        padding: 0;
-        .wrap{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-        }
-    }
-    .action {
-        img{
-            width: 34px;
-        }
-        .phone {
-            margin: 0;
-            padding: 0;
-            .wrap {
-                display: flex;
-                align-items: start;
-                justify-content: center;
-                flex-direction: column;
-                height: 100%;
-            }
-            h5,h3 {
-                margin: 0;
-                padding: 0;
-            }
-        }
-        .direct_to{
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            img { 
-                width: 24px;
-            }
-        }
     }
 }
 
