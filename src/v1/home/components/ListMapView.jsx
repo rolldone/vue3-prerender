@@ -180,7 +180,7 @@ export default {
         {(()=>{
           let newMarkers = [];
           for(var a=0; a < marker_datas.length; a++){
-            let markerItem = marker_datas[0];
+            let markerItem = marker_datas[a];
             newMarkers.push(
               <div class="asl_1">
                 <div class="asl_a_11 on_mobile">

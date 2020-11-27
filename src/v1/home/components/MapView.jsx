@@ -149,7 +149,7 @@ export const MapViewClass = BaseVue.extend({
         }).addTo(self.mymap);
         /* Set location of orders */
         for (var a = 0; a < location_datas.length; a++) {
-          self.markers["marker-" + a] = L.marker([
+          self.markers["marker-" + a] = window.L.marker([
             parseFloat(location_datas[a].business_latitude),
             parseFloat(location_datas[a].business_longitude)
           ], {
@@ -165,7 +165,7 @@ export const MapViewClass = BaseVue.extend({
               ...location_datas[a],
               index : a
             });
-          }.bind(L,a));
+          }.bind(window.L,a));
           // self.corner.push(new L.LatLng(parseFloat(location_datas[a].lat), parseFloat(location_datas[a].long)));
         }
         var markerBounds = window.L.latLngBounds([self.markers['marker-you'].getLatLng()]);
@@ -242,7 +242,6 @@ export const MapViewClass = BaseVue.extend({
   markerManipulate : async function(props){
     let self = this;
     let markers = [];
-    await self.set('markers',markers);
     for(var a=0;a<props.length;a++){
       let newResizeImage = await self.resizeImage(config.ARTYWIZ_HOST+props[a].store.icon,20,20);
       let wrapper = await self.resizeImage('/public/img/map/wrapper.svg',34,55);
