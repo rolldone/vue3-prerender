@@ -53,6 +53,10 @@ export default BaseService.extend({
         PRODUCTS : route['api.artywiz.artyplanet.product.products'],
         PRODUCT : route['api.artywiz.artyplanet.product.product'],
         DETAIL_PRODUCTS : route['api.artywiz.artyplanet.product.detail_products']
+      },
+      GOOGLE_PLACE : {
+        AUTO_COMPLETE : route['api.artywiz.artyplanet.location.auto_complete'],
+        DETAILS : route['api.artywiz.artyplanet.location.details']
       }
     });
     console.log("HTTP_REQUEST", window.HTTP_REQUEST);

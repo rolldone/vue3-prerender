@@ -112,6 +112,7 @@ export const MapViewClass = BaseVue.extend({
               await self.set('select_marker',self.markers["marker-" + index]);
               break;
             case 'BACK':
+              /* Reset old select marker */
               var select_marker = self.get('select_marker');
               var marker_datas = self.get('marker_datas');
               var markerItem = marker_datas[select_marker.index];

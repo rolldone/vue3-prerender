@@ -94,6 +94,76 @@ body.pushable>.pusher {
     height: 100%;
     background: #DDDDDD;
 }
+.ppsl{
+    .ppsl_1{
+        margin: 0 auto;
+        width: inherit !important;
+        h1{
+            text-align: center;
+        }
+    }
+    .ppsl_11{
+        text-align: center;
+    }
+    .ppsl_121{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+    .ppsl_1211{
+        @extend .ppsl_121;
+        align-items: center;
+        height: 50px;
+        font-size: 0.8em;
+        img{
+            width: 16px;
+            margin-right: 6px;
+        }
+    }
+    .ppsl_13{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 100px;
+    }
+    .ppsl_131{
+        @extend .ppsl_131;
+        color: white;
+        border: none;
+        cursor: pointer;
+        background-color: #0B76F1;
+        height: 50px;
+        border-radius: 30px;
+        min-width: 200px;
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+.ipsl{
+    input{
+        border: none;
+    }
+    .ipsl_1{
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+        img{
+            position: absolute;
+            left: 16px;
+            &:last-child{
+                right: 16px;
+                left: auto;
+            }
+        }
+        input{
+            border-radius: 30px !important;
+            height: 52px;
+        }
+    }
+}
 .home_search{
     width: inherit;
     height: inherit;

@@ -11,6 +11,7 @@ import ProductService from "../services/ProductService";
 import ListDataFunction from "./partials/ListDataFunction";
 import HeadSearch from "./components/HeadSearch";
 import SortingSearch from "./components/SortingSearch";
+import PopUpSelectLocation from "./components/PopUpSelectLocation";
 
 export const IndexClass = BaseVue.extend({
   data : function(){
@@ -44,6 +45,7 @@ export const IndexClass = BaseVue.extend({
       self.setInitDOMSelection('FILTER_SEARCH');
       self.setInitDOMSelection('HEAD_SEARCH');
       self.setInitDOMSelection('SORTING_SEARCH');
+      self.setInitDOMSelection('POPUP_SELECT_LOCATION');
     });
   },
   getProducts : async function(){
@@ -105,6 +107,14 @@ export const IndexClass = BaseVue.extend({
     });
     /* Casual define */
     switch(action){
+      case 'POPUP_SELECT_LOCATION':
+        self.popUpSelectLocation = self.getRef('popUpSelectLocationRef');
+        if(self.popUpSelectLocation == null) return;
+        self.popUpSelectLocation.setOnCallbackListener(function(action,props){
+          
+        });
+        self.popUpSelectLocation.setAction('show',{});
+        break;
       case 'LOAD_MAP_VIEW':
         self.mapView = self.getRef('mapView');
         if(self.mapView == null) return;
@@ -130,6 +140,7 @@ export default {
   render : function(h){
     let { select_view } = this.get();
     return (<>
+      <PopUpSelectLocation ref={(ref)=>this.setRef('popUpSelectLocationRef',ref)}></PopUpSelectLocation>
       {(()=>{
         switch(select_view){
           case 'MAP':
