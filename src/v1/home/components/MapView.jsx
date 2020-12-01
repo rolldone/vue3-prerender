@@ -91,16 +91,33 @@ export const MapViewClass = BaseVue.extend({
         self.listMapView.setOnChangeListener(async function(action,parseData,index){
           switch(action){
             case 'BUSINESS_SELECTED':
+              var marker_datas = self.get('marker_datas');
+              /* Reset old select marker */
+              var select_marker = self.get('select_marker');
+              if(Object.keys(select_marker).length > 0){
+                var markerItem = marker_datas[select_marker.index];
+                var icon = select_marker.options.icon;
+                icon.options.iconSize = [34, 55];
+                icon.options.iconUrl = markerItem.marker_img;
+                select_marker.setIcon(icon);
+              }
+
+              var markerItem = marker_datas[index];
               self.mymap.setView(self.markers["marker-" + index]._latlng);
               var icon = self.markers["marker-"+index].options.icon;
               icon.options.iconSize = [44, 65];
+              icon.options.iconUrl = markerItem.marker_select_img;
               self.markers["marker-"+index].setIcon(icon);
+              self.markers["marker-"+index].index = index;
               await self.set('select_marker',self.markers["marker-" + index]);
               break;
             case 'BACK':
               var select_marker = self.get('select_marker');
+              var marker_datas = self.get('marker_datas');
+              var markerItem = marker_datas[select_marker.index];
               var icon = select_marker.options.icon;
               icon.options.iconSize = [34, 55];
+              icon.options.iconUrl = markerItem.marker_img;
               select_marker.setIcon(icon);
               break;
           }
@@ -245,6 +262,8 @@ export const MapViewClass = BaseVue.extend({
     for(var a=0;a<props.length;a++){
       let newResizeImage = await self.resizeImage(config.ARTYWIZ_HOST+props[a].store.icon,20,20);
       let wrapper = await self.resizeImage('/public/img/map/wrapper.svg',34,55);
+      let newResizeImageSelected = await self.resizeImage(config.ARTYWIZ_HOST+props[a].store.icon,30,30);
+      let wrapperSelected = await self.resizeImage('/public/img/map/wrapper.svg',44,65);
       let newMerge = await mergeImages([{
         src : wrapper,
         x: 0, 
@@ -258,9 +277,23 @@ export const MapViewClass = BaseVue.extend({
         x : 7,
         y : 7
       }]);
+      let newMergeSelected = await mergeImages([{
+        src : wrapperSelected,
+        x: 0, 
+        y: 0,
+        width: 1,
+        height: 1
+      },{
+        src : newResizeImageSelected,
+        width: 1,
+        height: 1,
+        x : 7,
+        y : 7
+      }]);
       markers.push({
         ...props[a],
-        marker_img : newMerge
+        marker_img : newMerge,
+        marker_select_img : newMergeSelected
       });
     }
     await self.set('marker_datas',markers);
