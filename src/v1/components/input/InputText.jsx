@@ -31,13 +31,13 @@ export const InputTextClass = BaseVue.extend({
     });
   },
   render(h){
-    let { label, form_title, placeholder, disabled, readonly, name, type } = this.$props;
+    let { label, form_title, placeholder, disabled, readonly, name, type, id } = this.$props;
     let { form_data } = this.get();
     if (type == "hidden") {
       return (
         <>
           <div class="field">
-            <input type={type} placeholder={placeholder} name={name} disabled={disabled} v-model={form_data.value} readonly={readonly} />
+            <input type={type} id={id} placeholder={placeholder} name={name} disabled={disabled} v-model={form_data.value} readonly={readonly} />
             <div class="base_wr row">
               <span class="base_info error bold small"></span>
             </div>
@@ -52,7 +52,7 @@ export const InputTextClass = BaseVue.extend({
           <label for="">{label}</label>
           <div class="ui left icon input">
             <i class="angle right icon"></i>
-            <input type={type} placeholder={placeholder} name={name} disabled={disabled} v-model={form_data.value} readonly={readonly} />
+            <input type={type} id={id} placeholder={placeholder} name={name} disabled={disabled} v-model={form_data.value} readonly={readonly} />
           </div>
           <div class="base_wr row">
             <span class="base_info error bold small"></span>
@@ -65,6 +65,7 @@ export const InputTextClass = BaseVue.extend({
 
 export default {
   props: {
+    id:[null,String],
     input: [null, Function],
     inputObject: [null, Function],
     label: [String],

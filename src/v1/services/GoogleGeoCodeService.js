@@ -1,44 +1,27 @@
 import BaseService from "./BaseService";
 
 export default BaseService.extend({
-	getAutoComplete: async function(props) {
-		window.staticType(props, [Object]);
-		window.staticType(props.input, [String]);
-		window.staticType(props.types, [String]);
-		window.staticType(props.language, [String]);
-		try {
-			let url = window.HTTP_REQUEST.GOOGLE_PLACE.AUTO_COMPLETE;
-			let formData = this.objectToFormData({
-				...props
-			});
-			let resData = await this.postData(url, formData);
-			return resData;
-		} catch (ex) {
-			throw ex;
-		}
-	},
-	getDetails: async function(props) {
-		// input=bar&placeid=PLACE_ID&key=API_KEY
-		window.staticType(props, [Object]);
-		window.staticType(props.input, [String]);
-		window.staticType(props.placeid, [String]);
-		window.staticType(props.language, [String]);
-		try {
-			let url = window.HTTP_REQUEST.GOOGLE_PLACE.DETAILS;
-			let formData = this.objectToFormData({
-				...props
-			});
-			let resData = await this.postData(url, formData);
-			return resData;
-		} catch (ex) {
-			throw ex;
-		}
-	},
-	parseAddressComponents : function(props){
+  reverseGeoCode : function(props){
+    window.staticType(props,[Object]);
+    window.staticType(props.latlng,[String]);
+    try{
+      let url = window.HTTP_REQUEST.GOOGLE_GEOCODE.REVERSE_GEOCODE;
+      let resData = this.getData(url,props);
+      if (resData.status == "error") throw resData.data.responseJSON;
+      return resData;
+    }catch(ex){
+      throw ex;
+    }
+  },
+  parseAddressComponents : function(props){
 		window.staticType(props,[Array]);
 		try{
+      if(props.length == 0) return null;
+      /* Get only index 0 */
+      let address_components = props[0].address_components;
+      let formatted_address = props[0].formatted_address;
 			let components = {};
-			props.map((value, index) => {
+			address_components.map((value, index) => {
 				value.types.map((value2, index2) => {
 					components[value2] = value.long_name;
 					if (value2==='country')
@@ -48,7 +31,8 @@ export default BaseService.extend({
 				});
 			});
 			components = (function(props){
-				let filterComponent = {};
+        let filterComponent = {};
+        filterComponent.formatted_address = formatted_address;
 				for(var key in props){
 					switch(key){
 						case 'street_number':

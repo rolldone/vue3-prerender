@@ -1,0 +1,32 @@
+.autoComplete_list{
+  position: absolute;
+  background-color: transparent;
+  border: solid #DDDDDD 1px;
+  top: 56px;
+  right: 0;
+  left: 0;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  padding-top: 6px;
+  &:empty {
+    display: none;
+  }
+  li{
+    background-color: white;
+    position: relative;
+    padding: 6px;
+    padding-left: 12px;
+    padding-bottom: 12px;
+    cursor: pointer;
+    &:after{
+      content : ' ';
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      top: auto;
+      border-bottom: solid 1px #DDDDDD;
+    }
+  }
+}

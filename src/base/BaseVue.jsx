@@ -22,6 +22,10 @@ export default BaseComposition.extend({
       case typeof theValue != 'object':
         return self.set(whatString,props);
     }
+    if(Object.keys(currentData).length == 0){
+      await self.set(whatString,props);
+      return;
+    }
     await self.set(whatString, {
       ...currentData,
       ...props,
@@ -333,4 +337,37 @@ export default BaseComposition.extend({
     console.log("index", index);
     return middlewares[index](props, done, recursive.bind(this, next, done, middlewares));
   },
+  setLocalStorage : function(whatString,props){
+    let self = this;
+    let currentData = window.localStorage.getItem(whatString);
+    console.log("currentData -> ", currentData);
+    let theValue = window.localStorage.getItem(whatString);
+    switch(true){
+      case theValue == null:
+      case typeof theValue != 'object':
+        return window.localStorage.setItem(whatString,JSON.stringify(props));
+    }
+    currentData = JSON.parse(currentData);
+    if(Object.keys(currentData).length == 0){
+      window.localStorage.setItem(whatString,JSON.stringify(props));
+      return;
+    }
+    window.localStorage.setItem(whatString,{
+      ...currentData,
+      ...props,
+    });
+  },
+  getLocalStorage : function(whatString){
+    let theValue = window.localStorage.getItem(whatString);
+    try{
+      return JSON.parse(theValue);
+    }catch(ex){
+      switch(true){
+        case theValue == null:
+        case typeof theValue != 'object':
+          return theValue;
+      }
+    }
+    
+  }
 });

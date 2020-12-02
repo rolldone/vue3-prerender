@@ -58,6 +58,9 @@ export default BaseService.extend({
         AUTO_COMPLETE : route['api.artywiz.artyplanet.location.auto_complete'],
         DETAILS : route['api.artywiz.artyplanet.location.details']
       },
+      GOOGLE_GEOCODE : {
+        REVERSE_GEOCODE : route['api.artywiz.artyplanet.location.reverse_geocode']
+      },
       IP_LOCATION : {
         CURRENT_LOCATION : route['v1.member.ip.current_location'],
         IP_ADDRESS : route['v1.member.ip.ip_address']

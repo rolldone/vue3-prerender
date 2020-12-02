@@ -17,7 +17,8 @@ export const IndexClass = BaseVue.extend({
         lat : null,
         long : null
       },
-      datas : []
+      datas : [],
+      select_position : {}
     });
   },
   returnPositionService : function(){
@@ -39,12 +40,16 @@ export const IndexClass = BaseVue.extend({
       self.setUpdate('query',jsonParseUrl.query);
     });
     onMounted(async function(){
-      self.setProducts(await self.getProducts());
+      let position = self.getLocalStorage('position') || {};
       self.setInitDOMSelection(self.displayOption.map.INITIALIZE);
       self.setInitDOMSelection('FILTER_SEARCH');
       self.setInitDOMSelection('HEAD_SEARCH');
       self.setInitDOMSelection('SORTING_SEARCH');
-      self.setInitDOMSelection('POPUP_SELECT_LOCATION');
+      if(Object.keys(position).length == 0){
+        self.setInitDOMSelection('POPUP_SELECT_LOCATION');
+      }
+      await self.set('select_position',position);
+      self.setProducts(await self.getProducts());
     });
   },
   isAllowSelectLocation : async function(){
@@ -88,17 +93,19 @@ export const IndexClass = BaseVue.extend({
     let self = this;
     try{
       let service = self.returnProductService();
-      let position = null;
-      if(await self.isAllowSelectLocation() == true){
-        position = await self.getCurrentPosition();
-      }else{
-        position = await self.getCurrentIpLocation();
+      let select_position = self.get('select_position');
+      if(Object.keys(select_position).length == 0){
+        if(await self.isAllowSelectLocation() == true){
+          select_position = await self.getCurrentPosition();
+        }else{
+          select_position = await self.getCurrentIpLocation();
+        }
       }
       let query = self.get('query');
       query = {
         ...query,
-        lat : position.latitude,
-        long : position.longitude
+        lat : select_position.latitude,
+        long : select_position.longitude
       };
       await self.setUpdate('query',query);
       let resData = await service.getProducts(self.get('query'));
@@ -151,8 +158,25 @@ export const IndexClass = BaseVue.extend({
       case 'POPUP_SELECT_LOCATION':
         self.popUpSelectLocation = self.getRef('popUpSelectLocationRef');
         if(self.popUpSelectLocation == null) return;
-        self.popUpSelectLocation.setOnCallbackListener(function(action,props){
-          
+        self.popUpSelectLocation.setOnCallbackListener(async function(action,props){
+          switch(action){
+            case 'SUBMIT':
+              await self.set('datas',[]);
+              self.passDataToComponent();
+              window.localStorage.setItem('position',JSON.stringify(props));
+              self.setUpdate('select_position',props);
+              self.popUpSelectLocation.setAction('hide',{});
+              self.setProducts(await self.getProducts());
+              break;
+            case 'DISPOSE':
+              await self.set('datas',[]);
+              self.passDataToComponent();
+              window.localStorage.setItem('position',JSON.stringify(props));
+              self.setUpdate('select_position',props);
+              self.popUpSelectLocation.setAction('hide',{});
+              self.setProducts(await self.getProducts());
+              break;
+          }
         });
         self.popUpSelectLocation.setAction('show',{});
         break;
