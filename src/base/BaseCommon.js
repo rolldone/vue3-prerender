@@ -68,8 +68,7 @@ window.resultLoadingHttpRequest = 0.1;
 var pendingHttpRequestBounce = null;
 $.ajaxSetup({
   headers: {
-    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    Authorization: (window.localStorage.getItem("token_type")||"Bearer")+' '+ window.localStorage.getItem("token")
+    /* Defined on baseService js */
   },
   cache: false,
   beforeSend: function (xhr) {

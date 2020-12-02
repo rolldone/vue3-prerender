@@ -1,17 +1,13 @@
 import BaseVue from "../../base/BaseVue";
-import HomeLayout from "../layout/HomeLayout";
-import HeadMenu from "./components/HeadMenu";
 import { reactive, onMounted, onBeforeMount  } from 'vue';
 import AppStore from "../store/AppStore";
 import DisplayOptionFunction from "./partials/DisplayOptionFunction";
-import FilterSearch from "./components/FilterSearch";
 import MapView from "./components/MapView";
 import GridDataFunction from "./partials/GridDataFunction";
 import ProductService from "../services/ProductService";
 import ListDataFunction from "./partials/ListDataFunction";
-import HeadSearch from "./components/HeadSearch";
-import SortingSearch from "./components/SortingSearch";
 import PopUpSelectLocation from "./components/PopUpSelectLocation";
+import PositionService from "../services/PositionService";
 
 export const IndexClass = BaseVue.extend({
   data : function(){
@@ -23,6 +19,9 @@ export const IndexClass = BaseVue.extend({
       },
       datas : []
     });
+  },
+  returnPositionService : function(){
+    return PositionService.create();
   },
   returnProductService : function(){
     return ProductService.create();
@@ -48,11 +47,53 @@ export const IndexClass = BaseVue.extend({
       self.setInitDOMSelection('POPUP_SELECT_LOCATION');
     });
   },
+  isAllowSelectLocation : async function(){
+    let self = this;
+    try{
+      let service = self.returnPositionService();
+      let resData = await service.isAllowSelectLocation();
+      return resData;
+    }catch(ex){
+      console.error('isAllowSelectLocation - ex ',ex);
+    }
+  },
+  getCurrentIpLocation : async function(){
+    let self = this;
+    try{
+      let service = self.returnPositionService();
+      let resData = await service.getCurrentIpLocation();
+      resData = (function(parseData){
+        parseData.latitude = parseData.lat;
+        parseData.longitude = parseData.lon;
+        delete parseData.lat;
+        delete parseData.lon;
+        return parseData;
+      })(resData.return);
+      return resData;
+    }catch(ex){
+      console.error('getCurrentIpLocation - ex ',ex);
+    }
+  },
+  getCurrentPosition : async function(){
+    let self = this;
+    try{
+      let service = self.returnPositionService();
+      let resData = await service.getCurrentPosition();
+      return resData;
+    }catch(ex){
+      console.error('getCurrentPosition - ex ',ex);
+    }
+  },
   getProducts : async function(){
     let self = this;
     try{
       let service = self.returnProductService();
-      let position = await service.getCurrentPosition();
+      let position = null;
+      if(await self.isAllowSelectLocation() == true){
+        position = await self.getCurrentPosition();
+      }else{
+        position = await self.getCurrentIpLocation();
+      }
       let query = self.get('query');
       query = {
         ...query,

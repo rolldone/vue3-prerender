@@ -6,6 +6,10 @@ var BaseHttpRequest = Proto.extend({
   construct: function() {
     console.log("base construct");
   },
+  headers : {
+    "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+    Authorization: (window.localStorage.getItem("token_type")||"Bearer")+' '+ window.localStorage.getItem("token")
+  },
   /* Aditional function */
   objectToFormData: function(props) {
     let formData = null;
@@ -36,7 +40,20 @@ var BaseHttpRequest = Proto.extend({
     let theUrl = theArg.url(url, whatObject);
     return theUrl;
   },
+  getHeaders : function(){
+    if(this.headers == undefined) return null;
+    return this.headers;
+  },
+  setNewHeaders : function(props){
+    window.staticType(props,[Object]);
+    this.newHeaders = props;
+  },
+  getNewHeaders : function(){
+    if(this.newHeaders == undefined) return null;
+    return this.newHeaders;
+  },
   getData: function(url, queryString) {
+    let self = this;
     let theArg = new Arg();
     console.log('getData',queryString);
     // let query = theArg.query();
@@ -44,12 +61,19 @@ var BaseHttpRequest = Proto.extend({
     // query = Object.assign(query, queryString);
     let theUrl = theArg.url(url, queryString);
     return new Promise(function(resolve) {
-      $.ajax({
+      let ajaxVar = {
+        headers : self.getHeaders(),
         method: "GET",
         url: theUrl,
         processData: false,
         contentType: false /* what type of data do we expect back from the server */,
-      })
+      };
+      let newHeaders = self.getNewHeaders();
+      if(newHeaders != null){
+        /* Replace with new headers */
+        ajaxVar.headers = newHeaders;
+      }
+      $.ajax(ajaxVar)
         .then(function(res) {
           resolve(res);
         })
@@ -62,14 +86,22 @@ var BaseHttpRequest = Proto.extend({
     });
   },
   postData: function(url, formData) {
+    let self = this;
     return new Promise(function(resolve) {
-      $.ajax({
+      let ajaxVar = {
+        headers : self.getHeaders(),
         method: "POST",
         url: url,
         data: formData,
         processData: false,
         contentType: false /* what type of data do we expect back from the server */,
-      })
+      };
+      let newHeaders = self.getNewHeaders();
+      if(newHeaders != null){
+        /* Replace with new headers */
+        ajaxVar.headers = newHeaders;
+      }
+      $.ajax(ajaxVar)
         .then(function(res) {
           resolve(res);
         })

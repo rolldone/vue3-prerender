@@ -44,29 +44,5 @@ export default BaseService.extend({
     }catch(ex){
       throw ex;
     }
-  },
-  getCurrentPosition : async function(props){
-    return new Promise(function(resolve,reject){
-      navigator.permissions.query({name:'geolocation'}).then(function(permissionStatus) {
-        console.log('geolocation permission state is ', permissionStatus.state);
-        let unWatchNavigation = navigator.geolocation.watchPosition(function(position) {
-          navigator.geolocation.clearWatch(unWatchNavigation);
-          console.log('navigator location',position.coords);
-          resolve(position.coords);
-        },function(error) {
-          navigator.geolocation.clearWatch(unWatchNavigation);
-          reject(error);
-          // if (error.code == error.PERMISSION_DENIED)
-          //   console.log("you denied me :-(");
-          //   AppStore.commit('SET',{
-          //     notif_location : {
-          //       type : 'error',
-          //       title : "Warning",
-          //       message : 'Your location is denied, Please reactivate again!'
-          //     }
-          //   });
-        });
-      });
-    });
   }
 });

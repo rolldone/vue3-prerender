@@ -3,7 +3,7 @@ import { reactive, onMounted } from 'vue';
 import config from '@config';
 import mergeImages from 'merge-images';
 import ListMapView from "./ListMapView";
-import HeadSearch from "./HeadSearch";
+import MapViewSearch from "./MapViewSearch";
 
 export const MapViewClass = BaseVue.extend({
   data : function(){
@@ -233,7 +233,7 @@ export const MapViewClass = BaseVue.extend({
           switch(action){
             case 'ON_TYPING':
               await self.setUpdate('query',{
-                search : val
+                search_location : val
               });
               self.updateCurrentState(self.get('query'));
               // self.setProducts(await self.getProducts());
@@ -390,7 +390,7 @@ export default {
         <div style="height: inherit;">
           <div class="map_nav_home">
             <div class="mvh_1">
-              <HeadSearch ref={(ref)=>this.setRef('headSearchRef',ref)}></HeadSearch>
+              <MapViewSearch ref={(ref)=>this.setRef('headSearchRef',ref)}></MapViewSearch>
             </div>
           </div>
           <div style={style.map_wrapper} id="mapsingleid"></div>

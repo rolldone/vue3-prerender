@@ -57,6 +57,10 @@ export default BaseService.extend({
       GOOGLE_PLACE : {
         AUTO_COMPLETE : route['api.artywiz.artyplanet.location.auto_complete'],
         DETAILS : route['api.artywiz.artyplanet.location.details']
+      },
+      IP_LOCATION : {
+        CURRENT_LOCATION : route['v1.member.ip.current_location'],
+        IP_ADDRESS : route['v1.member.ip.ip_address']
       }
     });
     console.log("HTTP_REQUEST", window.HTTP_REQUEST);

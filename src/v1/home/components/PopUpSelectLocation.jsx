@@ -1,6 +1,7 @@
 import BaseVue from "../../../base/BaseVue";
 import { reactive, onMounted } from 'vue';
-import InputText, { InputTextClass } from "../../components/input/InputText";
+import InputText from "../../components/input/InputText";
+import PositionService from "../../services/PositionService";
 
 const ExtendInputText = {
   ...InputText,
@@ -48,6 +49,9 @@ export const PopUpSelectLocationClass = BaseVue.extend({
 
     });
   },
+  returnPositionService : function(){
+    return PositionService.create();
+  },
   construct : function(props,context){
     let self = this;
     onMounted(function(){
@@ -55,6 +59,34 @@ export const PopUpSelectLocationClass = BaseVue.extend({
         detachable: false,
       });
     });
+  },
+  getCurrentPosition : async function(){
+    let self = this;
+    try{
+      let service = this.returnPositionService();
+      let resData = await service.getCurrentPosition();
+      debugger;
+      return resData;
+    }catch(ex){
+      console.error('getCurrentPosition - ex ',ex);
+    }
+  },
+  getCurrentIpLocation : async function(){
+    let self = this;
+    try{
+      let service = this.returnPositionService();
+      let resData = await service.getCurrentIpLocation();
+      resData = (function(parseData){
+        parseData.latitude = parseData.lat;
+        parseData.longitude = parseData.lon;
+        delete parseData.lat;
+        delete parseData.lon;
+        return parseData;
+      })(resData.return);
+      return resData;
+    }catch(ex){
+      console.error('getIpLocation - ex' ,ex);
+    }
   },
   setIniDOMSelection : function(action,props){
     let self = this;
@@ -81,11 +113,15 @@ export const PopUpSelectLocationClass = BaseVue.extend({
     self.current_modal.modal(action);
     switch(action){
       case 'show':
+        let position = await self.getCurrentPosition();
+        if(position == null){
+          position = await self.getCurrentIpLocation();
+        }
+        debugger;
         // self.setUsers(await self.getUsers());
         break;
     }
   },
-
 });
 
 export default {
@@ -108,7 +144,6 @@ export default {
           <button class="ppsl_131" onClick={this.handleClick.bind(this,'SUBMIT')}>RECHERCHER</button>
         </div>
       </div>
-    </div>
-);
+    </div>);
   }
 };

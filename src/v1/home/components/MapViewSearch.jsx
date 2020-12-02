@@ -4,13 +4,13 @@ import { reactive } from 'vue';
 export const HeadSearchClass = BaseVue.extend({
   data : function(){
     return reactive({
-      search_text : null
+      search_text : null,
     });
   },
   construct : function(props,context){
     let self = this;
     let jsonParseUrl = self.jsonParseUrl();
-    self.setUpdate('search_text',jsonParseUrl.query.search);
+    self.setUpdate('search_text',jsonParseUrl.query.search_location);
   },
   handleChange : function(action,props,e){
     let self = this;
