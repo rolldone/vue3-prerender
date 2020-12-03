@@ -50,6 +50,7 @@ export default BaseService.extend({
         BUSINESS : route['api.artywiz.artyplanet.store.store'],
       },
       PRODUCT : {
+        PRODUCTS_SEARCH : route['api.artywiz.artyplanet.product.products_search'],
         PRODUCTS : route['api.artywiz.artyplanet.product.products'],
         PRODUCT : route['api.artywiz.artyplanet.product.product'],
         DETAIL_PRODUCTS : route['api.artywiz.artyplanet.product.detail_products']

@@ -23,6 +23,19 @@ export default BaseService.extend({
       throw ex;
     }
   },
+  getProductSearch : async function(props){
+    window.staticType(props,[String]);
+    try{
+      let url = window.HTTP_REQUEST.PRODUCT.PRODUCTS_SEARCH;
+      let resData = await this.getData(url,{
+        search : props
+      });
+      if (resData.status == "error") throw resData.data.responseJSON;
+      return resData;
+    }catch(ex){
+      throw ex;
+    }
+  },
   getProduct : async function(id){
     window.staticType(id,[Number]);
     try{
