@@ -14,7 +14,8 @@ export const ListMMapViewClass = BaseVue.extend({
       business_data_id : null,
       business_data : {},
       product_datas : [],
-      query : {}
+      query : {},
+      position : {}
     });
   },
   returnBusinessService : function(){
@@ -109,15 +110,6 @@ export const ListMMapViewClass = BaseVue.extend({
     })(props.return);
     self.setUpdate('business_data',business_data);
   },
-  getCurrentPosition : async function(){
-    try{
-      let service = this.returnProductService();
-      let resData = await service.getCurrentPosition();
-      return resData;
-    }catch(ex){
-      console.error('getCurrentPosition - ex ',ex);
-    }
-  },
   setOnChangeListener : function(func){
     let self = this;
     self.onChangeListener = func;
@@ -143,14 +135,15 @@ export const ListMMapViewClass = BaseVue.extend({
         window.staticType(props.id,[Number]);
         window.staticType(props.index,[Number]);
         window.staticType(props.search,[null,String]);
+        await self.set('business_data',{});
         await self.setUpdate('action','detail');
         self.onChangeListener('BUSINESS_SELECTED',self.get('business_data'),props.index);
-        let currentPosition = await self.getCurrentPosition();
+        let position = self.getLocalStorage('position');
         await self.setUpdate('query',{
           business_id : props.id,
           search : props.search,
-          long : currentPosition.longitude,
-          lat : currentPosition.latitude
+          long : position.longitude,
+          lat : position.latitude
         });
         await self.setUpdate('business_data_id',props.id);
         self.setBusiness(await self.getBusiness());
@@ -200,13 +193,13 @@ export default {
               <div class="asl_1">
                 <div class="asl_a_11 on_mobile">
                   <div class="asl_11 on_mobile">
-                    <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+markerItem.store.icon+")"}} alt=""/>
+                    <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+'/'+markerItem.business_cover_1+")"}} alt=""/>
                   </div>
                   <div class="asl_12">
                     <div class="asl_121 on_mobile">
-                      <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+markerItem.store.icon+")"}} alt=""/>
+                      <img style={{ "background-image" : "url("+config.ARTYWIZ_HOST+'/'+markerItem.business_logo+")"}} alt=""/>
                       <div class="asl_1211">
-                        <h3>{markerItem.store.name.toUpperCase()}</h3>
+                        <h3>{markerItem.business_name_line_1.toUpperCase()}&nbsp;{markerItem.business_name_line_2.toUpperCase()}</h3>
                         <span>{markerItem.business_address} {markerItem.business_city} {markerItem.business_postal_code} {markerItem.business_country} {markerItem.business_phone}</span>
                       </div>
                     </div>
@@ -264,6 +257,7 @@ export default {
         })()}
       </div>);
       case 'detail':
+        if(Object.keys(business_data).length == 0) return (<div style="padding:12px"><h4>Load Content...</h4></div>);
         return (
           <div style="width:100%;height:100%;overflow-y:auto;">
             <div class="app_shop_detail">
@@ -276,11 +270,11 @@ export default {
               </div>
               <div class="asd_2">
                 <div class="asd_2_1">
-                  <div class="image" style={{ "background-image":"url("+config.ARTYWIZ_HOST+this.safeJSON(business_data.store,'icon')+")"}}></div>
+                  <div class="image" style={{ "background-image":"url("+config.ARTYWIZ_HOST+'/'+business_data.business_logo+")"}}></div>
                 </div>
                 <div class="asd_2_2">
                   <div class="asd_2_2_1">
-                    <h4>{this.safeJSON(business_data.store,'name')}</h4>
+                    <h4>{business_data.business_name_line_1.toUpperCase()}&nbsp;{business_data.business_name_line_2.toUpperCase()}</h4>
                     <span>
                       {business_data.business_address} {business_data.business_city} {business_data.business_postal_code} {business_data.business_country}
                     </span>

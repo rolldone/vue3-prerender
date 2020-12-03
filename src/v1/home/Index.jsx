@@ -118,10 +118,6 @@ export const IndexClass = BaseVue.extend({
     let self = this;
     if(props == null) return;
     let datas = (function(parseDatas){
-      for(var a=0;a<parseDatas.length;a++){
-        parseDatas[a].store = self.simpleInitData(parseDatas[a].business_product_category);
-        delete parseDatas[a].business_product_category;
-      }
       return parseDatas;
     })(props.return);
     await self.set('datas',datas);
@@ -159,23 +155,30 @@ export const IndexClass = BaseVue.extend({
         self.popUpSelectLocation = self.getRef('popUpSelectLocationRef');
         if(self.popUpSelectLocation == null) return;
         self.popUpSelectLocation.setOnCallbackListener(async function(action,props){
+          window.staticType(props,[Object]);
+          window.staticType(props.position,[Object]);
+          window.staticType(props.form_data,[Object]);
           switch(action){
             case 'SUBMIT':
-              await self.set('datas',[]);
-              self.passDataToComponent();
-              window.localStorage.setItem('position',JSON.stringify(props));
-              self.setUpdate('select_position',props);
               self.popUpSelectLocation.setAction('hide',{});
-              self.setProducts(await self.getProducts());
-              break;
+              self.setLocalStorage('position',props.position);
+              self.setUpdate('select_position',props.position);
+              await self.set('datas',[]);
+              self.set('query',{
+                search : props.form_data.search
+              });
+              self.updateCurrentState(self.get('query'));
+              return;
             case 'DISPOSE':
-              await self.set('datas',[]);
-              self.passDataToComponent();
-              window.localStorage.setItem('position',JSON.stringify(props));
-              self.setUpdate('select_position',props);
               self.popUpSelectLocation.setAction('hide',{});
-              self.setProducts(await self.getProducts());
-              break;
+              self.setLocalStorage('position',props.position);
+              self.setUpdate('select_position',props.position);
+              await self.set('datas',[]);
+              self.set('query',{
+                search : props.form_data.search
+              });
+              self.updateCurrentState(self.get('query'));
+              return;
           }
         });
         self.popUpSelectLocation.setAction('show',{});

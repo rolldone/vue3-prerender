@@ -197,7 +197,7 @@ export const MapViewClass = BaseVue.extend({
         // self.mymap.dragging.disable();
         self.mymap.on("drag", function(ev) {
           if (self.marker == null) {
-            console.log("ev", ev.target.getCenter());
+            // console.log("ev", ev.target.getCenter());
             self.displayPopUp('HIDE',{});
             let center = ev.target.getCenter();
             if (self.pendingLatLong != null) {
@@ -261,9 +261,9 @@ export const MapViewClass = BaseVue.extend({
     let self = this;
     let markers = [];
     for(var a=0;a<props.length;a++){
-      let newResizeImage = await self.resizeImage(config.ARTYWIZ_HOST+props[a].store.icon,20,20);
+      let newResizeImage = await self.resizeImage(config.ARTYWIZ_HOST+props[a].business_logo,20,20);
       let wrapper = await self.resizeImage('/public/img/map/wrapper.svg',34,55);
-      let newResizeImageSelected = await self.resizeImage(config.ARTYWIZ_HOST+props[a].store.icon,30,30);
+      let newResizeImageSelected = await self.resizeImage(config.ARTYWIZ_HOST+props[a].business_logo,30,30);
       let wrapperSelected = await self.resizeImage('/public/img/map/wrapper.svg',44,65);
       let newMerge = await mergeImages([{
         src : wrapper,

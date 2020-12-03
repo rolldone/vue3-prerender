@@ -193,7 +193,6 @@ export const PopUpSelectLocationClass = BaseVue.extend({
     window.staticType(props.location,[String]);
     let self = this;
     try{
-      
       let service = self.returnGooglePlaceService();
       let resData = await service.getDetails({
         placeid : props.place_id,
@@ -273,18 +272,27 @@ export const PopUpSelectLocationClass = BaseVue.extend({
             var newLocation = self.get('newLocation');
             if(Object.keys(newLocation).length == 0){
               /* User have allow location */
-              self.onCallBackListener(action,position);
+              self.onCallBackListener(action,{
+                form_data : self.get('form_data'),
+                position : position
+              });
               return;
             }
             /* If user select another location */
             var detailPlaces = await self.getDetailPlaces(newLocation);
-            self.onCallBackListener(action,detailPlaces);
+            self.onCallBackListener(action,{
+              form_data : self.get('form_data'),
+              position : detailPlaces
+            });
           }
         });
         break;
       case 'DISPOSE':
         var position = self.get('position');
-        self.onCallBackListener(action,position);
+        self.onCallBackListener(action,{
+          form_data : self.get('form_data'),
+          position : position
+        });
         break;
     }
   },
