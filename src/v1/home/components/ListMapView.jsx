@@ -3,7 +3,6 @@ import { reactive, onMounted } from 'vue';
 import config from '@config';
 import BusinessService from "../../services/BusinessService";
 import ProductService from "../../services/ProductService";
-import ListMapViewSearch from "./ListMapViewSearch";
 import ListMapViewFilter from "./ListMapViewFilter";
 import ListMapViewSort from "./ListMapViewSort";
 
@@ -170,17 +169,13 @@ export default {
     switch(action){
       case 'list':
         return (<div class="app_shop_list on_mobile">
-          <div class="asl_sfs">
-            <div class="asl_sfs_1">
-              <ListMapViewSearch ref={(ref)=>this.setRef('listMapViewRef',ref)}></ListMapViewSearch>
-            </div>
-          </div>
           <div class="shop_filter">
             <div class="sf_1">
               <div class="sf_11">
-                <ListMapViewFilter ref={(ref)=>this.setRef('filterSearch',ref)}></ListMapViewFilter>
+                <span>{window.gettext("Trouvé 10 articles sur Strasbourg")}</span>
               </div>
-              <div class="sf_11">
+              <div class="sf_12" style="margin-left:auto;">
+                <ListMapViewFilter ref={(ref)=>this.setRef('filterSearch',ref)}></ListMapViewFilter>
                 <ListMapViewSort ref={(ref)=>this.setRef('sortingSearchRef',ref)}></ListMapViewSort>
               </div>
             </div>

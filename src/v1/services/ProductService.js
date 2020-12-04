@@ -23,7 +23,7 @@ export default BaseService.extend({
       throw ex;
     }
   },
-  getProductSearch : async function(props){
+  getProductsSearch : async function(props){
     window.staticType(props,[String]);
     try{
       let url = window.HTTP_REQUEST.PRODUCT.PRODUCTS_SEARCH;

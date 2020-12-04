@@ -388,11 +388,7 @@ export default {
           {appShopList()}
         </div>
         <div style="height: inherit;">
-          <div class="map_nav_home">
-            <div class="mvh_1">
-              <MapViewSearch ref={(ref)=>this.setRef('headSearchRef',ref)}></MapViewSearch>
-            </div>
-          </div>
+          
           <div style={style.map_wrapper} id="mapsingleid"></div>
         </div>
       </div>

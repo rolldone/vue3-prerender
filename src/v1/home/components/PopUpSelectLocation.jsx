@@ -1,5 +1,5 @@
 import BaseVue from "../../../base/BaseVue";
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, watch } from 'vue';
 import InputText from "../../components/input/InputText";
 import PositionService from "../../services/PositionService";
 import GoogleGeoCodeService from "../../services/GoogleGeoCodeService";
@@ -7,6 +7,7 @@ import InputAutoCompleteFunction from "../partials/InputAutoCompleteFunction";
 import GooglePlaceHttpRequest from "../../services/GooglePlaceHttpRequest";
 import './PopUpSelectLocation.scss';
 import InputValidation from "../../partials/InputValidation";
+import {setNavigableClassName} from "../../../base/ArrowKeyNav";
 
 const ExtendInputText = {
   ...InputText,
@@ -19,10 +20,14 @@ const ExtendInputText = {
     icon_last : {
       type : String,
       default : null
+    },
+    input_class :{
+      type : String,
+      default : null
     }
   },
   render(h){
-    let { label, form_title, placeholder, disabled, readonly, name, type, icon_first, icon_last, id } = this.$props;
+    let { label, form_title, placeholder, disabled, readonly, name, type, icon_first, icon_last, id, input_class } = this.$props;
     let { form_data } = this.get();
     return (
       <>
@@ -31,7 +36,7 @@ const ExtendInputText = {
           <label for="">{label}</label>
           <div class="ui left icon input ipsl_1">
             <img src={icon_first} class="right icon" alt=""/>
-            <input type={type} id={id} placeholder={placeholder} name={name} disabled={disabled} v-model={form_data.value} readonly={readonly} autocomplete="off" />
+            <input type={type} class={input_class} id={id} placeholder={placeholder} name={name} disabled={disabled} v-model={form_data.value} readonly={readonly} autocomplete="off" />
             {icon_last != null?<img src={icon_last} alt=""/>:null}
           </div>
           <div class="base_wr row">
@@ -74,7 +79,8 @@ export const PopUpSelectLocationClass = BaseVue.extend({
       position : {},
       newLocation : {},
       is_own_location : false,
-      form_data : {}
+      form_data : {},
+      location_datas : []
     });
   },
   returnPositionService : function(){
@@ -86,10 +92,16 @@ export const PopUpSelectLocationClass = BaseVue.extend({
   returnGooglePlaceService : function(){
     return GooglePlaceHttpRequest.create();
   },
+  handlePubSubListener : function(props){
+
+  },
   construct : function(props,context){
     let self = this;
     self.autoCompleteLocation = InputAutoCompleteFunction.create(props,self).setup();
     self.inputValidation = InputValidation.create(props,self).setup();
+    window.pubsub.on('popup_selection_location.load',function(func){
+      func(self);
+    });
     onMounted(function(){
       self.current_modal = $("#" + self.get("random_id")).modal({
         detachable: false,
@@ -98,6 +110,20 @@ export const PopUpSelectLocationClass = BaseVue.extend({
       self.setInitDOMSelection(self.inputValidation.map.INPUT_TEXT_VALIDATION,{
         ...INPUT_TEXT_VALIDATION,
         form_data : self.get('form_data')
+      });
+      watch(()=>self.get('form_data').location,function(val){
+        if(self.locationPendingSearch != null){
+          self.locationPendingSearch.cancel();
+        }
+        self.locationPendingSearch = _.debounce(async function(parseData){
+          if(self.isfirstlocation == null){
+            self.isfirstlocation = true;
+            return;
+          }
+          let resData = await self.getGoogleLocations(parseData);
+          self.setGoogleLocations(resData);
+        },500);
+        self.locationPendingSearch(val);
       });
     });
   },
@@ -126,6 +152,16 @@ export const PopUpSelectLocationClass = BaseVue.extend({
     }catch(ex){
       console.error('getGoogleLocations - ex ',ex);
     }
+  },
+  setGoogleLocations : async function(props){
+    let self = this;
+    if(props == null) return;
+    let location_datas = (function(parseData){
+      return parseData;
+    })(props);
+    await self.set('location_datas',location_datas);
+    
+    setNavigableClassName('.search_popup_21393,.ppsl_1211_link');
   },
   getCurrentPosition : async function(){
     try{
@@ -180,7 +216,20 @@ export const PopUpSelectLocationClass = BaseVue.extend({
       if(is_own_location == true){
         resData.location = resData.formatted_address;
       }else{
-        resData.location = resData.administrative_area_level_2+", "+resData.administrative_area_level_1;
+        let toCheckString = [resData.route,resData.city,resData.administrative_area_level_1,resData.country];
+        let newLocation = '';
+        for(var a=0;a<toCheckString.length;a++){
+          if(a == toCheckString.length-1){
+            if(toCheckString[a] != null){
+              newLocation +=  toCheckString[a];
+            }
+          }else{
+            if(toCheckString[a] != null){
+              newLocation +=  toCheckString[a]+', ';
+            }
+          }
+        }
+        resData.location = newLocation;
       }
       return resData;
     }catch(ex){
@@ -214,55 +263,64 @@ export const PopUpSelectLocationClass = BaseVue.extend({
   setInitDOMSelection : function(action,props){
     let self = this;
     self.inputValidation.join(action,props);
-    self.autoCompleteLocation.join(action,{
-      selector : "#autoComplete",
-      placeholder : 'Search Location',
-      key : ["place_id", "location", "reference"],
-      onHttpRequest : function(){
-        return new Promise(function(resolve){
-          // Loading placeholder text
-          document
-            .querySelector("#autoComplete")
-            .setAttribute("placeholder", "Loading...");
-          // Fetch External Data Source
-          const query = document.querySelector("#autoComplete").value;
+    // self.autoCompleteLocation.join(action,{
+    //   selector : "#autoComplete",
+    //   placeholder : 'Search Location',
+    //   key : ["place_id", "location", "reference"],
+    //   onHttpRequest : function(){
+    //     return new Promise(function(resolve){
+    //       // Loading placeholder text
+    //       document
+    //         .querySelector("#autoComplete")
+    //         .setAttribute("placeholder", "Loading...");
+    //       // Fetch External Data Source
+    //       const query = document.querySelector("#autoComplete").value;
           
-          if(self.locationPendingSearch != null){
-            self.locationPendingSearch.cancel();
-          }
-          self.locationPendingSearch = _.debounce(async function(parseData){
-            let resData = await self.getGoogleLocations(parseData);
-            // Post loading placeholder text
-            document
-              .querySelector("#autoComplete")
-              .setAttribute("placeholder", "Search Location");
-            // Returns Fetched data
-            resolve(resData);
-          },300);
-          self.locationPendingSearch(query);
-        });
-      },
-      onResult : function(feedback){
-        const selection = feedback.selection.value.location;
-        /* Save newLocation */
-        self.set('newLocation',feedback.selection.value);
-        self.setUpdate('form_data',{
-          location : feedback.selection.value.location
-        });
-        // Render selected choice to selection div
-        document.querySelector(".selection").innerHTML = selection;
-        // Clear Input
-        document.querySelector("#autoComplete").value = "";
-        // Change placeholder with the selected value
-        document
-          .querySelector("#autoComplete")
-          .setAttribute("placeholder", selection);
-      }
-    });
+    //       if(self.locationPendingSearch != null){
+    //         self.locationPendingSearch.cancel();
+    //       }
+    //       self.locationPendingSearch = _.debounce(async function(parseData){
+    //         let resData = await self.getGoogleLocations(parseData);
+    //         // Post loading placeholder text
+    //         document
+    //           .querySelector("#autoComplete")
+    //           .setAttribute("placeholder", "Search Location");
+    //         // Returns Fetched data
+    //         resolve(resData);
+    //       },300);
+    //       self.locationPendingSearch(query);
+    //     });
+    //   },
+    //   onResult : async function(feedback){
+    //     const selection = feedback.selection.value.location;
+    //     /* Save newLocation */
+    //     await self.set('newLocation',feedback.selection.value);
+    //     await self.setUpdate('form_data',{
+    //       location : feedback.selection.value.location
+    //     });
+    //     // Render selected choice to selection div
+    //     document.querySelector(".selection").innerHTML = selection;
+    //     // Clear Input
+    //     document.querySelector("#autoComplete").value = "";
+    //     // Change placeholder with the selected value
+    //     document
+    //       .querySelector("#autoComplete")
+    //       .setAttribute("placeholder", selection);
+    //   }
+    // });
   },
   handleClick : async function(action,props,e){
     let self = this;
     switch(action){
+      case 'SELECT_SEARCH_ITEM':
+        e.preventDefault();
+        await self.set('newLocation',props.value);
+        await self.setUpdate('form_data',{
+          location : props.value.location
+        });
+        self.isfirstlocation = null;
+        self.set('location_datas',[]);
+        break;
       case 'SUBMIT':
         self.setInitDOMSelection(self.inputValidation.map.SUBMIT_VALIDATION,{
           ...SUBMIT_VALIDATION,
@@ -326,27 +384,25 @@ export const PopUpSelectLocationClass = BaseVue.extend({
         break;
     }
   },
-  handleInputObject : async function(action,val){
+  setRedefineLocation : async function(action,props){
     let self = this;
+    window.staticType(action, [String]);
+    window.staticType(props, [Object]);
+    self.setUpdate("form_data", props);
+    self.current_modal.modal(action);
     switch(action){
-      /* Watching typing location input text */
-      case 'LOCATION_TYPING':
-        if(self.pendingHandleLocationTyping != null){
-          self.pendingHandleLocationTyping.cancel();
-        }
-        self.pendingHandleLocationTyping = _.debounce(async function(parseString){
-          if(parseString == ""){
-            await self.set('position',{});
-            await self.set('newLocation',{});
-            self.setUpdate('form_data',{
-              location : parseString
-            });
-          }
-        },200);
-        self.pendingHandleLocationTyping(val.location);
+      case 'show':
+        let position = await self.getLocalStorage('position');
+        await self.setUpdate('position',position);
+        let reverseGeoCode = await self.getReverseGeoCode();
+        await self.setUpdate('position',reverseGeoCode);
+        await self.setUpdate('form_data',{
+          location : reverseGeoCode.location
+        });
+        await self.setInitDOMSelection(self.autoCompleteLocation.map.LOAD);
         break;
     }
-  }
+  },
 });
 
 export default {
@@ -354,17 +410,47 @@ export default {
     return PopUpSelectLocationClass.create(props,context).setup();
   },
   render(h){
-    let { random_id, position, form_data } = this.get();
-    return (<div class="ui modal ppsl" id={random_id} style="position: fixed;margin: 0 auto; top: 35%;left: 0px;right: 0px; background: transparent; width:500px;">
+    let { random_id, position, form_data, location_datas } = this.get();
+    return (<div class="ui modal ppsl" id={random_id} style="position: fixed;margin: 0 auto; top: 35%;left: 0px;right: 0px; background: transparent; width:750px;">
       <div class="ui modal ppsl_1" style="display:block;">
+        <img class="ppsl_11_a_1" src="/public/img/map/artyplanet_logo_blue.svg" alt=""/>
         <i class="close icon" onClick={this.handleClick.bind(this, "DISPOSE", {})}></i>
-        <div class="header ppsl_11">{gettext("Bienvenue sur artyplanet")}</div>
-        <h1>{gettext("QUE CHERCHEZ-VOUS?")}</h1>
+        {/* <div class="header ppsl_11">{gettext("Vos artisans-commerçants à portée de clics!")}</div> */}
+        <h1 style="text-transform:uppercase;">{gettext("Vos artisans-commerçants à portée de clics!")}</h1>
         <form class="base_wr column ui form ppsl_12" id="form-define-location">
-          <ExtendInputText placeholder={window.gettext("Exemple “Boulangerie”, “pains ou gateau” au “chocolat”")} icon_first="/public/img/map/shop_dark.svg" type="text" inputObject={(val)=>this.setUpdate('form_data',val)} name="search"></ExtendInputText>
-          <ExtendInputText id="autoComplete" value={form_data.location||""}  icon_first="/public/img/map/marker.svg" icon_last="/public/img/map/own_location.svg" inputObject={this.handleInputObject.bind(this,'LOCATION_TYPING')} type="text" name="location"></ExtendInputText>
+          <ExtendInputText value={form_data.search} placeholder={window.gettext("Exemple “Boulangerie”, “pains ou gateau” au “chocolat”")} icon_first="/public/img/map/shop_dark.svg" type="text" inputObject={(val)=>this.setUpdate('form_data',val)} name="search"></ExtendInputText>
+          <div class="ui divider"></div>
+          <div class="ppsl_121_ap_1">
+            <ExtendInputText value={form_data.location} input_class="search_popup_21393" id="autoComplete" icon_first="/public/img/map/marker.svg" icon_last="/public/img/map/own_location.svg" inputObject={(val)=>this.setUpdate('form_data',val)} type="text" name="location"></ExtendInputText>
+            <ul class="ppsl_121">
+              {(()=>{
+                let search_locations = [];
+                for(var a=0;a<location_datas.length;a++){
+                  let locationItem = location_datas[a];
+                  search_locations.push(
+                    <li class="ppsl_1211">
+                      <a href="#" onClick={this.handleClick.bind(this,'SELECT_SEARCH_ITEM',{ value : locationItem })} class="ppsl_1211_link">{locationItem.location}</a>
+                    </li>
+                  );
+                }
+                return search_locations;
+              })()}
+            </ul>
+          </div>
+          
           {/* <div class="ppsl_121"><span class="ppsl_1211"><img src="/public/img/map/calendar.svg" alt=""/> 03 Novembre 2020</span></div> */}
+          <div class="field ipsl">
+            <div class="ipsl_2">
+            <span>Optionnel: quand souhaitez vous disposer de votre/vos produit(s)?</span>
+            <div class="ipsl_21">
+              <span class="ipsl_211">
+                <img src="/public/img/map/calendar.svg" alt=""/>03 Novembre 2020
+              </span>
+            </div> 
+            </div>
+          </div>
         </form>
+        
         <div class="actions ppsl_13">
           <button class="ppsl_131" onClick={this.handleClick.bind(this,'SUBMIT')}>RECHERCHER</button>
         </div>

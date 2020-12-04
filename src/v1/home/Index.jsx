@@ -45,7 +45,7 @@ export const IndexClass = BaseVue.extend({
       self.setInitDOMSelection('FILTER_SEARCH');
       self.setInitDOMSelection('HEAD_SEARCH');
       self.setInitDOMSelection('SORTING_SEARCH');
-      if(Object.keys(position).length == 0){
+      if(position == null || Object.keys(position).length == 0){
         self.setInitDOMSelection('POPUP_SELECT_LOCATION');
       }
       await self.set('select_position',position);

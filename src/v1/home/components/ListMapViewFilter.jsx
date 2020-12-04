@@ -111,7 +111,6 @@ export default {
       <div class="ui button">
         <img src="/public/img/filter_btn_icon.svg" alt=""/>
         &nbsp;&nbsp;
-        <span class="text on_mobile">TRIER</span>
         <img src="/public/img/map/dropdown_arrow_bottom.svg" alt=""/>
       </div>
       <div class="ui fluid popup">

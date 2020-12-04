@@ -64,7 +64,7 @@ body.pushable>.pusher {
             right: 100px;
             bottom: 0px;
             top: 0px;
-            overflow: hidden;
+            // overflow: hidden;
             width: 430px;
         }
         &:last-child{
@@ -98,27 +98,77 @@ body.pushable>.pusher {
     .ppsl_1{
         margin: 0 auto;
         width: inherit !important;
+        padding-top: 12px;
+        padding-left: 120px;
+        padding-right: 120px;
         h1{
             text-align: center;
         }
+        .close.icon{
+            cursor: pointer;
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            z-index: 1;
+            opacity: .8;
+            font-size: 1.25em;
+            color: red;
+            width: 2.25rem;
+            height: 2.25rem;
+            padding: .625rem 0 0 0;
+        }
+    }
+    .ppsl_11_a_1{
+        margin: 0 auto;
+        display: block;
+        margin-top: 12px;
     }
     .ppsl_11{
         text-align: center;
     }
+    .ppsl_12{
+        position: relative;
+        &.base_wr.form{
+            border: none;
+        }
+    }
+    .ppsl_121_ap_1{
+        position: relative;
+    }
     .ppsl_121{
-        display: flex;
-        flex-direction: row;
-        justify-content: flex-end;
+        position: absolute;
+        top: 81%;
+        bottom: 0;
+        left: 40px;
+        height: auto;
+        right: auto;
+        z-index: 100;
+        position: absolute;
+        bottom: auto;
+        width: 90%;
+        z-index: 1500;
+        background: white;
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        padding-top: 6px;
+        color: black;
+        border: solid #d4d4d5 1px;
+        li{
+            margin: 0;
+            padding: 12px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+        &:empty{
+            display: none;
+        }
     }
     .ppsl_1211{
-        @extend .ppsl_121;
-        align-items: center;
-        height: 50px;
-        font-size: 0.8em;
-        img{
-            width: 16px;
-            margin-right: 6px;
-        }
+
+    }
+    .ppsl_1211_link{
+        
     }
     .ppsl_13{
         display: flex;
@@ -126,6 +176,10 @@ body.pushable>.pusher {
         justify-content: center;
         align-items: center;
         height: 100px;
+        &.actions{
+            background: none;
+            border: none;
+        }
     }
     .ppsl_131{
         @extend .ppsl_131;
@@ -161,6 +215,32 @@ body.pushable>.pusher {
         input{
             border-radius: 30px !important;
             height: 52px;
+        }
+    }
+    .ipsl_2{
+        display: block;
+        margin-top: 24px;
+        text-align: center;
+    }
+    .ipsl_21{
+        display: flex;
+        width: 100%;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+    }
+    .ipsl_211{
+        @extend .ipsl_21;
+        width: auto;
+        cursor: pointer;
+        padding: 12px;
+        padding-left: 32px;
+        padding-right: 32px;
+        border-radius: 30px;
+        border: 1px #d4d4d5 solid;
+        margin-top: 12px;
+        img{
+            margin-right: 12px;
         }
     }
 }
@@ -402,26 +482,6 @@ body.pushable>.pusher {
     @include on_mobile{
         background-color: white;
     }
-    .asl_sfs{
-        display: flex;
-        flex-direction: row;
-        width: 100%;
-        height: 52px;
-    }
-    .asl_sfs_1{
-        @extend .asl_sfs;
-        border-bottom: 1px solid #DDDDDD;
-        input{
-            border: none;
-            outline: none;
-            border-style: none;
-            width: inherit;
-            display: block;
-            height: 100%;
-            padding: 6px;
-            padding-left: 12px;
-        }
-    }
     .asl_1{
         display: flex;
         flex-direction: column;
@@ -607,11 +667,28 @@ body.pushable>.pusher {
         display: flex;
         flex-direction: row;
         height: inherit;
+        width: 100%;
     }
     .sf_11{
+        width: 100%;
         height: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        span{
+            font-size: 1em;
+            margin-left: 12px;
+            display: inline-block;
+            width: 180px;
+            white-space: nowrap;
+            overflow: hidden !important;
+            text-overflow: ellipsis;
+        }
+    }
+    .sf_12{
+        height: 100%;
+        display: flex;
+        flex-direction: row;
         justify-content: center;
         align-items: center;
     }
@@ -1554,8 +1631,74 @@ body.pushable>.pusher {
                 outline-style: none;
                 outline: none;
                 border: none;
-                width: 100%;
                 font-size: 1em;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+        .hdm_11_a_1{
+            width: 80%;
+            position: relative;
+        }
+        .hdm_11_a_12{
+            width: 100%;
+        }
+        .hdm_11_a_13{
+            position: absolute;
+            bottom: auto;
+            top: 31px;
+            width: 100%;
+            z-index: 1500;
+            background: white;
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            padding-top: 6px;
+            color: black;
+            border: solid #d4d4d5 1px;
+            li{
+                margin: 0;
+                padding: 12px;
+                padding-top: 6px;
+                padding-bottom: 6px;
+            }
+            &:empty{
+                display: none;
+            }
+        }
+        .hdm_11_a_131{
+            border-bottom: 1px solid #d4d4d5;
+        }
+        .hdm_11_a_132{
+            cursor: pointer;
+            font-size: 0.8em;
+            
+        }
+        .hdm_11_a_132_link{
+            color: black;
+            &:focus{
+                color: blue;
+                font-weight: bold;
+                outline-style: none;
+            }
+        }
+        .hdm_11{
+            width:1px;
+            height: 40px;
+            border-right: 2px solid #ECF0F5;
+        }
+        .hdm_12{
+            width: 20%;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            color: black;
+            padding-left: 12px;
+            font-size: 0.8em;
+            cursor: pointer;
+            &:hover{
+                color: blue;
             }
         }
     }
