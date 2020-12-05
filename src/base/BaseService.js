@@ -53,6 +53,13 @@ var BaseHttpRequest = Proto.extend({
     }
     return newObject;
   },
+  jsonParseUrl: function(whatUrl = window.location.href) {
+    let theUrl = new Arg(whatUrl);
+    let theJSON = {};
+    theJSON["query"] = theUrl.query();
+    theJSON["hash"] = theUrl.hash();
+    return theJSON;
+  },
   jsonToQueryUrl: function(url, whatObject, action) {
     let theArg = new Arg();
     if (action == "hash") {
@@ -205,6 +212,39 @@ var BaseHttpRequest = Proto.extend({
     window.privilege_store_list = privileges;
     return privileges;
   },
+  setLocalStorage : function(whatString,props){
+    let self = this;
+    let currentData = window.localStorage.getItem(whatString);
+    console.log("currentData -> ", currentData);
+    let theValue = window.localStorage.getItem(whatString);
+    switch(true){
+      case theValue == null:
+      case typeof theValue != 'object':
+        return window.localStorage.setItem(whatString,JSON.stringify(props));
+    }
+    currentData = JSON.parse(currentData);
+    if(Object.keys(currentData).length == 0){
+      window.localStorage.setItem(whatString,JSON.stringify(props));
+      return;
+    }
+    window.localStorage.setItem(whatString,{
+      ...currentData,
+      ...props,
+    });
+  },
+  getLocalStorage : function(whatString){
+    let theValue = window.localStorage.getItem(whatString);
+    try{
+      return JSON.parse(theValue);
+    }catch(ex){
+      switch(true){
+        case theValue == null:
+        case typeof theValue != 'object':
+          return theValue;
+      }
+    }
+    
+  }
 });
 
 export default BaseHttpRequest;

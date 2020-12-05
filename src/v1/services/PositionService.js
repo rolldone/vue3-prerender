@@ -1,4 +1,5 @@
 import BaseService from "./BaseService";
+import GoogleGeoCodeService from "./GoogleGeoCodeService";
 
 export default BaseService.extend({
   getCurrentIpLocation : function(){
@@ -84,4 +85,51 @@ export default BaseService.extend({
       });
     });
   },
+  /* Better use only on middleware for reduce request to server */
+  getLastPosition : async function(){
+    let self = this;
+    try{
+      /* Get the position on localstorage first */
+      let position = self.getLocalStorage('position') || {};
+      /* If user have position on their url query override the current position with it. */
+      let jsonParseUrl = self.jsonParseUrl();
+      let query = jsonParseUrl.query;
+      if(query.latlng != null){
+        if(window.lastPosition == null){
+          window.lastPosition = {};
+        }
+        if(window.lastPosition[query.latlng] != null){
+          return window.lastPosition[query.latlng];
+        }
+        let latlngArray = query.latlng.split(',');
+        let returnGoogleGeoCodeService = GoogleGeoCodeService.create();
+        let latlng = parseFloat(latlngArray[0])+','+parseFloat(latlngArray[1]);
+        let reverseGeoCode = await returnGoogleGeoCodeService.reverseGeoCode({
+          latlng : latlng
+        });
+        let parseAddressComponent = await returnGoogleGeoCodeService.parseAddressComponents(reverseGeoCode.return.results);
+        position = parseAddressComponent;
+        position.latitude = parseFloat(latlngArray[0]);
+        position.longitude = parseFloat(latlngArray[1]);
+        window.lastPosition[latlng] = position;
+      }
+      return position;
+    }catch(ex){
+      console.error('getLastPosition - ex ',ex);
+      return null;
+    }
+  },
+  saveLastPosition : function(props){
+    window.staticType(props,[Object]);
+    try{
+      if(window.lastPosition == null){
+        window.lastPosition = {};
+      }
+      let latlng = props.latitude+','+props.longitude;
+      window.lastPosition[latlng] = props;
+      return window.lastPosition[latlng];
+    }catch(ex){
+      throw ex;
+    }
+  }
 });

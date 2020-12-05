@@ -187,6 +187,11 @@ window.simpleInitData = function(object,overrides){
   return newObject;
 };
 
+window.stackTraceFunction = function(){
+  let stack = new Error().stack || '';
+  console.log('stack',stack);
+};
+
 /* Pusher setup */
 // window.pusher = new Pusher("", {
 //   cluster: "ap1",

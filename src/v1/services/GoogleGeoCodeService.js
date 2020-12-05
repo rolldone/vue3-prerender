@@ -7,7 +7,7 @@ export default BaseService.extend({
     try{
       let url = window.HTTP_REQUEST.GOOGLE_GEOCODE.REVERSE_GEOCODE;
       let resData = this.getData(url,props);
-      if (resData.status == "error") throw resData.data.responseJSON;
+			if (resData.status == "error") throw resData.data.responseJSON;
       return resData;
     }catch(ex){
       throw ex;

@@ -331,13 +331,13 @@ export const PopUpSelectLocationClass = BaseVue.extend({
           await self.setUpdate('is_own_location',true);
           /* Change color if user allow own location */
           $('#autoComplete').next().attr('src',"/public/img/map/own_location_active.svg");
+          await self.setUpdate('position',self.simpleInitData(position));
+          let reverseGeoCode = await self.getReverseGeoCode();
+          await self.setUpdate('position',reverseGeoCode);
         }
-        await self.setUpdate('position',self.simpleInitData(position));
-        let reverseGeoCode = await self.getReverseGeoCode();
-        await self.setUpdate('position',reverseGeoCode);
         position = self.get('position');
         await self.setUpdate('form_data',{
-          location : reverseGeoCode.location
+          location : position.location
         });
         self.unWatchFormData = self.watchFormData();
         break;

@@ -33,18 +33,23 @@ export const IndexClass = BaseVue.extend({
   },
   construct : async function(props,context){
     let self = this;
+    let query = null;
+    let position = null;
     self.displayOption = (DisplayOptionFunction.create(props,self)).setup();
     self.gridData = (GridDataFunction.create(props,self)).setup();
     self.listData = (ListDataFunction.create(props,self)).setup();
+    let jsonParseUrl = self.jsonParseUrl();
+    self.setUpdate('query',jsonParseUrl.query);
     onBeforeMount(function(){
       AppStore.commit('SET',{
         title : window.gettext("ArtyPlanet Home")
       });
-      let jsonParseUrl = self.jsonParseUrl();
-      self.setUpdate('query',jsonParseUrl.query);
     });
     onMounted(async function(){
-      let position = self.getLocalStorage('position') || {};
+      /* Get last position */
+      let positionService = self.returnPositionService();
+      position = await positionService.getLastPosition();
+      
       self.setInitDOMSelection(self.displayOption.map.INITIALIZE);
       self.setInitDOMSelection('FILTER_SEARCH');
       self.setInitDOMSelection('HEAD_SEARCH');
@@ -151,12 +156,14 @@ export const IndexClass = BaseVue.extend({
           switch(action){
             case 'SUBMIT':
               self.popUpSelectLocation.setAction('hide',{});
+              /* Save the last position */
+              self.returnPositionService().saveLastPosition(props.position);
               self.setLocalStorage('position',props.position);
               self.setUpdate('select_position',props.position);
               await self.set('datas',[]);
               self.set('query',{
                 search : props.form_data.search,
-                laglng : props.position.latitude+','+props.position.longitude
+                latlng : props.position.latitude+','+props.position.longitude
               });
               self.updateCurrentState(self.get('query'));
               return;
@@ -167,7 +174,7 @@ export const IndexClass = BaseVue.extend({
               await self.set('datas',[]);
               self.set('query',{
                 search : props.form_data.search,
-                laglng : props.position.latitude+','+props.position.longitude
+                latlng : props.position.latitude+','+props.position.longitude
               });
               self.updateCurrentState(self.get('query'));
               return;

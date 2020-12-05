@@ -2,6 +2,7 @@ import BaseVue from "../../../base/BaseVue";
 import { onMounted, reactive, watch } from 'vue';
 import ProductService from "../../services/ProductService";
 import {setNavigableClassName} from '../../../base/ArrowKeyNav';
+import PositionService from "../../services/PositionService";
 
 export const HeadMenuSearchClass = BaseVue.extend({
   data : function(){
@@ -16,28 +17,33 @@ export const HeadMenuSearchClass = BaseVue.extend({
   returnProductService : function(){
     return ProductService.create();
   },
+  returnPositionService : function(){
+    return PositionService.create();
+  },
   construct : function(props,context){
     let self = this;
     let jsonParseUrl = self.jsonParseUrl();
-    let position = self.getLocalStorage('position')||{};
-    let toCheckString = [position.route,position.city,position.administrative_area_level_1,position.country];
-    let newLocation = '';
-    for(var a=0;a<toCheckString.length;a++){
-      if(a == toCheckString.length-1){
-        if(toCheckString[a] != null){
-          newLocation +=  toCheckString[a];
-        }
-      }else{
-        if(toCheckString[a] != null){
-          newLocation +=  toCheckString[a]+', ';
+    let productService = self.returnProductService();
+    let positionService = self.returnPositionService();
+    onMounted(async function(){
+      let position = await positionService.getLastPosition();
+      let toCheckString = [position.route,position.city,position.administrative_area_level_1,position.country];
+      let newLocation = '';
+      for(var a=0;a<toCheckString.length;a++){
+        if(a == toCheckString.length-1){
+          if(toCheckString[a] != null){
+            newLocation +=  toCheckString[a];
+          }
+        }else{
+          if(toCheckString[a] != null){
+            newLocation +=  toCheckString[a]+', ';
+          }
         }
       }
-    }
-    self.set('form_data',{
-      search : jsonParseUrl.query.search,
-      location : newLocation
-    });
-    onMounted(function(){
+      self.set('form_data',{
+        search : jsonParseUrl.query.search,
+        location : newLocation
+      });
       watch(()=>self.get('form_data').search,function(val){
         if(self.pendingWatchSearchText != null){
           self.pendingWatchSearchText.cancel();
@@ -149,6 +155,8 @@ export const HeadMenuSearchClass = BaseVue.extend({
             switch(action){
               case 'SUBMIT':
                 el.setAction('hide',{});
+                /* Save the last position */
+                self.returnPositionService().saveLastPosition(props.position);
                 self.setLocalStorage('position',props.position);
                 self.setUpdate('select_position',props.position);
                 self.set('query',{
