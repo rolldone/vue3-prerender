@@ -59,13 +59,15 @@ export default BaseService.extend({
     });
   },
   getCurrentPosition : async function(){
+    let self = this;
     return new Promise(function(resolve,reject){
       navigator.permissions.query({name:'geolocation'}).then(function(permissionStatus) {
         console.log('geolocation permission state is ', permissionStatus.state);
         let unWatchNavigation = navigator.geolocation.watchPosition(function(position) {
           navigator.geolocation.clearWatch(unWatchNavigation);
-          console.log('navigator location',position.coords);
-          resolve(position.coords);
+          let coords = self.simpleInitData(position.coords);
+          console.log('navigator location',coords);
+          resolve(coords);
         },function(error) {
           navigator.geolocation.clearWatch(unWatchNavigation);
           reject(error);

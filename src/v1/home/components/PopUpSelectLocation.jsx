@@ -8,6 +8,7 @@ import GooglePlaceHttpRequest from "../../services/GooglePlaceHttpRequest";
 import './PopUpSelectLocation.scss';
 import InputValidation from "../../partials/InputValidation";
 import {setNavigableClassName} from "../../../base/ArrowKeyNav";
+import AppStore from "../../store/AppStore";
 
 const ExtendInputText = {
   ...InputText,
@@ -97,7 +98,6 @@ export const PopUpSelectLocationClass = BaseVue.extend({
   },
   construct : function(props,context){
     let self = this;
-    self.autoCompleteLocation = InputAutoCompleteFunction.create(props,self).setup();
     self.inputValidation = InputValidation.create(props,self).setup();
     window.pubsub.on('popup_selection_location.load',function(func){
       func(self);
@@ -111,20 +111,19 @@ export const PopUpSelectLocationClass = BaseVue.extend({
         ...INPUT_TEXT_VALIDATION,
         form_data : self.get('form_data')
       });
-      watch(()=>self.get('form_data').location,function(val){
-        if(self.locationPendingSearch != null){
-          self.locationPendingSearch.cancel();
-        }
-        self.locationPendingSearch = _.debounce(async function(parseData){
-          if(self.isfirstlocation == null){
-            self.isfirstlocation = true;
-            return;
-          }
-          let resData = await self.getGoogleLocations(parseData);
-          self.setGoogleLocations(resData);
-        },500);
-        self.locationPendingSearch(val);
-      });
+    });
+  },
+  watchFormData : function(){
+    let self = this;
+    return watch(()=>self.get('form_data').location,function(val){
+      if(self.locationPendingSearch != null){
+        self.locationPendingSearch.cancel();
+      }
+      self.locationPendingSearch = _.debounce(async function(parseData){
+        let resData = await self.getGoogleLocations(parseData);
+        self.setGoogleLocations(resData);
+      },1000);
+      self.locationPendingSearch(val);
     });
   },
   getGoogleLocations : async function(searchString){
@@ -263,51 +262,6 @@ export const PopUpSelectLocationClass = BaseVue.extend({
   setInitDOMSelection : function(action,props){
     let self = this;
     self.inputValidation.join(action,props);
-    // self.autoCompleteLocation.join(action,{
-    //   selector : "#autoComplete",
-    //   placeholder : 'Search Location',
-    //   key : ["place_id", "location", "reference"],
-    //   onHttpRequest : function(){
-    //     return new Promise(function(resolve){
-    //       // Loading placeholder text
-    //       document
-    //         .querySelector("#autoComplete")
-    //         .setAttribute("placeholder", "Loading...");
-    //       // Fetch External Data Source
-    //       const query = document.querySelector("#autoComplete").value;
-          
-    //       if(self.locationPendingSearch != null){
-    //         self.locationPendingSearch.cancel();
-    //       }
-    //       self.locationPendingSearch = _.debounce(async function(parseData){
-    //         let resData = await self.getGoogleLocations(parseData);
-    //         // Post loading placeholder text
-    //         document
-    //           .querySelector("#autoComplete")
-    //           .setAttribute("placeholder", "Search Location");
-    //         // Returns Fetched data
-    //         resolve(resData);
-    //       },300);
-    //       self.locationPendingSearch(query);
-    //     });
-    //   },
-    //   onResult : async function(feedback){
-    //     const selection = feedback.selection.value.location;
-    //     /* Save newLocation */
-    //     await self.set('newLocation',feedback.selection.value);
-    //     await self.setUpdate('form_data',{
-    //       location : feedback.selection.value.location
-    //     });
-    //     // Render selected choice to selection div
-    //     document.querySelector(".selection").innerHTML = selection;
-    //     // Clear Input
-    //     document.querySelector("#autoComplete").value = "";
-    //     // Change placeholder with the selected value
-    //     document
-    //       .querySelector("#autoComplete")
-    //       .setAttribute("placeholder", selection);
-    //   }
-    // });
   },
   handleClick : async function(action,props,e){
     let self = this;
@@ -315,10 +269,13 @@ export const PopUpSelectLocationClass = BaseVue.extend({
       case 'SELECT_SEARCH_ITEM':
         e.preventDefault();
         await self.set('newLocation',props.value);
+        /* Unwatch first */
+        self.unWatchFormData();
         await self.setUpdate('form_data',{
           location : props.value.location
         });
-        self.isfirstlocation = null;
+        /* Start watch beginning */
+        self.unWatchFormData = self.watchFormData();
         self.set('location_datas',[]);
         break;
       case 'SUBMIT':
@@ -366,21 +323,26 @@ export const PopUpSelectLocationClass = BaseVue.extend({
     self.current_modal.modal(action);
     switch(action){
       case 'show':
+        /* Waiting prompt user */
         let position = await self.getCurrentPosition();
         if(position == null){
-          position = await self.getCurrentIpLocation();
+          position = AppStore.state.app.ipPosition;
         }else{
           await self.setUpdate('is_own_location',true);
           /* Change color if user allow own location */
           $('#autoComplete').next().attr('src',"/public/img/map/own_location_active.svg");
         }
-        await self.setUpdate('position',position);
+        await self.setUpdate('position',self.simpleInitData(position));
         let reverseGeoCode = await self.getReverseGeoCode();
         await self.setUpdate('position',reverseGeoCode);
+        position = self.get('position');
         await self.setUpdate('form_data',{
           location : reverseGeoCode.location
         });
-        await self.setInitDOMSelection(self.autoCompleteLocation.map.LOAD);
+        self.unWatchFormData = self.watchFormData();
+        break;
+      case 'hide':
+        self.unWatchFormData();
         break;
     }
   },
@@ -388,18 +350,16 @@ export const PopUpSelectLocationClass = BaseVue.extend({
     let self = this;
     window.staticType(action, [String]);
     window.staticType(props, [Object]);
-    self.setUpdate("form_data", props);
     self.current_modal.modal(action);
     switch(action){
       case 'show':
+        self.setUpdate("form_data", props);
+        self.unWatchFormData = self.watchFormData();
         let position = await self.getLocalStorage('position');
         await self.setUpdate('position',position);
-        let reverseGeoCode = await self.getReverseGeoCode();
-        await self.setUpdate('position',reverseGeoCode);
-        await self.setUpdate('form_data',{
-          location : reverseGeoCode.location
-        });
-        await self.setInitDOMSelection(self.autoCompleteLocation.map.LOAD);
+        break;
+      case 'hide':
+        self.unWatchFormData();
         break;
     }
   },

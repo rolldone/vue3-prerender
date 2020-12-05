@@ -322,7 +322,7 @@ export default BaseComposition.extend({
   },
   updateCurrentState(query){
     window.masterData.saveData('manual_state',null);
-    query.state_action=new Date().getTime();
+    query._ = new Date().getTime();
     window.router.push({ name : window.route.name, query : query });
   },
   resolveRouteToUrl: function(string) {

@@ -58,6 +58,18 @@ switch (config.env) {
         res.end();
       });
     });
+    /* Because the data in memory is little different to get the data assets */
+    app.use('/dist/*', function (req, res, next) {
+      var filename = path.join(compiler.outputPath,req.originalUrl);
+      compiler.outputFileSystem.readFile(filename, function(err, result){
+        if (err) {
+          return res.status(400).send(err.message);
+        }
+        res.set('content-type',mime.lookup(filename));
+        res.send(result);
+        res.end();
+      });
+    });
     break;
   case "production":
   case "devserver":

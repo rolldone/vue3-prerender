@@ -120,13 +120,17 @@ export const HeadMenuSearchClass = BaseVue.extend({
         break;
     }
   },
-  handleClick : function(action,props,e){
+  handleClick : async function(action,props,e){
     let self = this;
     switch(action){
       case 'SELECT_OTHER_ITEM':
+        e.preventDefault();
         switch(props.value){
           case 'RESET':
-            self.set('query',{});
+            var jsonParseUrl = self.jsonParseUrl();
+            var query = jsonParseUrl.query;
+            delete query.search;
+            await self.set('query',query);
             self.updateCurrentState(self.get('query'));
             break;
         }
@@ -149,7 +153,7 @@ export const HeadMenuSearchClass = BaseVue.extend({
                 self.setUpdate('select_position',props.position);
                 self.set('query',{
                   search : props.form_data.search,
-                  state : new Date().getTime()
+                  latlng : props.position.latitude+','+props.position.longitude
                 });
                 self.updateCurrentState(self.get('query'));
                 break;
@@ -160,7 +164,7 @@ export const HeadMenuSearchClass = BaseVue.extend({
                 await self.set('datas',[]);
                 self.set('query',{
                   search : props.form_data.search,
-                  state : new Date().getTime()
+                  latlng : props.position.latitude+','+props.position.longitude
                 });
                 self.updateCurrentState(self.get('query'));
                 break;

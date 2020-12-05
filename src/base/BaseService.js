@@ -32,6 +32,27 @@ var BaseHttpRequest = Proto.extend({
     }
     return urlString;
   },
+  simpleInitData : function(object,overrides){
+    let funcs = {};
+    let newObject = {};
+    for(var key in object){
+      if({}.toString.call(object[key]) == '[object Function]'){
+        funcs[key] = object[key];
+      }else{
+        newObject[key] = object[key];
+      }
+    }
+    newObject = JSON.stringify(newObject);
+    newObject = JSON.parse(newObject);
+    newObject = {
+      ...newObject,
+      ...overrides,
+    };
+    for(var key in funcs){
+      newObject[key] = funcs[key].bind(newObject);
+    }
+    return newObject;
+  },
   jsonToQueryUrl: function(url, whatObject, action) {
     let theArg = new Arg();
     if (action == "hash") {

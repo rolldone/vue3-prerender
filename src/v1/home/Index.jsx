@@ -8,6 +8,7 @@ import ProductService from "../services/ProductService";
 import ListDataFunction from "./partials/ListDataFunction";
 import PopUpSelectLocation from "./components/PopUpSelectLocation";
 import PositionService from "../services/PositionService";
+import UserAgentService from "../services/UserAgentService";
 
 export const IndexClass = BaseVue.extend({
   data : function(){
@@ -20,6 +21,9 @@ export const IndexClass = BaseVue.extend({
       datas : [],
       select_position : {}
     });
+  },
+  returnUserAgentService : function(){
+    return UserAgentService.create();
   },
   returnPositionService : function(){
     return PositionService.create();
@@ -46,7 +50,10 @@ export const IndexClass = BaseVue.extend({
       self.setInitDOMSelection('HEAD_SEARCH');
       self.setInitDOMSelection('SORTING_SEARCH');
       if(position == null || Object.keys(position).length == 0){
-        self.setInitDOMSelection('POPUP_SELECT_LOCATION');
+        let userAgentService = self.returnUserAgentService();
+        if(userAgentService.isMySystemUserAgent()==false){
+          self.setInitDOMSelection('POPUP_SELECT_LOCATION');
+        }
       }
       await self.set('select_position',position);
       self.setProducts(await self.getProducts());
@@ -60,23 +67,6 @@ export const IndexClass = BaseVue.extend({
       return resData;
     }catch(ex){
       console.error('isAllowSelectLocation - ex ',ex);
-    }
-  },
-  getCurrentIpLocation : async function(){
-    let self = this;
-    try{
-      let service = self.returnPositionService();
-      let resData = await service.getCurrentIpLocation();
-      resData = (function(parseData){
-        parseData.latitude = parseData.lat;
-        parseData.longitude = parseData.lon;
-        delete parseData.lat;
-        delete parseData.lon;
-        return parseData;
-      })(resData.return);
-      return resData;
-    }catch(ex){
-      console.error('getCurrentIpLocation - ex ',ex);
     }
   },
   getCurrentPosition : async function(){
@@ -98,7 +88,7 @@ export const IndexClass = BaseVue.extend({
         if(await self.isAllowSelectLocation() == true){
           select_position = await self.getCurrentPosition();
         }else{
-          select_position = await self.getCurrentIpLocation();
+          select_position = await AppStore.state.app.ipPosition;
         }
       }
       let query = self.get('query');
@@ -165,7 +155,8 @@ export const IndexClass = BaseVue.extend({
               self.setUpdate('select_position',props.position);
               await self.set('datas',[]);
               self.set('query',{
-                search : props.form_data.search
+                search : props.form_data.search,
+                laglng : props.position.latitude+','+props.position.longitude
               });
               self.updateCurrentState(self.get('query'));
               return;
@@ -175,7 +166,8 @@ export const IndexClass = BaseVue.extend({
               self.setUpdate('select_position',props.position);
               await self.set('datas',[]);
               self.set('query',{
-                search : props.form_data.search
+                search : props.form_data.search,
+                laglng : props.position.latitude+','+props.position.longitude
               });
               self.updateCurrentState(self.get('query'));
               return;

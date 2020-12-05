@@ -59,7 +59,7 @@ var beforeEach = Middleware.bind(Middleware, [
   InitPubSub,
   CommonCode,
   InitRouteApi,
-  // InitLocation,
+  InitLocation,
   // InitCheckRoute,
   // InitGetUser,
   // NotifRouteChange,

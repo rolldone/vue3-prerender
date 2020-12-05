@@ -1,72 +1,54 @@
+import BaseVue from "../../base/BaseVue";
+import GoogleGeoCodeService from "../services/GoogleGeoCodeService";
+import PositionService from "../services/PositionService";
 import AppStore from "../store/AppStore";
 
-const InitGetUser = async (to, from, done, nextMiddleware) => {
-  // 
-  let matchUserAgent = navigator.userAgent.match(/MY_SYSTEM/g);
-  if(matchUserAgent != null && matchUserAgent.length > 0){
-    return nextMiddleware();
-  }
-  try{
-    /* Watching Event Listener */
-    navigator.permissions.query({name:'geolocation'}).then(function(permissionStatus) {
-      console.log('geolocation permission state is ', permissionStatus.state);
-      permissionStatus.onchange = function() {
-        console.log('geolocation permission state has changed to ', this.state);
-        switch(this.state){
-          case 'denied':
-            AppStore.commit('SET',{
-              notif_location : {
-                type : 'error',
-                title : "Warning",
-                message : 'Your location is denied, Please reactivate again!'
-              }
-            });
-            return;
-        }      
-      };
+let googleGeocodeService = function(){
+  return GoogleGeoCodeService.create();
+};
+
+let positionService = function(){
+  return PositionService.create();
+};
+
+const InitLocation = async (to, from, done, nextMiddleware) => {
+  let service = null;
+  let position = null;
+  let ipPosition = null;
+
+  /* Check query have lat long or not */
+  let baseVue = BaseVue.create();
+  let jsonParseUrl = baseVue.jsonParseUrl();
+  let query = jsonParseUrl.query;
+  if(query.latlng != null){
+    service = googleGeocodeService();
+    let reverseGeoCode = await service.reverseGeoCode({
+      latlng : query.latlng
     });
-    if(navigator.geolocation) {
-      /* If Allow it */
-      navigator.geolocation.getCurrentPosition(function(position) {
-        AppStore.commit('SET',{
-          lat : position.coords.latitude,
-          long : position.coords.longitude
-        });
-      });
-    } else {
-      AppStore.commit('SET',{
-        notif_location : {
-          type : 'error',
-          title : "Warning",
-          message : 'Geolocation not detected!'
-        }
-      });
-    }
-    /* Watch the position */
-    let unWatchNavigatin = navigator.geolocation.watchPosition(function(position) {
-      /* Ignore it */
-      console.log('posotion',position);
-      AppStore.commit('SET',{
-        lat : position.coords.latitude,
-        long : position.coords.longitude
-      });
-      navigator.geolocation.clearWatch(unWatchNavigatin);
-    },function(error) {
-      if (error.code == error.PERMISSION_DENIED)
-        console.log("you denied me :-(");
-        AppStore.commit('SET',{
-          notif_location : {
-            type : 'error',
-            title : "Warning",
-            message : 'Your location is denied, Please reactivate again!'
-          }
-        });
-        navigator.geolocation.clearWatch(unWatchNavigatin);
+    position = await service.parseAddressComponents(reverseGeoCode.return.results);
+    AppStore.commit('SET',{
+      position : position
     });
-  }catch(ex){
-    console.error('Init Location',ex);
+    nextMiddleware();
+    return;
   }
+
+  /* Check the user ip to check information on it via third party service */
+  service = positionService();
+  ipPosition = await service.getCurrentIpLocation();
+  ipPosition = (function(parseData){
+    parseData.latitude = parseData.lat;
+    parseData.longitude = parseData.lon;
+    delete parseData.lat;
+    delete parseData.lon;
+    return parseData;
+  })(ipPosition.return);
+  AppStore.commit('SET',{
+    ipPosition : ipPosition
+  });
+
+  // /* Check user that have allow location on their browser, keep this section if access by curl, bot user agent */
   nextMiddleware();
 };
 
-export default InitGetUser;
+export default InitLocation;
