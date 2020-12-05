@@ -33,7 +33,6 @@ export const IndexClass = BaseVue.extend({
   },
   construct : async function(props,context){
     let self = this;
-    let query = null;
     let position = null;
     self.displayOption = (DisplayOptionFunction.create(props,self)).setup();
     self.gridData = (GridDataFunction.create(props,self)).setup();
@@ -59,6 +58,7 @@ export const IndexClass = BaseVue.extend({
         if(userAgentService.isMySystemUserAgent()==false){
           self.setInitDOMSelection('POPUP_SELECT_LOCATION');
         }
+        return;
       }
       await self.set('select_position',position);
       self.setProducts(await self.getProducts());

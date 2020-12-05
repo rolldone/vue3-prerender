@@ -27,19 +27,10 @@ export const HeadMenuSearchClass = BaseVue.extend({
     let positionService = self.returnPositionService();
     onMounted(async function(){
       let position = await positionService.getLastPosition();
-      let toCheckString = [position.route,position.city,position.administrative_area_level_1,position.country];
-      let newLocation = '';
-      for(var a=0;a<toCheckString.length;a++){
-        if(a == toCheckString.length-1){
-          if(toCheckString[a] != null){
-            newLocation +=  toCheckString[a];
-          }
-        }else{
-          if(toCheckString[a] != null){
-            newLocation +=  toCheckString[a]+', ';
-          }
-        }
-      }
+      /* If position null block it!! */
+      if(position == null) return;
+      /* Define address */
+      let newLocation = positionService.setLocation(position);
       self.set('form_data',{
         search : jsonParseUrl.query.search,
         location : newLocation

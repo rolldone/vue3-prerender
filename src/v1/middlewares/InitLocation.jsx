@@ -20,9 +20,6 @@ const InitLocation = async (to, from, done, nextMiddleware) => {
   let positionService = returnPositionService();
   position = await positionService.getLastPosition();
   if(position != null){
-    AppStore.commit('SET',{
-      position : position
-    });
     nextMiddleware();
   }
   
@@ -38,7 +35,7 @@ const InitLocation = async (to, from, done, nextMiddleware) => {
     return parseData;
   })(ipPosition.return);
   AppStore.commit('SET',{
-    ipPosition : ipPosition
+    first_position : ipPosition
   });
 
   // /* Check user that have allow location on their browser, keep this section if access by curl, bot user agent */

@@ -90,7 +90,7 @@ export default BaseService.extend({
     let self = this;
     try{
       /* Get the position on localstorage first */
-      let position = self.getLocalStorage('position') || {};
+      let position = self.getLocalStorage('position') || null;
       /* If user have position on their url query override the current position with it. */
       let jsonParseUrl = self.jsonParseUrl();
       let query = jsonParseUrl.query;
@@ -131,5 +131,22 @@ export default BaseService.extend({
     }catch(ex){
       throw ex;
     }
+  },
+  setLocation : function(position){
+    window.staticType(position,[Object]);
+    let toCheckString = [position.route,position.city,position.administrative_area_level_1,position.country];
+    let newLocation = '';
+    for(var a=0;a<toCheckString.length;a++){
+      if(a == toCheckString.length-1){
+        if(toCheckString[a] != null){
+          newLocation +=  toCheckString[a];
+        }
+      }else{
+        if(toCheckString[a] != null){
+          newLocation +=  toCheckString[a]+', ';
+        }
+      }
+    }
+    return newLocation;
   }
 });

@@ -326,18 +326,17 @@ export const PopUpSelectLocationClass = BaseVue.extend({
         /* Waiting prompt user */
         let position = await self.getCurrentPosition();
         if(position == null){
-          position = AppStore.state.app.ipPosition;
+          position = AppStore.state.app.first_position;
         }else{
           await self.setUpdate('is_own_location',true);
           /* Change color if user allow own location */
           $('#autoComplete').next().attr('src',"/public/img/map/own_location_active.svg");
           await self.setUpdate('position',self.simpleInitData(position));
-          let reverseGeoCode = await self.getReverseGeoCode();
-          await self.setUpdate('position',reverseGeoCode);
+          position = await self.getReverseGeoCode();
         }
-        position = self.get('position');
+        await self.setUpdate('position',position);
         await self.setUpdate('form_data',{
-          location : position.location
+          location : self.returnPositionService().setLocation(position)
         });
         self.unWatchFormData = self.watchFormData();
         break;

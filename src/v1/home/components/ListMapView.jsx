@@ -5,6 +5,7 @@ import BusinessService from "../../services/BusinessService";
 import ProductService from "../../services/ProductService";
 import ListMapViewFilter from "./ListMapViewFilter";
 import ListMapViewSort from "./ListMapViewSort";
+import PositionService from "../../services/PositionService";
 
 export const ListMMapViewClass = BaseVue.extend({
   data : function(){
@@ -22,6 +23,9 @@ export const ListMMapViewClass = BaseVue.extend({
   },
   returnProductService : function(){
     return ProductService.create();
+  },
+  returnPositionService : function(){
+    return PositionService.create();
   },
   construct : function(props,context){
     let self = this;
@@ -137,7 +141,7 @@ export const ListMMapViewClass = BaseVue.extend({
         await self.set('business_data',{});
         await self.setUpdate('action','detail');
         self.onChangeListener('BUSINESS_SELECTED',self.get('business_data'),props.index);
-        let position = self.getLocalStorage('position');
+        let position = await self.returnPositionService().getLastPosition();
         await self.setUpdate('query',{
           business_id : props.id,
           search : props.search,

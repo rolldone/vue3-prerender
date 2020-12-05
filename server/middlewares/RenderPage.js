@@ -129,9 +129,9 @@ module.exports = async function(req,res,next){
         page.on('request', req => {
           // 2. Ignore requests for resources that don't produce DOM
           /* (image ). */
-          const allowlist = ['stylesheet','other','document', 'script', 'xhr', 'fetch'];
+          const allowlist = ['image','stylesheet','other','document', 'script', 'xhr', 'fetch'];
           if (!allowlist.includes(req.resourceType())) {
-            console.log('req.resourceType() - blocked ',req.resourceType());
+            console.log('req.resourceType() - ada yang kena blocked ',req.resourceType());
             return req.abort();
           }
 
