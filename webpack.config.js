@@ -74,7 +74,7 @@ module.exports = {
   },
   entry: {
     // auth: [path.resolve(__dirname, "./src/v1/partner/auth/index")],
-    main: [path.resolve(__dirname, "./src/v1/index")],
+    main: [path.resolve(__dirname, "./src/module1/index")],
     vendor: ["babel-polyfill"],
   },
   output: {
