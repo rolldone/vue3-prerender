@@ -1,8 +1,7 @@
 import { ref, watch, reactive,  onMounted } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import BaseVue from "../base/BaseVue";
-import SideMenu from "./components/SideMenu";
-import HomeView from "./home/HomeView";
+import ExampleView from "./example/ExampleView";
 import RouteActionFunction from "./partials/RouteActionFunction";
 let router = null;
 let route = null;
@@ -69,14 +68,8 @@ export default {
 		let {template} = this.get();
 		/* Authentication segment */
 		switch(template){
-			case 'oauth':
-				return (<router-view></router-view>);
-			case 'order':
-				return (<div class="main">
-					<router-view></router-view>
-				</div>);
-			case 'auth':
-				return (<router-view></router-view>);
+			case 'example':
+				return <ExampleView></ExampleView>;
 			case 'home':
 				return (<HomeView></HomeView>);
 			case 'main':

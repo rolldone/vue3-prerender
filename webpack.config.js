@@ -173,6 +173,7 @@ module.exports = {
   plugins: [
     new webpack.SourceMapDevToolPlugin({
       filename: '[name].js.map',
+      chunkFilename : '[id].[hash].js.map',
       exclude: ['vendor.js']
     }),
 

@@ -1,0 +1,1638 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"BaseV",
+				"BasePrivateKeyEncodingOptions\tnode_modules/crypto"
+			],
+			[
+				"Auth",
+				"AuthHttpRequest\t  Field"
+			],
+			[
+				"Base",
+				"BaseService\t  Field"
+			],
+			[
+				"categ",
+				"category"
+			],
+			[
+				"dec",
+				"decrypted"
+			],
+			[
+				"return",
+				"returnNewMemberService〔function〕"
+			],
+			[
+				"returnnew",
+				"returnNewGuestAuthenticationService"
+			],
+			[
+				"Guestau",
+				"GuestAuthenticationService"
+			],
+			[
+				"parse",
+				"parseObject〔variable〕"
+			],
+			[
+				"new",
+				"newOne〔variable〕"
+			],
+			[
+				"pars",
+				"parseObject〔variable〕"
+			],
+			[
+				"auth",
+				"authtest"
+			],
+			[
+				"Au",
+				"AuthHttpRequest2"
+			],
+			[
+				"key",
+				"keypath〔argument〕"
+			],
+			[
+				"subs",
+				"subscribe"
+			],
+			[
+				"subsc",
+				"subscribe_captcha"
+			],
+			[
+				"rec",
+				"recaptcha_token"
+			],
+			[
+				"SUBSC",
+				"SUBSCRIBE_XHR"
+			],
+			[
+				"formd",
+				"form_data"
+			],
+			[
+				"getCu",
+				"getCuisine"
+			],
+			[
+				"find",
+				"findComponent"
+			],
+			[
+				"SelfCui",
+				"SelfCuisinesHttpRequest"
+			],
+			[
+				"CUISI",
+				"CUISINE_XHR"
+			],
+			[
+				"select",
+				"selectCuisineUsers"
+			],
+			[
+				"CUIS",
+				"CUISINE_XHR"
+			],
+			[
+				"deletecu",
+				"deleteCuisineUsers〔function〕"
+			],
+			[
+				"cuisin",
+				"cuisine_id"
+			],
+			[
+				"use",
+				"user_error〔function〕"
+			],
+			[
+				"cuis",
+				"cuisine"
+			],
+			[
+				"get_clas",
+				"get_parent_class〔function〕"
+			],
+			[
+				"cui",
+				"cuisiner"
+			],
+			[
+				"returnnewcu",
+				"returnNewCuisinier〔function〕"
+			],
+			[
+				"confi",
+				"configuration"
+			],
+			[
+				"dev",
+				"devConfig"
+			],
+			[
+				"conf",
+				"configuration"
+			],
+			[
+				"config",
+				"Configuration"
+			],
+			[
+				"prod",
+				"prodConfig"
+			],
+			[
+				"ex",
+				"exec"
+			],
+			[
+				"base",
+				"baseConfig"
+			],
+			[
+				"guest",
+				"guestItem"
+			],
+			[
+				"restour",
+				"resTourBooking"
+			],
+			[
+				"adult",
+				"adultItem"
+			],
+			[
+				"Order",
+				"OrderApp"
+			],
+			[
+				"totl",
+				"totalPercent"
+			],
+			[
+				"alarm",
+				"alarm_value"
+			],
+			[
+				"stock",
+				"stock_type"
+			],
+			[
+				"grou",
+				"group_id"
+			],
+			[
+				"get",
+				"getBelowGroupId"
+			],
+			[
+				"Privi",
+				"PrivilegeController"
+			],
+			[
+				"nest",
+				"nestedBelowGroup"
+			],
+			[
+				"res",
+				"resGroup"
+			],
+			[
+				"pass",
+				"passes"
+			],
+			[
+				"privi",
+				"privilegeHttp"
+			],
+			[
+				"ui",
+				"ui_dropdown_config"
+			],
+			[
+				"resd",
+				"resDatas"
+			],
+			[
+				"PRIVI",
+				"PRIVILEGE_XHR"
+			],
+			[
+				"PRIV",
+				"PRIVILEGE_XHR"
+			],
+			[
+				"cuisines",
+				"cuisines_id"
+			],
+			[
+				"ht",
+				"HTTP_REQUEST"
+			],
+			[
+				"Object",
+				"objectToFormData"
+			],
+			[
+				"form_",
+				"form_data"
+			],
+			[
+				"useh",
+				"userHttp"
+			],
+			[
+				"u",
+				"userModel"
+			],
+			[
+				"get_ca",
+				"get_class"
+			],
+			[
+				"cuisine",
+				"cuisineUser"
+			],
+			[
+				"Json",
+				"json_encode"
+			],
+			[
+				"cuisi",
+				"cuisine_id"
+			],
+			[
+				"getc",
+				"get_called_class"
+			],
+			[
+				"get_",
+				"get_called_class"
+			],
+			[
+				"Product",
+				"ProductController"
+			],
+			[
+				"date",
+				"dateCalendar"
+			],
+			[
+				"tras",
+				"onlyTrashed"
+			],
+			[
+				"returnnewme",
+				"returnNewMenusCuisines"
+			],
+			[
+				"menu_",
+				"menu_header_id"
+			],
+			[
+				"set",
+				"setMenus"
+			],
+			[
+				"delete",
+				"deleteHttpRequest"
+			],
+			[
+				"init",
+				"initTextValidation"
+			],
+			[
+				"plat",
+				"platsHttp"
+			],
+			[
+				"swal",
+				"swalFailure"
+			],
+			[
+				"selectCui",
+				"selectCuisines"
+			],
+			[
+				"Cuis",
+				"CuisineSelfController"
+			],
+			[
+				"user",
+				"user_id"
+			],
+			[
+				"comp",
+				"compileString"
+			],
+			[
+				"array",
+				"arrayRecordTypeOf"
+			],
+			[
+				"type",
+				"typeDataItem"
+			],
+			[
+				"inti",
+				"initial_value"
+			],
+			[
+				"menu",
+				"menu_header_id"
+			],
+			[
+				"form",
+				"form_update_rules"
+			],
+			[
+				"json",
+				"json_encode"
+			],
+			[
+				"last",
+				"lastStockHistory"
+			],
+			[
+				"findCo",
+				"findComponentByRef"
+			],
+			[
+				"sele",
+				"selectAction"
+			],
+			[
+				"menus",
+				"menus_id"
+			],
+			[
+				"menu_header",
+				"menu_header_id"
+			],
+			[
+				"setM",
+				"setMenu"
+			],
+			[
+				"stat",
+				"staticType"
+			],
+			[
+				"mess",
+				"messageError"
+			],
+			[
+				"supp",
+				"supplier_new"
+			],
+			[
+				"Menuh",
+				"MenusCuisinesHttpRequest"
+			],
+			[
+				"returnew",
+				"returnNewMenusCuisines"
+			],
+			[
+				"MenusCUi",
+				"MenusCuisinesApp"
+			],
+			[
+				"sub",
+				"submitCuisine"
+			],
+			[
+				"submi",
+				"submitCuisine"
+			],
+			[
+				"menuht",
+				"menusHttp"
+			],
+			[
+				"input",
+				"inputSearchDropdown"
+			],
+			[
+				"his",
+				"stockHistories"
+			],
+			[
+				"str_re",
+				"str_replace"
+			],
+			[
+				"tmepl",
+				"template-test"
+			],
+			[
+				"BLade",
+				"BladeServiceProvider"
+			],
+			[
+				"hook",
+				"hookRecord"
+			],
+			[
+				"Blade",
+				"BladeServiceProvider"
+			],
+			[
+				"food",
+				"foodMenu"
+			],
+			[
+				"foo",
+				"foodMenu"
+			],
+			[
+				"fo",
+				"foodMenus"
+			],
+			[
+				"menu_he",
+				"menu_header_id"
+			],
+			[
+				"MENU_STO",
+				"MENU_STOCK_XHR"
+			],
+			[
+				"setmenu",
+				"setMenuDatas"
+			],
+			[
+				"getme",
+				"getMenuDatas"
+			],
+			[
+				"MENU_",
+				"MENU_HEADER_XHR"
+			],
+			[
+				"MENU",
+				"MENU_HEADER_XHR"
+			],
+			[
+				"menu_h",
+				"menu_header"
+			],
+			[
+				"Menu",
+				"MenuController"
+			],
+			[
+				"json_",
+				"json_encode"
+			],
+			[
+				"Member",
+				"MemberService"
+			],
+			[
+				"Stock",
+				"StockMenuApp"
+			],
+			[
+				"plats",
+				"plats_id"
+			],
+			[
+				"temp",
+				"temp_saved_menus"
+			],
+			[
+				"tem",
+				"temp_saved_menus"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "src/v1/orderwizard/Step1.jsx",
+			"settings":
+			{
+				"buffer_size": 232,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "src/base/BaseVue.jsx",
+			"settings":
+			{
+				"buffer_size": 9127,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"import",
+				"Import Helper: Insert import"
+			],
+			[
+				"remove",
+				"Package Control: Remove Package"
+			],
+			[
+				"quotka",
+				"Quokka.js: Stop All"
+			],
+			[
+				"quot",
+				"Quokka.js: Switch to 'Community' Edition"
+			],
+			[
+				"inser",
+				"Import Helper: Insert import"
+			],
+			[
+				"insert",
+				"Import Helper: Insert import"
+			],
+			[
+				"instal",
+				"Package Control: Install Package"
+			],
+			[
+				"resta",
+				"LSP: Restart Servers"
+			],
+			[
+				"remo",
+				"Package Control: Remove Package"
+			],
+			[
+				"lsp",
+				"LSP: Restart Servers"
+			],
+			[
+				"ls",
+				"LSP: Restart Servers"
+			],
+			[
+				"intel",
+				"Preferences: LSP-intelephense Settings"
+			],
+			[
+				"lspp",
+				"LSP: Toggle Log Panel"
+			],
+			[
+				"lsp: s",
+				"LSP: Restart Servers"
+			],
+			[
+				"lsp:",
+				"LSP: Restart Servers"
+			],
+			[
+				"insta",
+				"SublimeCodeIntel: Disable Plugin"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"form",
+				"CodeFormatter: Format as HTML Syntax"
+			],
+			[
+				"jso",
+				"JsPrettier: Format Code"
+			],
+			[
+				"tpl",
+				"Tpl: tpl"
+			],
+			[
+				"jspre",
+				"JsPrettier: Format Code"
+			],
+			[
+				"for",
+				"CodeFormatter: Format as Javascript Syntax"
+			],
+			[
+				"jsp",
+				"JsPrettier: Format Code"
+			],
+			[
+				"js",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jinj",
+				"Set Syntax: HTML (Jinja2)"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"html",
+				"Set Syntax: HTML"
+			],
+			[
+				"jfor",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jsf",
+				"JsPrettier: Format Code"
+			],
+			[
+				"format",
+				"CodeFormatter: Format as Javascript Syntax"
+			],
+			[
+				"jsore",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jspr",
+				"JsPrettier: Format Code"
+			],
+			[
+				"php",
+				"CodeFormatter: Format as PHP Syntax"
+			],
+			[
+				"ph",
+				"CodeFormatter: Format as PHP Syntax"
+			],
+			[
+				"blade",
+				"Blade Spacer: Format File"
+			],
+			[
+				"set blade",
+				"Set Syntax: Laravel Blade"
+			],
+			[
+				"set php",
+				"Set Syntax: PHP"
+			],
+			[
+				"code",
+				"CodeFormatter: Format as PHP Syntax"
+			],
+			[
+				"html code",
+				"CodeFormatter: Format as HTML Syntax"
+			],
+			[
+				"codefor",
+				"CodeFormatter: Format Code"
+			],
+			[
+				"codef",
+				"CodeFormatter: Format as PHP Syntax"
+			],
+			[
+				"jsfo",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jsfor",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jf",
+				"JsPrettier: Format Code"
+			],
+			[
+				"jsform",
+				"JsPrettier: Format Code"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 243.0,
+		"history":
+		[
+			"*"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/workspaces/artywiz-partner"
+	],
+	"file_history":
+	[
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/JsPrettier/JsPrettier.sublime-settings",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/User/Quokka.sublime-settings",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/Quokka/Quokka.sublime-settings",
+		"/c/workspaces/artywiz/app/Modules/Admin/Services/AdminService.php",
+		"/c/workspaces/artywiz/app/Modules/Base/BaseService.php",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/LSP/LSP.sublime-settings",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/User/LSP.sublime-settings",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Installed Packages/LSP-intelephense.sublime-package",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Installed Packages/LSP.sublime-package",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/LSP-intelephense/LSP-intelephense.sublime-settings",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/User/Tpl.sublime-settings",
+		"/C/Users/donny/AppData/Roaming/Sublime Text 3/Packages/User/Default (Windows).sublime-keymap",
+		"/C/laragon/bin/php/php-7.1.30-Win32-VC14-x64/php.ini",
+		"/C/Users/donny/AppData/Local/Temp/scp27837/home/akasa/artywiz/storage/logs/laravel-cli-akasa-2020-09-19.log",
+		"/C/Users/donny/AppData/Local/Temp/scp46162/home/akasa/artywiz/.env",
+		"/C/Users/donny/AppData/Local/Temp/scp37711/home/lacuisine/lacuisine/storage/logs/laravel-2020-08-27.log",
+		"/C/Users/donny/AppData/Local/Temp/scp40512/home/lacuisine/lacuisine/logs/access.log",
+		"/C/Users/donny/AppData/Local/Temp/scp39494/home/lacuisine/lacuisine/storage/logs/laravel-2020-08-26.log",
+		"/C/Users/donny/AppData/Local/Temp/scp50480/home/lacuisine/lacuisine/logs/access.log",
+		"/C/Users/donny/AppData/Local/Temp/scp49326/home/lacuisine/lacuisine/logs/error.log",
+		"/C/Users/donny/AppData/Local/Temp/scp23031/home/lacuisine/lacuisine/logs/error.log",
+		"/C/Users/donny/AppData/Local/Temp/scp18529/home/lacuisine/lacuisine/logs/access.log",
+		"/C/Users/donny/AppData/Local/Temp/scp17031/home/lacuisine/lacuisine/storage/logs/laravel-2020-08-24.log",
+		"/C/Users/donny/AppData/Local/Temp/scp58238/home/lacuisine/lacuisine/logs/error.log",
+		"/C/Users/donny/AppData/Local/Temp/scp56873/home/lacuisine/lacuisine/logs/access.log",
+		"/C/Users/donny/AppData/Local/Temp/scp01963/home/lacuisine/lacuisine/storage/logs/laravel-2020-08-24.log",
+		"/C/Users/donny/AppData/Local/Temp/scp06562/home/lacuisine/lacuisine/logs/access.log",
+		"/C/Users/donny/AppData/Local/Temp/scp07008/home/lacuisine/lacuisine/logs/error.log",
+		"/C/Users/donny/AppData/Local/Temp/scp08819/home/lacuisine/lacuisine/storage/logs/laravel-2020-08-21.log",
+		"/C/laragon/etc/nginx/sites-enabled/auto.lacuisine.local.conf",
+		"/C/laragon/etc/nginx/php_upstream.conf",
+		"/C/laragon/bin/nginx/nginx-1.14.0/conf/fastcgi.conf",
+		"/C/Users/donny/AppData/Local/Temp/scp01490/home/lacuisine/lacuisine/logs/access.log",
+		"/C/laragon/bin/apache/httpd-2.4.39-win64-VC14/logs/error.log",
+		"/C/Users/donny/AppData/Local/Temp/scp58593/home/lacuisine/lacuisine/logs/error.log",
+		"/C/laragon/bin/apache/httpd-2.4.39-win64-VC14/cgi-bin/test.php",
+		"/C/laragon/bin/nginx/nginx-1.14.0/conf/nginx.conf",
+		"/C/Users/donny/AppData/Local/Temp/scp57897/home/ubuntu/.ssh/id_rsa.pub",
+		"/C/Users/donny/AppData/Local/Temp/scp41272/home/ubuntu/dev_africa_hunting_safari/composer.json",
+		"/C/Users/donny/AppData/Local/Temp/scp04066/etc/nginx/sites-available/africa-hunting-safari.lacuisinededemain.com",
+		"/C/workspaces/scaffold_nodejs/node_modules/named-routes/router.js",
+		"/C/Users/donny/AppData/Local/Temp/scp18016/home/ubuntu/dev_africa_hunting_safari/config/app.php",
+		"/C/Users/donny/AppData/Local/Temp/scp22239/home/ubuntu/dev_africa_hunting_safari/modules/system/aliases.php",
+		"/C/Users/donny/AppData/Local/Temp/scp34269/home/ubuntu/dev_africa_hunting_safari/vendor/autoload.php",
+		"/C/Users/donny/AppData/Local/Temp/scp38149/home/akasa/artywiz/storage/logs/laravel-2020-08-18-fpm-fcgi-www-data.log",
+		"/C/Users/donny/AppData/Local/Temp/scp43566/home/akasa/artywiz/storage/logs/laravel-2020-08-14-cli-root.log",
+		"/C/Users/donny/AppData/Local/Temp/scp42730/home/akasa/artywiz/storage/logs/laravel-2020-08-14-fpm-fcgi-www-data.log",
+		"/C/Users/donny/AppData/Local/Temp/scp41957/home/akasa/screenshot/app/classes/renderDocGenerator.js",
+		"/C/Users/donny/AppData/Local/Temp/scp19337/home/lacuisine/lacuisine/app/Http/Controllers/v1/Guest/InvoiceController.php",
+		"/C/Users/donny/AppData/Local/Temp/scp09250/home/lacuisine/dev_lacuisine/storage/logs/laravel-2020-06-03.log",
+		"/C/Users/donny/AppData/Local/Temp/scp02542/home/lacuisine/dev_colleague/delivery.js",
+		"/C/Users/donny/AppData/Local/Temp/scp14631/home/ubuntu/dev_africa_hunting_safari/composer.json",
+		"/C/Users/donny/AppData/Local/Temp/scp35364/home/ubuntu/dev_africa_hunting_safari/bootstrap/autoload.php",
+		"/C/Users/donny/AppData/Local/Temp/scp33018/home/donny/wetsee/app/technicalindicator/trendIndicator.js",
+		"/C/Users/donny/AppData/Local/Temp/scp31308/home/donny/wetsee/app/services/alarm.js",
+		"/C/Users/donny/Downloads/icmp-tunnel/WpdPack_4_1_2/WpdPack/Examples-pcap/basic_dump/basic_dump.c",
+		"/C/workspaces/artiwiz-community/routes/web.php",
+		"/C/workspaces/artiwiz-community/app/Modules/Scenario/Routes/Data.php",
+		"/C/workspaces/artiwiz-community/app/Http/Controllers/Api/ScenarioController.php",
+		"/C/workspaces/artiwiz-community/app/Modules/User/Models/PreRegister.php",
+		"/C/workspaces/africa_hunting_safari/oldversion/Your Namibia Hunt _ Hunting Safaris Africa Ozondjahe.html",
+		"/C/workspaces/africa_hunting_safari/themes/africa-hunting-safari-v1/theme52824/header.php",
+		"/C/workspaces/africa_hunting_safari/themes/africa-hunting-safari-v1/theme52824/page-home.php",
+		"/C/workspaces/africa_hunting_safari/themes/africa-hunting-safari-v1/theme52824/includes/theme-init.php",
+		"/C/Users/donny/Downloads/icmp-tunnel/WpdPack_4_1_2/WpdPack/Examples-pcap/basic_dump/basic_dump.vcproj",
+		"/C/Users/donny/Downloads/icmp-tunnel/ptunnel-ng-master/src/Makefile",
+		"/C/Users/donny/Downloads/icmp-tunnel/ptunnel-master/Makefile",
+		"/C/Users/donny/AppData/Local/Temp/scp52259/home/lacuisine/africa_hunting_safari/config/database.php",
+		"/C/Users/donny/Downloads/africa-hunting-safari.com/CodePen_Export_wvaxLpw/src/index.html",
+		"/C/Users/donny/Downloads/africa-hunting-safari.com/CodePen_Export_wvaxLpw/src/style.css",
+		"/C/workspaces/africa_hunting_safari/themes/africa-hunting-safari-v1/theme52824/page.php",
+		"/C/workspaces/artiwiz-community/app/Modules/Common/Models/Category.php",
+		"/C/workspaces/monetico/test.php",
+		"/C/workspaces/monetico/Phase1Go.php",
+		"/C/Users/donny/AppData/Local/Temp/scp12067/home/lacuisine/lacuisine/storage/logs/laravel-2020-04-09.log",
+		"/C/Users/donny/Downloads/icmp-tunnel/simpleicmptunnel-0.2b/0.2b/icmpTunnelServer.sh",
+		"/C/workspaces/africa_hunting_safari/oldversion/Your Namibia Hunt _ Hunting Safaris Africa Ozondjahe_files/jplayer.playlist.min.js.download",
+		"/C/workspaces/africa_hunting_safari/composer.json",
+		"/C/workspaces/africa_hunting_safari/.env",
+		"/C/Users/donny/AppData/Local/Temp/scp35211/home/lacuisine/lacuisine/logs/access.log",
+		"/C/Users/donny/AppData/Local/Temp/scp35811/home/lacuisine/lacuisine/logs/error.log",
+		"/C/Users/donny/AppData/Local/Temp/scp38249/home/akasa/artywiz/app/Modules/Common/Models/Category.php",
+		"/C/Users/donny/AppData/Local/Temp/scp37887/home/akasa/artywiz/storage/logs/laravel-2020-03-03.log",
+		"/C/Users/donny/AppData/Local/Temp/scp50860/home/akasa/artywiz/app/Modules/User/Models/PreRegister.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/scripts/register_form.blade.php",
+		"/C/workspaces/lacuisine/app/Guest.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/route.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/login.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/scripts/login_form.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/member/product/partials/product_new.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/member/element/input/com_input_dropdown.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/member/cuisine/partials/cuisine_users.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/member/cuisiner/cuisiner_new.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/front/landing.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/mail_activation.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/scripts/activation_form.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/auth/register.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/element/base_script.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/request/auth_http_request.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/base/base_http_request.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/front/home.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/base/base_common.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/base/base_ractive.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/base/base_swal.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/layout_auth.blade.php",
+		"/C/workspaces/lacuisine/resources/views/v1/guest/element/head.blade.php",
+		"/C/workspaces/lacuisine/database/migrations/2020_02_11_144126_update_guests2.php",
+		"/C/workspaces/lacuisine/app/Services/Guest.php",
+		"/C/workspaces/lacuisine/app/Http/Controllers/v1/GuestAuthController.php",
+		"/C/workspaces/lacuisine/vendor/htmlmin/htmlmin/src/HTMLMinServiceProvider.php",
+		"/C/workspaces/lacuisine/resources/views/v1/member/product/products.blade.php",
+		"/C/Users/donny/AppData/Local/Temp/scp39855/home/ubuntu/dev.artywiz/app/Http/Controllers/NewsLetterController.php",
+		"/C/Users/donny/AppData/Local/Temp/scp46370/home/ubuntu/dev.artywiz/resources/views/email/pre_register_notify_register.blade.php",
+		"/C/workspaces/lacuisine/routes/web.php",
+		"/C/workspaces/lacuisine/app/Http/Controllers/v1/xhr/Guest/AuthController.php",
+		"/C/workspaces/lacuisine/app/Http/Controllers/v1/BaseController.php",
+		"/C/workspaces/lacuisine/app/Services/Authentication.php",
+		"/C/workspaces/lacuisine/app/Services/Privilege.php",
+		"/C/workspaces/lacuisine/config/auth.php",
+		"/C/workspaces/lacuisine/app/Http/Kernel.php",
+		"/C/workspaces/lacuisine/app/Http/Middleware/RedirectIfAuthenticated.php",
+		"/C/workspaces/lacuisine/app/Http/Middleware/CustomerAccessMiddleware.php",
+		"/C/workspaces/lacuisine/app/Http/Middleware/MemberAccessMiddleware.php",
+		"/C/workspaces/lacuisine/resources/views/v1/member/element/base_script.blade.php",
+		"/C/workspaces/lacuisine/app/Services/BaseService.php",
+		"/C/workspaces/lacuisine/app/User.php",
+		"/C/Users/donny/AppData/Local/Temp/scp08803/home/ubuntu/dev.artywiz/resources/views/email/pre_register_single_user.blade.php",
+		"/C/Users/donny/Downloads/LACUISINE (RESTAURANT - MEMBER).html"
+	],
+	"find":
+	{
+		"height": 40.0
+	},
+	"find_in_files":
+	{
+		"height": 104.8,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"from_qu",
+			"import"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "src/v1/orderwizard/Step1.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 232,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								204,
+								204
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".\"'/@<",
+									"selector": "source.js"
+								}
+							],
+							"lsp_active": true,
+							"lsp_language":
+							{
+								"lsp-typescript": "javascript"
+							},
+							"show_definitions": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "src/base/BaseVue.jsx",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 9127,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								644,
+								644
+							]
+						],
+						"settings":
+						{
+							"auto_complete_triggers":
+							[
+								{
+									"characters": "<",
+									"selector": "text.html"
+								},
+								{
+									"characters": ".\"'/@<",
+									"selector": "source.js"
+								}
+							],
+							"lsp_active": true,
+							"lsp_language":
+							{
+								"lsp-typescript": "javascript"
+							},
+							"show_definitions": false,
+							"syntax": "Packages/Babel/JavaScript (Babel).sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 22.0
+	},
+	"input":
+	{
+		"height": 122.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": false,
+	"output.console_panel":
+	{
+		"height": 96.0
+	},
+	"output.diagnostics":
+	{
+		"height": 357.0
+	},
+	"output.find_results":
+	{
+		"height": 109.0
+	},
+	"output.language servers":
+	{
+		"height": 333.0
+	},
+	"output.mdpopups":
+	{
+		"height": 0.0
+	},
+	"output.references":
+	{
+		"height": 348.0
+	},
+	"pinned_build_system": "",
+	"project": "workspace.sublime-project",
+	"replace":
+	{
+		"height": 40.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"BaseVu",
+				"src\\base\\BaseVue.jsx"
+			],
+			[
+				"step1",
+				"src\\v1\\orderwizard\\Step1.jsx"
+			],
+			[
+				"docker-",
+				"docker-compose.yml"
+			],
+			[
+				"partner",
+				"app\\Modules\\Partner\\Services\\Partner.php"
+			],
+			[
+				"partn",
+				"app\\Modules\\Partner\\Models\\Partner.php"
+			],
+			[
+				"",
+				"app\\Modules\\Partner\\Controllers\\PartnerController.php"
+			],
+			[
+				"part",
+				"app\\Modules\\Partner\\Models\\Partner.php"
+			],
+			[
+				".env",
+				".env"
+			],
+			[
+				"Modules\\Scenario\\Routes\\Data",
+				"app\\Modules\\Scenario\\Routes\\Data.php"
+			],
+			[
+				"web",
+				"routes\\web.php"
+			],
+			[
+				"guestcont",
+				"app\\Http\\Controllers\\v1\\GuestAuthController.php"
+			],
+			[
+				"guest/auth",
+				"app\\Http\\Controllers\\v1\\xhr\\Guest\\AuthController.php"
+			],
+			[
+				"service/guest",
+				"app\\Services\\Guest.php"
+			],
+			[
+				"guest",
+				"app\\Http\\Controllers\\v1\\GuestAuthController.php"
+			],
+			[
+				"app\\Services\\Guest.php",
+				"app\\Services\\Guest.php"
+			],
+			[
+				"v1\\xhr\\Guest\\AuthController.php",
+				"app\\Http\\Controllers\\v1\\xhr\\Guest\\AuthController.php"
+			],
+			[
+				"guestautc",
+				"app\\Http\\Controllers\\v1\\GuestAuthController.php"
+			],
+			[
+				"guestaut",
+				"app\\Http\\Controllers\\v1\\GuestAuthController.php"
+			],
+			[
+				"service/auth",
+				"app\\Services\\Authentication.php"
+			],
+			[
+				"authentication",
+				"app\\Services\\GuestAuthentication.php"
+			],
+			[
+				"\\xhr\\Guest\\AuthController.php",
+				"app\\Http\\Controllers\\v1\\xhr\\Guest\\AuthController.php"
+			],
+			[
+				"Services\\Privilege.php",
+				"app\\Services\\Privilege.php"
+			],
+			[
+				"guest.",
+				"app\\Services\\Guest.php"
+			],
+			[
+				"app\\Services\\GuestAuthentication.php",
+				"app\\Services\\GuestAuthentication.php"
+			],
+			[
+				"basecontr",
+				"app\\Http\\Controllers\\v1\\BaseController.php"
+			],
+			[
+				"update_guest",
+				"database\\migrations\\2020_02_11_144126_update_guests2.php"
+			],
+			[
+				"kerne",
+				"app\\Http\\Kernel.php"
+			],
+			[
+				"config/aut",
+				"config\\auth.php"
+			],
+			[
+				"kern",
+				"app\\Http\\Kernel.php"
+			],
+			[
+				"kernel",
+				"app\\Http\\Kernel.php"
+			],
+			[
+				"v1\\xhr\\Guest\\AuthController",
+				"app\\Http\\Controllers\\v1\\xhr\\Guest\\AuthController.php"
+			],
+			[
+				"guestcontrol",
+				"app\\Http\\Controllers\\v1\\xhr\\Guest\\AuthController.php"
+			],
+			[
+				"update_gue",
+				"database\\migrations\\2020_02_11_144126_update_guests2.php"
+			],
+			[
+				"config/au",
+				"config\\auth.php"
+			],
+			[
+				"config/auth",
+				"config\\auth.php"
+			],
+			[
+				"base_ractive",
+				"resources\\views\\v1\\base\\base_ractive.blade.php"
+			],
+			[
+				"login_view",
+				"resources\\views\\v1\\guest\\auth\\views\\login_view.blade.php"
+			],
+			[
+				"base_htt",
+				"resources\\views\\v1\\member\\element\\base_http_request.blade.php"
+			],
+			[
+				"base_http_request",
+				"resources\\views\\v1\\base\\base_http_request.blade.php"
+			],
+			[
+				"base_script",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"guestcontr",
+				"app\\Http\\Controllers\\v1\\GuestAuthController.php"
+			],
+			[
+				"user",
+				"app\\User.php"
+			],
+			[
+				"service/member/sub",
+				"app\\Services\\Member\\Subscribe.php"
+			],
+			[
+				"xhr\\Member\\SubscribeController.php",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\SubscribeController.php"
+			],
+			[
+				"subscribes_view",
+				"resources\\views\\v1\\member\\subscribe\\views\\subscribes_view.blade.php"
+			],
+			[
+				"base_sci",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"Services\\Member\\Subscribe.php",
+				"app\\Services\\Member\\Subscribe.php"
+			],
+			[
+				"subscrbecn",
+				"app\\Http\\Controllers\\v1\\xhr\\Front\\SubscribeController.php"
+			],
+			[
+				"subscribecontr",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\SubscribeController.php"
+			],
+			[
+				"create_gu",
+				"database\\migrations\\2019_12_30_040242_create_guests.php"
+			],
+			[
+				"create_user",
+				"database\\migrations\\2014_10_12_000000_create_users_table.php"
+			],
+			[
+				"productself",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\ProductSelfController.php"
+			],
+			[
+				"productcontroller",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\ProductController.php"
+			],
+			[
+				"supplier_new_view",
+				"resources\\views\\v1\\member\\supplier\\views\\supplier_new_view.blade.php"
+			],
+			[
+				"supplierupd",
+				"resources\\views\\v1\\member\\supplier\\supplier_update.blade.php"
+			],
+			[
+				"supplier_new",
+				"resources\\views\\v1\\member\\supplier\\supplier_new.blade.php"
+			],
+			[
+				"supplier",
+				"app\\Http\\Controllers\\v1\\xhr\\Front\\SupplierController.php"
+			],
+			[
+				"update_four",
+				"database\\migrations\\2020_01_23_130633_update_fournisseurs3.php"
+			],
+			[
+				"supplier_update",
+				"resources\\views\\v1\\member\\supplier\\supplier_update.blade.php"
+			],
+			[
+				"cuisine_htt",
+				"resources\\views\\v1\\member\\request\\cuisines_http_request.blade.php"
+			],
+			[
+				"list_tab",
+				"resources\\views\\v1\\member\\element\\list_table.blade.php"
+			],
+			[
+				"create_subscr",
+				"database\\migrations\\2020_02_10_040952_create_subscribe.php"
+			],
+			[
+				"subscribe.php",
+				"app\\Subscribe.php"
+			],
+			[
+				"subscribecontro",
+				"app\\Http\\Controllers\\v1\\Member\\SubscribeController.php"
+			],
+			[
+				"subscribes_vi",
+				"resources\\views\\v1\\member\\subscribe\\views\\subscribes_view.blade.php"
+			],
+			[
+				"v1\\xhr\\Member\\SubscribeController",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\SubscribeController.php"
+			],
+			[
+				"SubscribeController",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\SubscribeController.php"
+			],
+			[
+				"base_scip",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"list_table",
+				"resources\\views\\v1\\member\\element\\list_table.blade.php"
+			],
+			[
+				"privilege",
+				"app\\Services\\Privilege.php"
+			],
+			[
+				"com_side",
+				"resources\\views\\v1\\member\\element\\com_sidemenu.blade.php"
+			],
+			[
+				"cuisineself",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\CuisineSelfController.php"
+			],
+			[
+				"cuisines_htt",
+				"resources\\views\\v1\\member\\request\\cuisines_http_request.blade.php"
+			],
+			[
+				"blades",
+				"app\\Providers\\BladeServiceProvider.php"
+			],
+			[
+				"self_cui",
+				"resources\\views\\v1\\member\\request\\self_cuisines_http_request.blade.php"
+			],
+			[
+				"base_scri",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"base_http_req",
+				"resources\\views\\v1\\member\\element\\base_http_request.blade.php"
+			],
+			[
+				"baseHttp",
+				"resources\\views\\v1\\front\\request\\base_http_request.blade.php"
+			],
+			[
+				"input_drop",
+				"resources\\views\\v1\\member\\element\\input\\com_input_dropdown.blade.php"
+			],
+			[
+				"inputsear",
+				"resources\\views\\v1\\member\\element\\input\\com_input_search_dropdown.blade.php"
+			],
+			[
+				"user_htt",
+				"resources\\views\\v1\\member\\request\\user_http_request.blade.php"
+			],
+			[
+				"BASE_SC",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"base_scrip",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"cuisine_httpReu",
+				"resources\\views\\v1\\member\\request\\cuisines_http_request.blade.php"
+			],
+			[
+				"cuisinecontr",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\CuisineController.php"
+			],
+			[
+				"cuisinecontroller",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\CuisineController.php"
+			],
+			[
+				"cuisineController",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\CuisineSelfController.php"
+			],
+			[
+				"cuisine_http_Req",
+				"resources\\views\\v1\\member\\request\\cuisines_http_request.blade.php"
+			],
+			[
+				"cuisine_new_view",
+				"resources\\views\\v1\\member\\cuisine\\views\\cuisine_new_view.blade.php"
+			],
+			[
+				"cuisine",
+				"app\\Cuisine.php"
+			],
+			[
+				"cuisine_update",
+				"resources\\views\\v1\\member\\cuisine\\cuisine_update.blade.php"
+			],
+			[
+				"cuisine_upda",
+				"resources\\views\\v1\\member\\cuisine\\cuisine_update.blade.php"
+			],
+			[
+				"create_sub",
+				"database\\migrations\\2020_02_10_040952_create_subscribe.php"
+			],
+			[
+				"cuisiner",
+				"app\\Services\\Member\\Cuisiner.php"
+			],
+			[
+				"create_subs",
+				"database\\migrations\\2020_02_10_040952_create_subscribe.php"
+			],
+			[
+				"cuisiners_view",
+				"resources\\views\\v1\\member\\cuisiner\\views\\cuisiners_view.blade.php"
+			],
+			[
+				"cuisiners",
+				"resources\\views\\v1\\member\\cuisiner\\cuisiners.blade.php"
+			],
+			[
+				"input_import",
+				"resources\\views\\v1\\member\\element\\input\\com_input_import_document.blade.php"
+			],
+			[
+				"cuisiner_",
+				"resources\\views\\v1\\member\\cuisiner\\cuisiner_new.blade.php"
+			],
+			[
+				"cuisinercontr",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\CuisinerController.php"
+			],
+			[
+				"service/cuisine",
+				"app\\Services\\Member\\Cuisiner.php"
+			],
+			[
+				"update_cuisiner4",
+				"database\\migrations\\2020_02_10_034116_update_cuisiner4.php"
+			],
+			[
+				"update_",
+				"database\\migrations\\2019_12_27_090354_update_fournisseurs2.php"
+			],
+			[
+				"base_scr",
+				"resources\\views\\v1\\member\\element\\base_script.blade.php"
+			],
+			[
+				"arg.js",
+				"webapp\\webpack\\lib\\arg\\dist\\arg.min.js"
+			],
+			[
+				"cuisineus",
+				"app\\CuisineUser.php"
+			],
+			[
+				"app/service/cuisine",
+				"app\\Services\\Member\\Cuisine.php"
+			],
+			[
+				"base_sc",
+				"resources\\v1\\member\\element\\base_script.html"
+			],
+			[
+				"alarm",
+				"app\\services\\alarm.js"
+			],
+			[
+				"trading",
+				"app\\controller\\v1\\xhr\\member\\trading.js"
+			],
+			[
+				"route/xhr",
+				"routes\\xhr_member.js"
+			],
+			[
+				"service/user",
+				"app\\Services\\User.php"
+			],
+			[
+				"privi",
+				"app\\Services\\Privilege.php"
+			],
+			[
+				"serviec/us",
+				"app\\Services\\User.php"
+			],
+			[
+				"userself",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\UserSelfController.php"
+			],
+			[
+				"usercontr",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\UserController.php"
+			],
+			[
+				"privilegecon",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\PrivilegeController.php"
+			],
+			[
+				"privilegeContr",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\PrivilegeController.php"
+			],
+			[
+				"service/privi",
+				"app\\Services\\Privilege.php"
+			],
+			[
+				"privilege_new_view",
+				"resources\\views\\v1\\member\\privilege\\views\\privilege_new_view.blade.php"
+			],
+			[
+				"privilege_http_request",
+				"resources\\views\\v1\\member\\request\\privilege_http_request.blade.php"
+			],
+			[
+				"user_self_new_view",
+				"resources\\views\\v1\\member\\user\\views\\user_self_new_view.blade.php"
+			],
+			[
+				"service/use",
+				"app\\Services\\User.php"
+			],
+			[
+				"userselfo",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\UserSelfController.php"
+			],
+			[
+				"user.php",
+				"app\\User.php"
+			],
+			[
+				"priv",
+				"app\\Services\\Privilege.php"
+			],
+			[
+				"usercontrol",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\UserController.php"
+			],
+			[
+				"usercontro",
+				"app\\Http\\Controllers\\v1\\xhr\\Member\\UserController.php"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 380.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}

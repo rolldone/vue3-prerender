@@ -46,9 +46,7 @@ window.addEventListener('urlchangeevent', function(e) {
 });
 
 const routes = (function(routes){
-  require('./auth/route')(routes);
-  require('./user/route')(routes);
-  require('./home/route')(routes);
+  require('./example/route')(routes);
   return routes;
 })([]);
 
