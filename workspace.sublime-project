@@ -1,0 +1,10 @@
+{
+	"import_root": ".",
+	"from_quote": "'",
+	"folders":
+	[
+		{
+			"path": "."
+		}
+	]
+}
