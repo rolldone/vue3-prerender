@@ -6,6 +6,22 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const webpack = require("webpack");
 // const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
+var providePluginLib = {
+  $: "jquery",
+  jQuery: "jquery",
+  moment: "moment",
+  Swal: path.resolve(path.join(__dirname, "assets", "sweetalert2/dist/sweetalert2.js")),
+  // jQuery: path.resolve(path.join(__dirname, 'lib', 'own_jquery.js')),
+  // 'window.jQuery': path.resolve(path.join(__dirname, 'lib', 'own_jquery.js')),
+  gettext: path.join(__dirname, "src/base", "Ttag.js"),
+  Arg: path.join(__dirname, "assets", "arg/dist/arg.min.js"),
+  asyncjs: "async",
+  NProgress: "nprogress",
+  Pusher: path.join(__dirname, "assets", "pusher-js-master/dist/web/pusher.min.js"),
+  _: path.join(__dirname, "assets", "lodash/dist/lodash.min.js"),
+  Validator: path.join(__dirname, "assets", "validatorjs/validator.js")
+};
+
 var pkg = {
   version: new Date().getTime()
 };
@@ -56,26 +72,39 @@ module.exports = {
           reuseExistingChunk: true,
           test: /[\\/]assets[\\/]((semantic).*)[\\/]/
         },
-        
-        /* Old Version
-        common: {
-          chunks: "initial",
-          filename: `[name].bundle.js?v=${pkg.version}`,
-          minChunks: 2,
-          name: "common",
-          reuseExistingChunk: true,
-          test: (module, chunks) => {
-            return !(chunks.length === 2 && /^(editor|player)$/.test(chunks[0].name) && /^(editor|player)$/.test(chunks[1].name));
-          }
-        } 
-        */
+
+        /* Old Version */
+        // common: {
+        //   chunks: "initial",
+        //   filename: `[name].bundle.js?v=${pkg.version}`,
+        //   minChunks: 2,
+        //   name: "common",
+        //   reuseExistingChunk: true,
+        //   test: (module, chunks) => {
+        //     return !(chunks.length === 2 && /^(editor|player)$/.test(chunks[0].name) && /^(editor|player)$/.test(chunks[1].name));
+        //   }
+        // } 
+
       }
     }
   },
   entry: {
     // auth: [path.resolve(__dirname, "./src/v1/partner/auth/index")],
     main: [path.resolve(__dirname, "./src/module1/index")],
-    vendor: ["babel-polyfill"],
+    vendor: (function(parseData){
+      let hasRegistered = {};
+      let vendorsRegister = ["babel-polyfill"];
+      /* Initialize manual jika multi buat entry dengan app.js */
+      /* Kasus sekarang yaitu main, dan manage_content */
+      for(var key in parseData){
+        
+        if(hasRegistered[parseData[key]] == null){
+          vendorsRegister.push(parseData[key]);
+          hasRegistered[parseData[key]] = 'exist';
+        }
+      }
+      return vendorsRegister;
+    })(providePluginLib),
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -140,6 +169,10 @@ module.exports = {
         ]
       },
       {
+        test: /\.html$/,
+        loader: 'html-loader',
+      },
+      {
         test: /\.svg$/,
         use: [
           {
@@ -179,13 +212,15 @@ module.exports = {
 
     /* Load Html-webpack-plugin */
     /* If use NOdejs as rendering you dont need it */
-    new HtmlWebpackPlugin({
-        title: 'My App',
-        chunks: [],
-        date : new Date().getTime(),
-        template : path.join(__dirname, "views", "v1/prod/index.html"),
-        filename: path.join(__dirname, "dist", "main.html")
-    }),
+    // new HtmlWebpackPlugin({
+    //     title: 'My App',
+    //     chunks: [],
+    //     date : new Date().getTime(),
+    //     template : path.join(__dirname, "views", "v1/prod/index.html"),
+    //     filename: path.join(__dirname, "dist", "main.html")
+    // }),
+
+    /* Rendering per compile webpack */
     // new PrerenderSPAPlugin({
     //   // Required - The path to the webpack-outputted app to prerender.
     //   staticDir: path.join(__dirname, 'dist'),
@@ -207,23 +242,15 @@ module.exports = {
     new webpack.DefinePlugin({
       "process.env": {
         NODE_ENV: JSON.stringify("production")
+      },
+    }),
+    new webpack.ProvidePlugin((function(parseData){
+      let vendorsRegister = {};
+      for(var key in parseData){
+        vendorsRegister[key] = parseData[key];
       }
-    }),
-    new webpack.ProvidePlugin({
-      $: "jquery",
-      jQuery: "jquery",
-      moment: "moment",
-      Swal: path.resolve(path.join(__dirname, "assets", "sweetalert2/dist/sweetalert2.js")),
-      // jQuery: path.resolve(path.join(__dirname, 'lib', 'own_jquery.js')),
-      // 'window.jQuery': path.resolve(path.join(__dirname, 'lib', 'own_jquery.js')),
-      gettext: path.join(__dirname, "src/base", "Ttag.js"),
-      Arg: path.join(__dirname, "assets", "arg/dist/arg.min.js"),
-      asyncjs: "async",
-      NProgress: "nprogress",
-      Pusher: path.join(__dirname, "assets", "pusher-js-master/dist/web/pusher.min.js"),
-      _: path.join(__dirname, "assets", "lodash/dist/lodash.min.js"),
-      Validator: path.join(__dirname, "assets", "validatorjs/validator.js")
-    }),
+      return vendorsRegister;
+    })(providePluginLib)),
     //new BundleAnalyzerPlugin()
   ],
   resolve: {
