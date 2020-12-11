@@ -1,36 +1,47 @@
 
-
 import { setNavigableClassName } from './ArrowKeyNav';
+let SmartAutoCompleteIndex = 0;
+let SmartAutoCompleteStore = {};
+let isOwnArea = null;
+let currentSelectEl = null;
 (function(global){
   /* Static Type check allowed type data */
+  document.body.onmouseup = function(event){
+    if(isOwnArea.isSameNode(event.target.closest('.'+isOwnArea.className.replaceAll(' ','.'))) == false){
+      currentSelectEl.style.display = "none";
+    }
+  };
+  document.body.onkeyup = function(event){
+    if(isOwnArea.isSameNode(event.target.closest('.'+isOwnArea.className.replaceAll(' ','.'))) == false){
+      currentSelectEl.style.display = "none";
+    }
+  };
   let smartAutoComplete = function(props){
+    StaticType(props,[Object]);
+    StaticType(props.inputSelector,[Object,String]);
+    StaticType(props.listSelector,[String]);
+    StaticType(props.itemSelector,[String]);
     let currentProps = {
+      indetity : '.'+props.inputSelector.className.replaceAll(' ','.')+','+props.itemSelector,
+      areaSelector : '.'+props.inputSelector.className.replaceAll(' ','.')+','+props.listSelector,
       inputSelector : props.inputSelector,
       listSelector : props.listSelector,
       itemSelector : props.itemSelector,
       currentSelectEl : null,
-      isOwnArea : false,
       focusOutSearchInput : function(event){
         let self = this;
-        this.isOwnArea = false;
-        setTimeout(function(){
-          if(self.isOwnArea == false){
-            self.currentSelectEl.style.display = "none";
-          }
-        },100);
+        currentSelectEl = self.currentSelectEl;
+        isOwnArea = self.parent;
       },
       currentSelectEl : null,
       startOnTyping : props.startOnTyping || false,
       focusInSearchInput : function(event){
-        setNavigableClassName(this.inputSelector+','+this.itemSelector);
+        setNavigableClassName(this.indetity);
         let self = this;
-        this.isOwnArea = true;
-        // console.log('focusInSearchInput',event.target);
         const dom = event.target;
         const el = dom.nextSibling;
         let i = 1;
         while (el) {
-          // console.log(i, '. ', el.nodeName);
           let foundClassName = el.className.match(this.listSelector.replace('.',''))||[];
           if(foundClassName.length > 0){
             self.currentSelectEl = el;
@@ -47,25 +58,26 @@ import { setNavigableClassName } from './ArrowKeyNav';
         }
       },
     };
-    let inputQuerySelector = document.querySelectorAll(currentProps.inputSelector);
-    let domClassItem = null;
+    let inputQuerySelector = typeof currentProps.inputSelector == 'object' ? currentProps.inputSelector : document.querySelectorAll(currentProps.inputSelector);
     let nextEl = null;
-    for(var a=0;a<inputQuerySelector.length;a++){
-      domClassItem = inputQuerySelector[a];
-      domClassItem.addEventListener('focusin',currentProps.focusInSearchInput.bind(currentProps));
-      domClassItem.addEventListener('focusout',currentProps.focusOutSearchInput.bind(currentProps));
-      nextEl = domClassItem.nextSibling;
-      while(nextEl){
-        let foundClassName = nextEl.className.match(currentProps.listSelector.replace('.',''))||[];
-        if(foundClassName.length > 0){
-          nextEl.className += (' rel_'+currentProps.inputSelector.replace('.',''));
-          nextEl.style.display = 'none';
-          nextEl.addEventListener('focusin',currentProps.focusInSearchInput.bind(currentProps));
-          nextEl.addEventListener('focusout',currentProps.focusOutSearchInput.bind(currentProps));
-          break;
-        }else{}
-        nextEl = nextEl.nextSibling;
-      }
+    let domClassItem = null;
+    domClassItem = inputQuerySelector;
+    currentProps.parent = domClassItem.parentNode;
+    domClassItem.setAttribute('smart-auto-complete-index',SmartAutoCompleteIndex);
+    domClassItem.addEventListener('focusin',currentProps.focusInSearchInput.bind(currentProps));
+    domClassItem.addEventListener('focusout',currentProps.focusOutSearchInput.bind(currentProps));
+    SmartAutoCompleteStore[SmartAutoCompleteIndex] = domClassItem;
+    nextEl = domClassItem.nextSibling;
+    while(nextEl){
+      let foundClassName = nextEl.className.match(currentProps.listSelector.replace('.',''))||[];
+      if(foundClassName.length > 0){
+        nextEl.className += (' rel_'+currentProps.inputSelector.className);
+        nextEl.style.display = 'none';
+        nextEl.addEventListener('focusin',currentProps.focusInSearchInput.bind(currentProps));
+        nextEl.addEventListener('focusout',currentProps.focusOutSearchInput.bind(currentProps));
+        break;
+      }else{}
+      nextEl = nextEl.nextSibling;
     }
   };
   if (typeof define === 'function' && define.amd) {
