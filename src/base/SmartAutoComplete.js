@@ -7,11 +7,13 @@ let currentSelectEl = null;
 (function(global){
   /* Static Type check allowed type data */
   document.body.onmouseup = function(event){
+    if(isOwnArea == null) return;
     if(isOwnArea.isSameNode(event.target.closest('.'+isOwnArea.className.replaceAll(' ','.'))) == false){
       currentSelectEl.style.display = "none";
     }
   };
   document.body.onkeyup = function(event){
+    if(isOwnArea == null) return;
     if(isOwnArea.isSameNode(event.target.closest('.'+isOwnArea.className.replaceAll(' ','.'))) == false){
       currentSelectEl.style.display = "none";
     }
@@ -21,12 +23,14 @@ let currentSelectEl = null;
     StaticType(props.inputSelector,[Object,String]);
     StaticType(props.listSelector,[String]);
     StaticType(props.itemSelector,[String]);
+    StaticType(props.parentSelector,[null,String]);
     let currentProps = {
       indetity : '.'+props.inputSelector.className.replaceAll(' ','.')+','+props.itemSelector,
       areaSelector : '.'+props.inputSelector.className.replaceAll(' ','.')+','+props.listSelector,
       inputSelector : props.inputSelector,
       listSelector : props.listSelector,
       itemSelector : props.itemSelector,
+      parentSelector : props.parentSelector,
       currentSelectEl : null,
       focusOutSearchInput : function(event){
         let self = this;
@@ -39,10 +43,23 @@ let currentSelectEl = null;
         setNavigableClassName(this.indetity);
         let self = this;
         const dom = event.target;
-        const el = dom.nextSibling;
+        let el = this.parentSelector == null ?dom.nextSibling : dom.closest(self.parentSelector);
+        if(this.parentSelector != null){
+          el = el.querySelector(this.listSelector);
+          if(el != null){
+            self.currentSelectEl = el;
+            if(this.startOnTyping == false || typeof this.startOnTyping == 'function'  ){
+              el.style.display = null;
+              if(typeof this.startOnTyping == 'function'){
+                this.startOnTyping(el);
+              }
+            }
+          }
+          return;
+        }
         let i = 1;
         while (el) {
-          let foundClassName = el.className.match(this.listSelector.replace('.',''))||[];
+          let foundClassName = el.className.match(this.listSelector.replaceAll('.',''))||[];
           if(foundClassName.length > 0){
             self.currentSelectEl = el;
             if(this.startOnTyping == false || typeof this.startOnTyping == 'function'  ){
@@ -62,7 +79,8 @@ let currentSelectEl = null;
     let nextEl = null;
     let domClassItem = null;
     domClassItem = inputQuerySelector;
-    currentProps.parent = domClassItem.parentNode;
+    currentProps.parent = currentProps.parentSelector == null ? domClassItem.parentNode : domClassItem.closest(currentProps.parentSelector);
+    console.log('currentProps',currentProps.parent);
     domClassItem.setAttribute('smart-auto-complete-index',SmartAutoCompleteIndex);
     domClassItem.addEventListener('focusin',currentProps.focusInSearchInput.bind(currentProps));
     domClassItem.addEventListener('focusout',currentProps.focusOutSearchInput.bind(currentProps));
