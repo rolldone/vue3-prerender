@@ -19,6 +19,7 @@ var browser = null;
 var runnerBrowser = (async function(){
   browser = await puppeteer.launch({
     args: [
+      "--window-size=1280,768",
       '--no-sandbox',
       '--disable-setuid-sandbox'
     ],
@@ -121,15 +122,19 @@ module.exports = async function(req,res,next){
         CurrentUrlWorking[local_url] = local_url;
 
         let page = await browser.newPage();
+        page.setViewport({
+          width: 1280,
+          height: 768,
+        });
         await page.setDefaultNavigationTimeout(12000);
 
         /* Optimation */
         /* 1. Intercept network requests. */
         await page.setRequestInterception(true);
         page.on('request', req => {
-          // 2. Ignore requests for resources that don't produce DOM
-          /* (image ). */
-          const allowlist = ['image','stylesheet','other','document', 'script', 'xhr', 'fetch'];
+          // 2. Ignore requests for resources that don't produce DOM          
+          /* block : stylesheet */
+          const allowlist = ['eventsource','image','other','document', 'script', 'xhr', 'fetch'];
           if (!allowlist.includes(req.resourceType())) {
             console.log('req.resourceType() - ada yang kena blocked ',req.resourceType());
             return req.abort();
@@ -158,14 +163,14 @@ module.exports = async function(req,res,next){
         });
 
         // .on('pageerror', ({ message }) => console.log(message))
-        page.on('response', async resp => {
-          const responseUrl = resp.url();
-          const sameOrigin = new URL(responseUrl).origin === new URL(local_url).origin;
-          const isStylesheet = resp.request().resourceType() === 'stylesheet';
-          if (sameOrigin && isStylesheet) {
-            stylesheetContents[responseUrl] = await resp.text();
-          }
-        });
+        // page.on('response', async resp => {
+        //   const responseUrl = resp.url();
+        //   const sameOrigin = new URL(responseUrl).origin === new URL(local_url).origin;
+        //   const isStylesheet = resp.request().resourceType() === 'stylesheet';
+        //   if (sameOrigin && isStylesheet) {
+        //     stylesheetContents[responseUrl] = await resp.text();
+        //   }
+        // });
         // .on('requestfailed', request =>
         //   console.log(`${request.failure().errorText} ${request.url()}`))
 
@@ -195,16 +200,16 @@ module.exports = async function(req,res,next){
         // await page.waitForSelector('#headless_done');  
 
         // Replace stylesheets in the page with their equivalent <style>.
-        await page.$$eval('link[rel="stylesheet"]', (links, content) => {
-          links.forEach(link => {
-            const cssText = content[link.href];
-            if (cssText) {
-              const style = document.createElement('style');
-              style.textContent = cssText;
-              link.replaceWith(style);
-            }
-          });
-        },stylesheetContents);
+        // await page.$$eval('link[rel="stylesheet"]', (links, content) => {
+        //   links.forEach(link => {
+        //     const cssText = content[link.href];
+        //     if (cssText) {
+        //       const style = document.createElement('style');
+        //       style.textContent = cssText;
+        //       link.replaceWith(style);
+        //     }
+        //   });
+        // },stylesheetContents);
 
         html = await evaluatePage(page);
         console.log('rendered!!');

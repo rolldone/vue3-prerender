@@ -33,7 +33,7 @@ export default BaseComposition.extend({
   },
   set: function(whatString, props) {
     let self = this;
-    window.staticType(self._data,[Object]);
+    StaticType(self._data,[Object]);
     return new Promise(function(resolve) {
       self._data[whatString] = props;
       resolve();
@@ -41,7 +41,7 @@ export default BaseComposition.extend({
   },
   get: function(whatString) {
     let self = this;
-    window.staticType(self._data,[Object]);
+    StaticType(self._data,[Object]);
     if (whatString == null) {
       return self._data;
     }
@@ -53,7 +53,7 @@ export default BaseComposition.extend({
   },
   getRef : function(ref){
     try{
-      window.staticType(ref,[String]);
+      StaticType(ref,[String]);
       let test = this.refs[ref];
       return test.value._.setupState;
     }catch(ex){
@@ -85,10 +85,10 @@ export default BaseComposition.extend({
   },
   getRef2 : function(whatObject){
     try{
-      window.staticType(whatObject,[Object]);
-      window.staticType(whatObject.value,[Object]);
-      window.staticType(whatObject.value._,[Object]);
-      window.staticType(whatObject.value._.setupState,[Object]);
+      StaticType(whatObject,[Object]);
+      StaticType(whatObject.value,[Object]);
+      StaticType(whatObject.value._,[Object]);
+      StaticType(whatObject.value._.setupState,[Object]);
       return whatObject.value._.setupState;
     }catch(ex){
       /* Its ok just keep it */
@@ -101,7 +101,7 @@ export default BaseComposition.extend({
     this._super();
   },
   parseException: function(props) {
-    window.staticType(props, [null, String]);
+    StaticType(props, [null, String]);
     if (props == null) return "";
     try {
       return JSON.parse(props);
@@ -265,7 +265,7 @@ export default BaseComposition.extend({
     return urlString;
   },
   routeToPathString: function(object) {
-    window.staticType(object, [Object]);
+    StaticType(object, [Object]);
     /* Example {name:'auth.login'} */
     return this.$router.resolve(object).href;
   },
@@ -276,9 +276,9 @@ export default BaseComposition.extend({
     return array.slice(array.length - takeCount, array.length);
   },
   getRandomText: function(combineString, stringLength, substringLenght) {
-    window.staticType(combineString, [String]);
-    window.staticType(stringLength, [null, Number]);
-    window.staticType(substringLenght, [null, Number]);
+    StaticType(combineString, [String]);
+    StaticType(stringLength, [null, Number]);
+    StaticType(substringLenght, [null, Number]);
     return (
       combineString +
       Math.random()
@@ -305,19 +305,20 @@ export default BaseComposition.extend({
     // console.log(window.location.href,' - '+curUrl);
     switch (action) {
       case "PUSH_STATE":
-        if (window.location.href == curUrl) {
-          return;
-        }
-        return window.history.pushState("", "", curUrl);
-        // return window.masterData.saveData('pushstate',window.history);
+        // if (window.location.href == curUrl) {
+        //   return;
+        // }
+        return window.history.pushState({
+          urlPath : curUrl
+        }, "", curUrl);
     }
     return window.history.replaceState("", "", curUrl);
-    // window.router.update(curUrl,false,{});
   },
   saveQueryUrl: function(query, url = null, option = null) {
     let self = this;
+    query._ = new Date().getTime();
     let newQuery = self.jsonToQueryUrl(url || window.location.href, query, null);
-    self.updateUrlState(newQuery, option || "PUSH_STATE");
+    self.updateUrlState(newQuery, option || "REPLACE_STATE");
     return newQuery;
   },
   updateCurrentState(query){
@@ -340,12 +341,12 @@ export default BaseComposition.extend({
   },
   setLocalStorage : function(whatString,props){
     let self = this;
-    let currentData = window.localStorage.getItem(whatString);
+    let currentData = window.localStorage.getItem(whatString)||null;
     console.log("currentData -> ", currentData);
     let theValue = window.localStorage.getItem(whatString);
     switch(true){
       case theValue == null:
-      case typeof theValue != 'object':
+      case theValue[0] != '{' || theValue[0] != '[':
         return window.localStorage.setItem(whatString,JSON.stringify(props));
     }
     currentData = JSON.parse(currentData);
@@ -353,22 +354,17 @@ export default BaseComposition.extend({
       window.localStorage.setItem(whatString,JSON.stringify(props));
       return;
     }
-    window.localStorage.setItem(whatString,{
+    window.localStorage.setItem(whatString,JSON.stringify({
       ...currentData,
       ...props,
-    });
+    }));
   },
   getLocalStorage : function(whatString){
     let theValue = window.localStorage.getItem(whatString);
     try{
       return JSON.parse(theValue);
     }catch(ex){
-      switch(true){
-        case theValue == null:
-        case typeof theValue != 'object':
-          return theValue;
-      }
+      return theValue;
     }
-    
   }
 });
