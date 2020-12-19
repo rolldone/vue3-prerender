@@ -4,6 +4,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const webpack = require("webpack");
+const ESLintPlugin = require('eslint-webpack-plugin');
 // const PrerenderSPAPlugin = require('prerender-spa-plugin')
 
 var providePluginLib = {
@@ -72,19 +73,19 @@ module.exports = {
           reuseExistingChunk: true,
           test: /[\\/]assets[\\/]((semantic).*)[\\/]/
         },
-
-        /* Old Version */
-        // common: {
-        //   chunks: "initial",
-        //   filename: `[name].bundle.js?v=${pkg.version}`,
-        //   minChunks: 2,
-        //   name: "common",
-        //   reuseExistingChunk: true,
-        //   test: (module, chunks) => {
-        //     return !(chunks.length === 2 && /^(editor|player)$/.test(chunks[0].name) && /^(editor|player)$/.test(chunks[1].name));
-        //   }
-        // } 
-
+        
+        /* Old Version
+        common: {
+          chunks: "initial",
+          filename: `[name].bundle.js?v=${pkg.version}`,
+          minChunks: 2,
+          name: "common",
+          reuseExistingChunk: true,
+          test: (module, chunks) => {
+            return !(chunks.length === 2 && /^(editor|player)$/.test(chunks[0].name) && /^(editor|player)$/.test(chunks[1].name));
+          }
+        } 
+        */
       }
     }
   },
@@ -136,17 +137,17 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: [/node_modules/,/assets/],
-        loaders: ["babel-loader",'eslint-loader']
+        loaders: ["babel-loader"]
       },
-      // {
-      //   test: /\.tsx?$/,
-      //   use: 'ts-loader',
-      //   exclude: /node_modules/,
-      // },
+      {
+        test: /\.(tsx|ts)?$/,
+        use: 'ts-loader',
+        exclude: /node_modules/,
+      },
       {
         test: /\.js?$/,
         exclude: /node_modules/,
-        loaders: ["babel-loader",'eslint-loader']
+        loaders: ["babel-loader"]
       },
       
       /* If you need create single component vue and watch it */
@@ -204,6 +205,7 @@ module.exports = {
     ]
   },
   plugins: [
+    new ESLintPlugin({}),
     new webpack.SourceMapDevToolPlugin({
       filename: '[name].js.map',
       chunkFilename : '[id].[hash].js.map',
@@ -212,15 +214,13 @@ module.exports = {
 
     /* Load Html-webpack-plugin */
     /* If use NOdejs as rendering you dont need it */
-    // new HtmlWebpackPlugin({
-    //     title: 'My App',
-    //     chunks: [],
-    //     date : new Date().getTime(),
-    //     template : path.join(__dirname, "views", "v1/prod/index.html"),
-    //     filename: path.join(__dirname, "dist", "main.html")
-    // }),
-
-    /* Rendering per compile webpack */
+    new HtmlWebpackPlugin({
+        title: 'My App',
+        chunks: [],
+        date : new Date().getTime(),
+        template : path.join(__dirname, "views", "v1/prod/index.html"),
+        filename: path.join(__dirname, "dist", "main.html")
+    }),
     // new PrerenderSPAPlugin({
     //   // Required - The path to the webpack-outputted app to prerender.
     //   staticDir: path.join(__dirname, 'dist'),
@@ -275,6 +275,6 @@ module.exports = {
         })()
       )
     },
-    extensions: ['.js', '.jsx', '.vue'],
+    extensions: ['.js', '.jsx', '.vue','.tsx','.ts'],
   }
 };

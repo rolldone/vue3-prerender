@@ -302,23 +302,23 @@ export default BaseComposition.extend({
     return theUrl;
   },
   updateUrlState: function(curUrl, action) {
-    // console.log(window.location.href,' - '+curUrl);
-    switch (action) {
-      case "PUSH_STATE":
-        // if (window.location.href == curUrl) {
-        //   return;
-        // }
-        return window.history.pushState({
-          urlPath : curUrl
-        }, "", curUrl);
+    if(window.stateAction == null){
+      switch (action) {
+        case "PUSH_STATE":
+          window.history.pushState("", "", curUrl);
+          // window.router.options.history.state.current = curUrl;
+          window.history.state.current = curUrl;
+          return
+      }
+      return window.history.replaceState("", "", curUrl);
     }
-    return window.history.replaceState("", "", curUrl);
+    return null;
   },
   saveQueryUrl: function(query, url = null, option = null) {
     let self = this;
     query._ = new Date().getTime();
-    let newQuery = self.jsonToQueryUrl(url || window.location.href, query, null);
-    self.updateUrlState(newQuery, option || "REPLACE_STATE");
+    let newQuery = self.jsonToQueryUrl("?", query, null);
+    self.updateUrlState(newQuery, option || "PUSH_STATE");
     return newQuery;
   },
   updateCurrentState(query){
