@@ -1,5 +1,8 @@
 import config from "@config";
 import Proto from 'uberproto';
+import StaticType from './StaticType';
+
+const rememberRequest = {};
 
 var BaseHttpRequest = Proto.extend({
   __init : 'construct',
@@ -73,12 +76,18 @@ var BaseHttpRequest = Proto.extend({
     return this.headers;
   },
   setNewHeaders : function(props){
-    window.staticType(props,[Object]);
+    StaticType(props,[Object]);
     this.newHeaders = props;
   },
   getNewHeaders : function(){
     if(this.newHeaders == undefined) return null;
     return this.newHeaders;
+  },
+  setPreventDuplicate : function(prevent=false){
+    this.preventDuplicateRequest = prevent;
+  },
+  isPreventDuplicate : function(){
+    return this.preventDuplicateRequest || false;
   },
   getData: function(url, queryString) {
     let self = this;
@@ -89,7 +98,11 @@ var BaseHttpRequest = Proto.extend({
     // query = Object.assign(query, queryString);
     let theUrl = theArg.url(url, queryString);
     return new Promise(function(resolve) {
+      var xhr = new window.XMLHttpRequest();
       let ajaxVar = {
+        xhr : function(){
+          return xhr;
+        },
         headers : self.getHeaders(),
         method: "GET",
         url: theUrl,
@@ -101,6 +114,22 @@ var BaseHttpRequest = Proto.extend({
         /* Replace with new headers */
         ajaxVar.headers = newHeaders;
       }
+      /* Cancel if get duplicate request like debounce */
+      if(self.isPreventDuplicate() == true){
+        if(rememberRequest[url] != null){
+          rememberRequest[url].xhr.abort();
+          rememberRequest[url].resolve({
+            status : 'error',
+            data : {
+              responseJSON : null
+            }
+          });
+        }
+      }
+      rememberRequest[url] = {
+        xhr : xhr,
+        resolve : resolve
+      };  
       $.ajax(ajaxVar)
         .then(function(res) {
           resolve(res);
@@ -141,9 +170,71 @@ var BaseHttpRequest = Proto.extend({
         });
     });
   },
+  putData : function(url,formData){
+    let self = this;
+    return new Promise(function(resolve) {
+      let ajaxVar = {
+        headers : {
+          ...self.getHeaders(),
+          'Content-Type' : 'application/json'
+        },
+        method: "PUT",
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false /* what type of data do we expect back from the server */,
+      };
+      let newHeaders = self.getNewHeaders();
+      if(newHeaders != null){
+        /* Replace with new headers */
+        ajaxVar.headers = newHeaders;
+      }
+      $.ajax(ajaxVar)
+        .then(function(res) {
+          resolve(res);
+        })
+        .fail(function(data, status) {
+          resolve({
+            status: "error",
+            data: data,
+          });
+        });
+    });
+  },
+  deleteData : function(url,formData){
+    let self = this;
+    return new Promise(function(resolve) {
+      let ajaxVar = {
+        headers : {
+          ...self.getHeaders(),
+          'Content-Type' : 'application/json'
+        },
+        method: "DELETE",
+        url: url,
+        data: formData,
+        processData: false,
+        contentType: false /* what type of data do we expect back from the server */,
+      };
+      let newHeaders = self.getNewHeaders();
+      if(newHeaders != null){
+        /* Replace with new headers */
+        ajaxVar.headers = newHeaders;
+      }
+      $.ajax(ajaxVar)
+        .then(function(res) {
+          resolve(res);
+        })
+        .fail(function(data, status) {
+          resolve({
+            status: "error",
+            data: data,
+          });
+        });
+    });
+  },
   getScript: function(url, queryString) {
-    window.staticType(url, [String]);
-    window.staticType(queryString, [Object]);
+    StaticType(url, [String]);
+    StaticType(queryString, [Object]);
     return new Promise(function(resolve, reject) {
       let theArg = new Arg(url);
       let query = theArg.query();
@@ -185,7 +276,7 @@ var BaseHttpRequest = Proto.extend({
   },
   name: "class_" + new Date().getMilliseconds(),
   setApiRoute: function(route) {
-    window.staticType(route, [Object]);
+    StaticType(route, [Object]);
     var newRoute = {};
     var baseHttp = config.API_URL;
     for (var a in route) {
@@ -196,9 +287,9 @@ var BaseHttpRequest = Proto.extend({
       }
     }
     window.routeApi = (function(api_store_list) {
-      window.staticType(api_store_list, [Object]);
+      StaticType(api_store_list, [Object]);
       return function(whatName) {
-        window.staticType(whatName, [String]);
+        StaticType(whatName, [String]);
         if (api_store_list[whatName] == null) {
           return "";
         }
@@ -208,7 +299,7 @@ var BaseHttpRequest = Proto.extend({
     return (route = newRoute);
   },
   setPrivilegeMap: function(privileges) {
-    window.staticType(privileges, [Object]);
+    StaticType(privileges, [Object]);
     window.privilege_store_list = privileges;
     return privileges;
   },
