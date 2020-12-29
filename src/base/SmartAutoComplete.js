@@ -97,6 +97,12 @@ let currentSelectEl = null;
       }else{}
       nextEl = nextEl.nextSibling;
     }
+
+    return {
+      hide : function(){
+        currentSelectEl.style.display = "none";
+      }
+    };
   };
   if (typeof define === 'function' && define.amd) {
     /* AMD support */

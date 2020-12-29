@@ -253,6 +253,34 @@ export default BaseComposition.extend({
     }
     return this.safeJSON(props, endpoint.join("."), index);
   },
+  setJSONItem : function(props,endpoint,value,index){
+    var calculateJSON = function(props,endpoint,value,index){
+      endpoint = endpoint.split(".");
+      console.log('endpoint',endpoint);
+      if (endpoint.length == 0) {
+        return "";
+      }
+      if (index == null) {
+        index = 0;
+      }
+      if (props == null) {
+        return "";
+      }
+      if (props[endpoint[index]] == null) {
+        return "";
+      }
+      if (index == endpoint.length -1) {
+        props[endpoint[index]] = value;
+        return props;
+      }
+      props = props[endpoint[index]];
+      index += 1;
+      
+      return calculateJSON(props, endpoint.join("."),value, index);
+    }
+    calculateJSON(props,endpoint,value,index);
+    return props;
+  },
   setUrl: function(urlString, array) {
     for (var a = 0; a < array.length; a++) {
       for (var key in array[a]) {
@@ -314,6 +342,10 @@ export default BaseComposition.extend({
     }
     return null;
   },
+  getTimeState : function(props={}){
+    props._ = new Date().getTime();
+    return props;
+  },
   saveQueryUrl: function(query, url = null, option = null) {
     let self = this;
     query._ = new Date().getTime();
@@ -365,6 +397,26 @@ export default BaseComposition.extend({
       return JSON.parse(theValue);
     }catch(ex){
       return theValue;
+    }
+  },
+  getType : function(){
+    var types = {
+      'get': function(prop) {
+         return Object.prototype.toString.call(prop);
+      },
+      'null': '[object Null]',
+      'object': '[object Object]',
+      'array': '[object Array]',
+      'string': '[object String]',
+      'boolean': '[object Boolean]',
+      'number': '[object Number]',
+      'date': '[object Date]',
+    }
+    return {
+      check : function(props){
+        return types.get(props);
+      },
+      types
     }
   }
 });
