@@ -373,6 +373,10 @@ export default BaseComposition.extend({
   },
   setLocalStorage : function(whatString,props){
     let self = this;
+    if(props == null){
+      window.localStorage.removeItem(whatString);
+      return;
+    }
     let currentData = window.localStorage.getItem(whatString)||null;
     console.log("currentData -> ", currentData);
     let theValue = window.localStorage.getItem(whatString);
