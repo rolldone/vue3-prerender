@@ -5,7 +5,7 @@ import Validator from '../../assets/validatorjs/validator';
 
 (function(global){
   var smartValidation = function(idSelector){
-    StaticType(idSelector,[String,Object]);
+    StaticType(idSelector,[String,HTMLDivElement]);
     var id = idSelector;
     if(Object.prototype.toString.call(idSelector) == '[object String]'){
       id = '#'+id;
