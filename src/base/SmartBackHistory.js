@@ -1,5 +1,4 @@
 
-import { setNavigableClassName } from './ArrowKeyNav';
 (function(global){
 
   if(window.sessionStorage.getItem('smart_state_history') == null){
