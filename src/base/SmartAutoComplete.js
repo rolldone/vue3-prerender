@@ -1,4 +1,3 @@
-
 import { setNavigableClassName } from './ArrowKeyNav';
 let SmartAutoCompleteIndex = 0;
 let SmartAutoCompleteStore = {};
@@ -20,7 +19,7 @@ let currentSelectEl = null;
   };
   let smartAutoComplete = function(props){
     StaticType(props,[Object]);
-    StaticType(props.inputSelector,[Object,String]);
+    StaticType(props.inputSelector,[HTMLInputElement,String]);
     StaticType(props.listSelector,[String]);
     StaticType(props.itemSelector,[String]);
     StaticType(props.parentSelector,[null,String]);
