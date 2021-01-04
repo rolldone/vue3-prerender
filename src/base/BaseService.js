@@ -10,6 +10,7 @@ var BaseHttpRequest = Proto.extend({
     console.log("base construct");
   },
   headers : {
+    "X-Requested-With" : 'XMLHttpRequest',
     "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
     Authorization: (window.localStorage.getItem("token_type")||"Bearer")+' '+ window.localStorage.getItem("token")
   },
@@ -275,6 +276,9 @@ var BaseHttpRequest = Proto.extend({
     return !!pattern.test(str);
   },
   name: "class_" + new Date().getMilliseconds(),
+  getApiRoute : function(){
+    alert('You have no override this function');
+  },
   setApiRoute: function(route) {
     StaticType(route, [Object]);
     var newRoute = {};
