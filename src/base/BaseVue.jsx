@@ -49,6 +49,9 @@ export default BaseComposition.extend({
     return self.safeJSON(self._data,whatString,null);
   },
   setRef : function(theRef,whatObject){
+    if(this.refs == null){
+      this.refs = {};
+    }
     this.refs[theRef] = ref(whatObject);
   },
   getRef : function(ref){
@@ -358,8 +361,9 @@ export default BaseComposition.extend({
     query._ = new Date().getTime();
     window.router.push({ name : window.route.name, query : query });
   },
-  resolveRouteToUrl: function(string) {
-    return window.router.resolve({ name: string }).href;
+  resolveRouteToUrl: function(string,props=null) {
+    let theUrl = { name: string, ...props };
+    return window.router.resolve(theUrl).href;
   },
   recursiveFunction: function(index, done, middlewares, props = null) {
     console.log(index, "length", middlewares.length);
