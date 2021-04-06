@@ -20,24 +20,37 @@ window.moment = moment;
 window.masterData = {
   pending: {},
   vars: {},
-  stores: {},
+  exist_vars : {},
   listeners : {},
-  setOnListener: function (listenerName, callback,key="") {
-    key = listenerName+key;
-    if(this.listeners[key||callback.toString()] != null){
-      window.pubsub.removeListener(listenerName,this.listeners[key||callback.toString()]);
+  // listenerName, callback,key="",callOnInit=false
+  setOnListener: function () {
+    let listenerName = arguments[0];
+    let callback = arguments[1];
+    window.staticType(arguments[2],[String,Boolean,null,undefined]);
+    arguments[2] = arguments[2]==null?"":arguments[2];
+    let key = Object.prototype.toString.call(arguments[2])=='[object Boolean]'?'':arguments[2];
+    let callOnInit = Object.prototype.toString.call(arguments[2])=='[object String]'?arguments[3]==null?false:arguments[3]:arguments[2];
+    
+    var newKey = listenerName+key;
+    var newListenerKey = listenerName+callback.toString();
+    if(this.listeners[newListenerKey] != null){
+      window.pubsub.removeListener(newKey,this.listeners[newListenerKey]);
+      delete this.listeners[newListenerKey];
     }
-    this.listeners[key||callback.toString()] = callback;
-    window.pubsub.on(listenerName, this.listeners[key||callback.toString()]);
+    this.listeners[newListenerKey] = callback;
+    window.pubsub.on(newKey, this.listeners[newListenerKey]);
+    if(callOnInit == true){
+      window.pubsub.emit(newKey, this.vars[newKey]);
+    }
+    if(this.vars[newKey] != null){
+      return this.vars[newKey];
+    }
   },
-  removeListener : function(listenerName,key){
-    try{
-      key = listenerName+key;
-      window.pubsub.removeListener(listenerName,this.listeners[key]);
-      delete this.listeners[key];
-    }catch(ex){
-      console.error('removeListener - ex',ex);
-    }
+  removeListener : function(listenerName,key=""){
+    key = listenerName+key;
+    window.pubsub.removeListener(listenerName,this.listeners[key]);
+    delete this.listeners[key];
+    delete this.vars[key];
   },
   saveData: function (key, props) {
     this.vars[key] = props;
@@ -47,14 +60,11 @@ window.masterData = {
     // }
     // this.pending[key] = _.debounce(function (key, props) {
     //   window.pubsub.emit(key, props);
-    //   debugger;
-    // }, 100);
+    // }, 1000);
     // this.pending[key](key, props);
   },
-  run: function () {
-    for (var key in this.stores) {
-      this.saveData(key, this.vars[key]);
-    }
+  run : function(){
+    console.log('This function deprecated!');
   }
 };
 
